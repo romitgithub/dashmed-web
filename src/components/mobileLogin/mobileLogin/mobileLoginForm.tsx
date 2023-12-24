@@ -5,7 +5,7 @@ import { FormControlForMobileNo } from '@/views/loginViews/FormControlForMobileN
 import { OtpInput } from '@/views/loginViews/OtpInput';
 import { SelectAddress } from '@/views/loginViews/SelectAddress';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 interface LoginChecks {
   isOtpSent: boolean;
@@ -39,13 +39,11 @@ export const LoginWithMobileNumber: React.FC = () => {
     mobileNum: '',
   });
 
-  // console.log(loginChecks);
-
   const handleToggleType = (value: string): void => {
     localStorage.setItem('typeVal', value);
     setLoginChecks({
       ...loginChecks,
-      type: value,
+      tabType: value,
     });
   };
 
@@ -119,7 +117,7 @@ export const LoginWithMobileNumber: React.FC = () => {
             (
               <div className="w-full m-2 p-2 flex flex-col mt-2 sm:mt-2 md:mt-2 lg:mt-4 xl:mt-6">
                 <div className="flex flex-row items-center justify-center relative" >
-                  <span className="absolute top-0 left-0 mt-0 ml-0 p-1" onClick={handleBackFromOtpPage}>
+                  <span className="absolute cursor-pointer top-0 left-0 mt-0 ml-0 p-1" onClick={handleBackFromOtpPage}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -147,7 +145,7 @@ export const LoginWithMobileNumber: React.FC = () => {
             (
               <div className="flex flex-col items-center w-full">
                 <div className="flex flex-row items-center justify-center relative p-2 w-full" >
-                  <span className="absolute top-2 left-0 mt-0 ml-0 p-1" onClick={handleBackFromSelectAddressPage}>
+                  <span className="absolute cursor-pointer top-2 left-0 mt-0 ml-0 p-1" onClick={handleBackFromSelectAddressPage}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -173,12 +171,12 @@ export const LoginWithMobileNumber: React.FC = () => {
         </>
       }
       {
-        loginChecks?.type === 'emailId' &&
+        loginChecks?.tabType === 'emailId' &&
         <></>
       }
       {
-        loginChecks?.type === 'abhaNumber' &&
-        <LoginWithAbhaNumber />
+        loginChecks?.tabType === 'abhaNumber' &&
+        <LoginWithAbhaNumber setLoginChecks={setLoginChecks} loginChecks={loginChecks} />
       }
     </>
   );

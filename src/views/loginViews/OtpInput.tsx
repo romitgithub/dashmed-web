@@ -9,7 +9,7 @@ export const OtpInput: React.FC<FormControlProps> = ({ setLoginChecks, loginChec
      const [otp, setOtp] = useState(['', '', '', '', '', '']);
      const refs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
      console.log({ loginChecks });
-     
+
      const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
           const value = event.target.value;
           setOtp([...otp?.slice(0, index), value, ...otp?.slice(index + 1)]);
