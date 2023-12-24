@@ -1,4 +1,4 @@
-export async function fetchLoginWithMobile<T = any, Args = any>(
+export async function fetchLoginExternalApi<T = any, Args = any>(
      url: string,
      data?: Args
 ): Promise<T> {
@@ -8,7 +8,8 @@ export async function fetchLoginWithMobile<T = any, Args = any>(
                "Content-Type": "application/json",
           });
           return await response.json();
-     } catch (err: any) {
+     } 
+     catch (err: any) {
           console.log({ err })
           throw new Error(err?.message);
      }
@@ -20,7 +21,7 @@ export async function fetchPost(url: string, data?: any, headers?: any) {
      try {
           console.log({ url, data });
           // Default options are marked with *
-          const response = await fetch(process.env.NEXT_BASE_URL + url, {
+          const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + url, {
                method: "POST", // *GET, POST, PUT, DELETE, etc.
                mode: "cors", // no-cors, *cors, same-origin
                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

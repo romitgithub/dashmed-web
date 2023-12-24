@@ -1,17 +1,11 @@
-// "use client"
+"use client"
 
 import { LoginWithAbhaNumber } from '@/components/abhaNumberLogin/abhaNumberLogin';
-import CountdownTimer from '@/components/countDown/expiresIn';
-import { fetchLoginWithMobile } from '@/utils/apiHelpers';
+import { FormControlForMobileNo } from '@/views/loginViews/FormControlForMobileNo';
+import { OtpInput } from '@/views/loginViews/OtpInput';
+import { SelectAddress } from '@/views/loginViews/SelectAddress';
 import Link from 'next/link';
-import React, { useState, useRef, ChangeEvent, KeyboardEvent } from 'react';
-
-interface Country {
-  code: string;
-  name: string;
-  flag: string;
-}
-
+import React, { useEffect, useState } from 'react';
 
 interface LoginChecks {
   isOtpSent: boolean;
@@ -19,46 +13,44 @@ interface LoginChecks {
   isAbhaAddressSelected: boolean;
   transactionId: string;
   type: string;
+  tabType: string;
   addresses: string[];
+  mobileNum: string;
 };
 
 type SetLoginChecks = React.Dispatch<React.SetStateAction<LoginChecks>>;
 
-interface FormControlProps {
+export interface FormControlProps {
   setLoginChecks: SetLoginChecks;
   loginChecks: LoginChecks;
 }
 
 
-const countries: Country[] = [
-  { code: 'us', name: 'United States', flag: '🇺🇸' },
-  { code: 'in', name: 'India', flag: '🇮🇳' },
-  // Add more countries as needed
-];
-
-
 export const LoginWithMobileNumber: React.FC = () => {
 
-  // const typeVal = localStorage.getItem('typeVal');
+  const defaultLoginChecks: LoginChecks = {
+    isOtpSent: false,
+    isOtpVerify: false,
+    isAbhaAddressSelected: false,
+    transactionId: '',
+    type: 'MOBILE',
+    tabType: 'mobileNumber',
+    addresses: [],
+    mobileNum: '',
+  };
+
   // Retrieve the value from local storage
   const storedLoginChecks = localStorage.getItem('loginChecks');
+  const initialState = storedLoginChecks ? JSON.parse(storedLoginChecks) : defaultLoginChecks;
 
-  // Check if the stored value exists and parse it, otherwise use the default state
-  const initialState = storedLoginChecks
-    ? JSON.parse(storedLoginChecks)
-    : {
-      isOtpSent: false,
-      isOtpVerify: false,
-      isAbhaAddressSelected: false,
-      transactionId: '',
-      type: 'mobileNumber',
-      addresses: [],
-    };
+  const [loginChecks, setLoginChecks] = useState<LoginChecks>(initialState);
 
-  const [loginChecks, setLoginChecks] = useState(initialState);
+  // Update local storage whenever loginChecks changes
+  useEffect(() => {
+    localStorage.setItem('loginChecks', JSON.stringify(loginChecks));
+  }, [loginChecks]);
 
-
-  console.log(loginChecks);
+  // console.log(loginChecks);
 
   const handleToggleType = (value: string): void => {
     localStorage.setItem('typeVal', value);
@@ -67,17 +59,6 @@ export const LoginWithMobileNumber: React.FC = () => {
       type: value,
     });
   };
-
-  const addresses = [
-    {
-      'address': '7897417171@abdm',
-      'username': 'Vibhor Agnihotri'
-    },
-    {
-      'address': 'vibhor.agnihotri@abdm',
-      'username': 'Vibhor Agnihotri'
-    },
-  ];
 
 
   return (
@@ -171,256 +152,6 @@ export const LoginWithMobileNumber: React.FC = () => {
         loginChecks?.type === 'abhaNumber' &&
         <LoginWithAbhaNumber />
       }
-    </>
-  );
-};
-
-
-
-
-
-
-const FormControlForMobileNo: React.FC<FormControlProps> = ({ setLoginChecks, loginChecks }) => {
-
-  const [mobileNumber, setMobileNumber] = useState<string>('');
-  const [selectedCountry, setSelectedCountry] = useState<string>(countries[0].code);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault();
-    console.log({ "ENV": process.env.NEXT_BASE_URL })
-    console.log(`Country: ${selectedCountry}, Mobile Number: ${mobileNumber}`);
-
-    try {
-      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/sendOtp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ value: mobileNumber, type: 'MOBILE' }), // Send the necessary data in the body
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      console.log({ data });
-      setLoginChecks({
-        ...loginChecks,
-        isOtpSent: true,
-        transactionId: data?.transactionId,
-      });
-
-    } catch (error) {
-      console.error('Error:', error);
-    }
-
-
-    // setLoginChecks({
-    //   ...loginChecks,
-    //   isOtpSent: true,
-    // });
-  };
-
-
-  return (
-    <form onSubmit={handleSubmit} className='pt-5 pb5'>
-      <label>Enter mobile number</label>
-      <div className="flex items-center space-x-2">
-        <select
-          className="p-2 rounded border border-gray-300"
-          value={selectedCountry}
-          onChange={(e) => setSelectedCountry(e.target.value)}
-        >
-          {countries.map((country) => (
-            <option key={country.code} value={country.code}>
-              {country.flag}
-            </option>
-          ))}
-        </select>
-        <input
-          type="tel"
-          className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
-          placeholder="Enter mobile number"
-          value={mobileNumber}
-          onChange={(e) => setMobileNumber(e.target.value)}
-        />
-      </div>
-      <div className='mt-5 mb-5'>
-        <button
-          type="submit"
-          className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
-        >
-          Sign in / Sign up
-        </button>
-      </div>
-    </form>
-  );
-};
-
-
-
-
-
-
-const OtpInput: React.FC<FormControlProps> = ({ setLoginChecks, loginChecks }) => {
-
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const refs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
-
-  const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setOtp([...otp?.slice(0, index), value, ...otp?.slice(index + 1)]);
-
-    // Auto focus to the next input
-    if (value !== '' && index < 5 && refs[index + 1]?.current) {
-      refs[index + 1]?.current?.focus();
-    }
-  };
-
-  const handleKeyDown = (index: number, event: KeyboardEvent<HTMLInputElement>) => {
-    // Handle backspace to move focus to the previous input
-    if (event?.key === 'Backspace' && index > 0 && otp[index] === '' && refs[index - 1].current) {
-      refs[index - 1]?.current?.focus();
-    }
-  };
-
-  const handleOtpSubmit = async () => {
-
-    console.log({
-      "otp": otp.join(''),
-      "type": "MOBILE",
-      "transactionId": loginChecks?.transactionId
-    });
-
-
-
-    try {
-      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/verifyOtp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "otp": otp.join(''),
-          "type": "MOBILE",
-          "transactionId": loginChecks?.transactionId
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      console.log({ data });
-      setLoginChecks({
-        ...loginChecks,
-        isOtpVerify: true,
-        addresses: data?.mappedPhrAddress,
-      })
-    } catch (error) {
-      console.error('Error:', error);
-    }
-
-    // setLoginChecks({
-    //   ...loginChecks,
-    //   isOtpVerify: true,
-    //   // addresses: data?.mappedPhrAddress,
-    // })
-  }
-
-  return (
-    <div className='flex flex-col w-full mt-5'>
-      <label className=''>Enter 6 digit OTP</label>
-      <div className="flex justify-between items-center mt-3">
-        {otp?.map((value, index) => (
-          <input
-            key={index}
-            ref={refs[index]}
-            type="text"
-            maxLength={1}
-            value={value}
-            onChange={(e) => handleInputChange(index, e)}
-            onKeyDown={(e) => handleKeyDown(index, e)}
-            className="w-12 h-12 mx-1 text-4xl text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500 sm:text-3xl extra-small:text-sm small:text-md extra-small:w-8 extra-small:h-8 small:w-10 small:h-10 grid-cols-6 extra-small:grid-cols-1"
-          />
-        ))}
-      </div>
-      <div className="flex flex-row w-full justify-between mt-5">
-        <CountdownTimer />
-        <span className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-teal-400">RESEND OTP</span>
-      </div>
-      <div className='mt-5 mb-5'>
-        <button
-          onClick={handleOtpSubmit}
-          className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
-        >
-          CONTINUE
-        </button>
-      </div>
-    </div>
-  );
-};
-
-
-
-const SelectAddress: React.FC<FormControlProps> = ({ setLoginChecks, loginChecks }) => {
-
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
-
-  const handleItemClick = (item: string) => {
-    setSelectedItem(item);
-  };
-
-  const handleSelectAddress = async () => {
-    try {
-      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/abhaAddConfirm', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "abhaAdd": selectedItem,
-          "transactionId": "",
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      console.log({ data });
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-
-  return (
-    <>
-      <div className='w-full'>
-        {loginChecks?.addresses?.map((item, index) => (
-          <div key={index} className="border border-solid border-gray-700 w-full flex p-2 pl-3 rounded-md mt-2">
-            <input
-              type="radio"
-              id={`item_${index}`}
-              name="items"
-              checked={selectedItem === item}
-              onChange={() => handleItemClick(item)}
-            />
-            <label className='ml-3' htmlFor={`item_${index}`}>{item}</label>
-          </div>
-        ))}
-      </div>
-      <div className='mt-5 mb-5 w-full'>
-        <button
-          onClick={handleSelectAddress}
-          className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
-        >
-          LOGIN
-        </button>
-      </div>
     </>
   );
 };
