@@ -5,6 +5,7 @@ import { useState } from "react";
 const FormControlForMobileNo: React.FC<FormControlProps> = ({ setLoginChecks, loginChecks }) => {
 
      const [mobileNumber, setMobileNumber] = useState<string>('');
+     console.log({ loginChecks });
 
      const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
           e.preventDefault();
@@ -23,14 +24,15 @@ const FormControlForMobileNo: React.FC<FormControlProps> = ({ setLoginChecks, lo
 
                const data = await response.json();
                console.log({ data });
-               setLoginChecks({
-                    ...loginChecks,
-                    isOtpSent: true,
-                    transactionId: data?.transactionId,
-                    type: 'MOBILE',
-                    mobileNum: mobileNumber,
-               });
-
+               if (data?.transactionId) {
+                    setLoginChecks({
+                         ...loginChecks,
+                         isOtpSent: true,
+                         transactionId: data?.transactionId,
+                         type: 'MOBILE',
+                         mobileNum: mobileNumber,
+                    });
+               }
           } catch (error) {
                console.error('Error:', error);
           }
