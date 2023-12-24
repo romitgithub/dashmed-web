@@ -1,6 +1,8 @@
 "use client"
 
+import { LoginWithAbhaAddress } from '@/components/abhaAddressLogin/abhaAddressLogin';
 import { LoginWithAbhaNumber } from '@/components/abhaNumberLogin/abhaNumberLogin';
+import { LoginWithEmailId } from '@/components/loginWithEmail/emailLogin';
 import { FormControlForMobileNo } from '@/views/loginViews/FormControlForMobileNo';
 import { OtpInput } from '@/views/loginViews/OtpInput';
 import { SelectAddress } from '@/views/loginViews/SelectAddress';
@@ -16,6 +18,9 @@ interface LoginChecks {
   tabType: string;
   addresses: string[];
   mobileNum: string;
+  forgetPassword: boolean;
+  isAbhaLoginShow: boolean;
+  emailId: string;
 };
 
 type SetLoginChecks = React.Dispatch<React.SetStateAction<LoginChecks>>;
@@ -37,6 +42,9 @@ export const LoginWithMobileNumber: React.FC = () => {
     tabType: 'mobileNumber',
     addresses: [],
     mobileNum: '',
+    forgetPassword: false,
+    isAbhaLoginShow: false,
+    emailId: '',
   });
 
   const handleToggleType = (value: string): void => {
@@ -171,8 +179,12 @@ export const LoginWithMobileNumber: React.FC = () => {
         </>
       }
       {
+        loginChecks?.tabType === 'abhaAddress' &&
+        <LoginWithAbhaAddress setLoginChecks={setLoginChecks} loginChecks={loginChecks} />
+      }
+      {
         loginChecks?.tabType === 'emailId' &&
-        <></>
+        <LoginWithEmailId setLoginChecks={setLoginChecks} loginChecks={loginChecks} />
       }
       {
         loginChecks?.tabType === 'abhaNumber' &&
