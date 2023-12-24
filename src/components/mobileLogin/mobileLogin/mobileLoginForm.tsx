@@ -1,9 +1,10 @@
-"use client"
+// "use client"
 
+import { LoginWithAbhaNumber } from '@/components/abhaNumberLogin/abhaNumberLogin';
 import CountdownTimer from '@/components/countDown/expiresIn';
+import { fetchLoginWithMobile } from '@/utils/apiHelpers';
 import Link from 'next/link';
-import React, { useState, useRef, ChangeEvent, KeyboardEvent, SetStateAction } from 'react';
-
+import React, { useState, useRef, ChangeEvent, KeyboardEvent } from 'react';
 
 interface Country {
   code: string;
@@ -15,6 +16,8 @@ interface LoginChecks {
   isOtpSent: boolean;
   isOtpVerify: boolean;
   isAbhaAddressSelected: boolean;
+  transactionId: string;
+  type: string
 };
 
 type SetLoginChecks = React.Dispatch<React.SetStateAction<LoginChecks>>;
@@ -36,14 +39,27 @@ const countries: Country[] = [
 ];
 
 
+export const LoginWithMobileNumber: React.FC = () => {
 
-export const LoginWithMobileNumber = () => {
-
+  // const typeVal = localStorage.getItem('typeVal');
   const [loginChecks, setLoginChecks] = useState({
     isOtpSent: false,
     isOtpVerify: false,
     isAbhaAddressSelected: false,
+    transactionId: '',
+    type: 'mobileNumber'
   });
+
+  console.log(loginChecks);
+  console.log({ "url": process.env.NEXT_PUBLIC_SERVER_URL });
+
+  const handleToggleType = (value: string) => {
+    localStorage.setItem('typeVal', value);
+    setLoginChecks({
+      ...loginChecks,
+      type: value,
+    })
+  };
 
   const addresses = [
     {
@@ -60,105 +76,115 @@ export const LoginWithMobileNumber = () => {
   return (
     <>
       {
-        !loginChecks?.isOtpSent &&
-        !loginChecks?.isOtpVerify &&
-        !loginChecks?.isAbhaAddressSelected &&
-        (
-          <>
-            <div className="w-full m-2 p-2 flex flex-col mt-2 sm:mt-2 md:mt-2 lg:mt-4 xl:mt-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-center lg:justify-center xl:justify-center">
-                <span className="font-semibold sm:text-lg md:text-2xl lg:text-3xl xl:text-3xl">Hello!</span>
-                {" "}
-                <span className="ml-0 sm:ml-3 font-semibold sm:text-lg md:text-2xl lg:text-3xl xl:text-3xl">Romit Choudhary</span>
-              </div>
-              <div>
-                <FormControlForMobileNo setLoginChecks={setLoginChecks} loginChecks={loginChecks} />
-              </div>
-              <div className="flex flex-col w-full justify-center align-middle">
-                <span className="m-auto text-xl">Or</span>
-                <Link href={"/auth/login"}><span className="block text-center mt-5 font-medium text-teal-700">Other Login Options</span></Link>
-                <div className="flex flex-col w-full justify-center align-middle mt-5">
-                  <Link href={'#'} className="mt-5">
-                    <button className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 rounded-md text-#1b5887 font-medium transition duration-300">ABHA Address</button>
-                  </Link>
-                  <Link href={'#'} className="mt-5">
-                    <button className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 rounded-md text-#1b5887 font-medium transition duration-300">Email ID</button>
-                  </Link>
-                  <Link href={'#'} className="mt-5">
-                    <button className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 rounded-md text-#1b5887 font-medium transition duration-300">ABHA Number</button>
-                  </Link>
+        loginChecks?.type === 'mobileNumber' &&
+        <>
+          {
+            !loginChecks?.isOtpSent &&
+            !loginChecks?.isOtpVerify &&
+            !loginChecks?.isAbhaAddressSelected &&
+            (
+              <>
+                <div className="w-full m-2 p-2 flex flex-col mt-2 sm:mt-2 md:mt-2 lg:mt-4 xl:mt-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-center lg:justify-center xl:justify-center">
+                    <span className="font-semibold sm:text-lg md:text-2xl lg:text-3xl xl:text-3xl">Hello!</span>
+                    {" "}
+                    <span className="ml-0 sm:ml-3 font-semibold sm:text-lg md:text-2xl lg:text-3xl xl:text-3xl">Romit Choudhary</span>
+                  </div>
+                  <div>
+                    <FormControlForMobileNo setLoginChecks={setLoginChecks} loginChecks={loginChecks} />
+                  </div>
+                  <div className="flex flex-col w-full justify-center align-middle">
+                    <span className="m-auto text-xl">Or</span>
+                    <Link href={"/auth/login"}><span className="block text-center mt-5 font-medium text-teal-700">Other Login Options</span></Link>
+                    <div className="flex flex-col w-full justify-center align-middle mt-5">
+                      <button onClick={() => handleToggleType('abhaAddress')} className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 mt-2 rounded-md text-#1b5887 font-medium transition duration-300">ABHA Address</button>
+                      <button onClick={() => handleToggleType('emailId')} className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 mt-2 rounded-md text-#1b5887 font-medium transition duration-300">Email ID</button>
+                      <button onClick={() => handleToggleType('abhaNumber')} className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 mt-2 rounded-md text-#1b5887 font-medium transition duration-300">ABHA Number</button>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <span className="font-medium block text-center text-xs sm:text-xs md:text-sm lg:text-md xl:text-lg">{"Don't have an ABHA Address?"}</span>
+                    <span className="flex justify-center align-middle font-medium text-teal-700">Register</span>
+                  </div>
+                  <div className="mt-4 mb-4">
+                    <span className="font-medium block text-center text-xs sm:text-xs md:text-sm lg:text-md xl:text-lg">{"Don't have an ABHA number?"}</span>
+                    <span className="flex justify-center align-middle font-medium text-teal-700">Create Now</span>
+                  </div>
+                  <div className="mb-3">
+                    <span className="flex justify-center align-middle mt-2 font-medium text-teal-700 text-sm underline">Privacy Policy</span>
+                  </div>
+                </div>
+              </>
+            )
+          }
+
+          {
+            loginChecks?.isOtpSent &&
+            !loginChecks?.isOtpVerify &&
+            !loginChecks?.isAbhaAddressSelected &&
+            (
+              <div className="w-full m-2 p-2 flex flex-col mt-2 sm:mt-2 md:mt-2 lg:mt-4 xl:mt-6">
+                <div className="flex flex-row items-center justify-center">
+                  <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4">Login with Mobile Number</span>
+                </div>
+                <div>
+                  <OtpInput setLoginChecks={setLoginChecks} loginChecks={loginChecks} />
                 </div>
               </div>
-            </div>
-            <div>
-              <div>
-                <span className="font-medium block text-center text-xs sm:text-xs md:text-sm lg:text-md xl:text-lg">{"Don't have an ABHA Address?"}</span>
-                <span className="flex justify-center align-middle font-medium text-teal-700">Register</span>
-              </div>
-              <div className="mt-4 mb-4">
-                <span className="font-medium block text-center text-xs sm:text-xs md:text-sm lg:text-md xl:text-lg">{"Don't have an ABHA number?"}</span>
-                <span className="flex justify-center align-middle font-medium text-teal-700">Create Now</span>
-              </div>
-              <div className="mb-3">
-                <span className="flex justify-center align-middle mt-2 font-medium text-teal-700 text-sm underline">Privacy Policy</span>
-              </div>
-            </div>
-          </>
-        )
-      }
+            )
+          }
 
-      {
-        loginChecks?.isOtpSent &&
-        !loginChecks?.isOtpVerify &&
-        !loginChecks?.isAbhaAddressSelected &&
-        (
-          <div className="w-full m-2 p-2 flex flex-col mt-2 sm:mt-2 md:mt-2 lg:mt-4 xl:mt-6">
-            <div className="flex flex-row items-center justify-center">
-              <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4">Login with Mobile Number</span>
-            </div>
-            <div>
-              <OtpInput setLoginChecks={setLoginChecks} loginChecks={loginChecks} />
-            </div>
-          </div>
-        )
-      }
-
-      {
-        loginChecks?.isOtpSent &&
-        loginChecks?.isOtpVerify &&
-        !loginChecks?.isAbhaAddressSelected &&
-        (
-          <div className="flex flex-col items-center w-full">
-            <div className="flex w-full flex-row items-center justify-center">
-              <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4">Login with Mobile Number</span>
-            </div>
-            <div className="flex flex-row items-center justify-center mt-5">
-              <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-xl xl:text-2xl mb-4 text-center">Select the ABHA Address through which you wish to login</span>
-            </div>
-            <div className="flex flex-col items-center w-full m-auto p-1">
-              {
-                addresses?.map((address) => {
-                  return <div className="border border-solid border-gray-700 w-full flex flex-col p-2 pl-7 rounded-md m-2">
-                    <span className="text-gray-500">{address?.address}</span>
-                    <span className="font-medium">{address?.username}</span>
+          {
+            loginChecks?.isOtpSent &&
+            loginChecks?.isOtpVerify &&
+            !loginChecks?.isAbhaAddressSelected &&
+            (
+              <div className="flex flex-col items-center w-full">
+                <div className="flex w-full flex-row items-center justify-center">
+                  <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4">Login with Mobile Number</span>
+                </div>
+                <div className="flex flex-row items-center justify-center mt-5">
+                  <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-xl xl:text-2xl mb-4 text-center">Select the ABHA Address through which you wish to login</span>
+                </div>
+                <div className="flex flex-col items-center w-full m-auto p-1">
+                  {
+                    addresses?.map((address) => {
+                      return <div className="border border-solid border-gray-700 w-full flex flex-col p-2 pl-7 rounded-md m-2">
+                        <span className="text-gray-500">{address?.address}</span>
+                        <span className="font-medium">{address?.username}</span>
+                      </div>
+                    })
+                  }
+                  <div className='mt-5 mb-5 w-full'>
+                    <button
+                      type="submit"
+                      className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
+                    >
+                      LOGIN
+                    </button>
                   </div>
-                })
-              }
-              <div className='mt-5 mb-5 w-full'>
-                <button
-                  type="submit"
-                  className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
-                >
-                  LOGIN
-                </button>
+                </div>
               </div>
-            </div>
-          </div>
-        )
+            )
+          }
+        </>
+      }
+      {
+        loginChecks?.type === 'emailId' &&
+        <></>
+      }
+      {
+        loginChecks?.type === 'abhaNumber' &&
+        <LoginWithAbhaNumber />
       }
     </>
   );
 };
+
+
+
 
 
 
@@ -167,15 +193,34 @@ const FormControlForMobileNo: React.FC<FormControlForMobileNoProps> = ({ setLogi
   const [mobileNumber, setMobileNumber] = useState<string>('');
   const [selectedCountry, setSelectedCountry] = useState<string>(countries[0].code);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log({ "ENV": process.env.NEXT_BASE_URL })
     console.log(`Country: ${selectedCountry}, Mobile Number: ${mobileNumber}`);
-    setLoginChecks({
-      ...loginChecks,
-      isOtpSent: true,
-    });
-    console.log({ loginChecks });
-    // Here you can perform further actions, like making API calls, etc.
+
+    try {
+      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/sendOtp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ value: mobileNumber, type: 'MOBILE' }), // Send the necessary data in the body
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log({ data });
+      setLoginChecks({
+        ...loginChecks,
+        isOtpSent: true,
+        transactionId: data?.transactionId,
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -215,6 +260,9 @@ const FormControlForMobileNo: React.FC<FormControlForMobileNoProps> = ({ setLogi
 
 
 
+
+
+
 const OtpInput: React.FC<FormControlForOTPProps> = ({ setLoginChecks, loginChecks }) => {
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -237,15 +285,49 @@ const OtpInput: React.FC<FormControlForOTPProps> = ({ setLoginChecks, loginCheck
     }
   };
 
-  const handleOtpSubmit = () => {
-    setLoginChecks({
-      ...loginChecks,
-      isOtpVerify: true,
-    })
+  const handleOtpSubmit = async () => {
+
+    console.log({
+      "otp": otp.join(''),
+      "type": "MOBILE",
+      "transactionId": loginChecks?.transactionId
+    });
+
+    // if (!loginChecks?.transactionId) {
+    //   throw new Error('Transaction Id Not found!');
+    // }
+
+    try {
+      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + 'phr/api/login/verifyOtp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "otp": otp.join(''),
+          "type": "MOBILE",
+          "transactionId": loginChecks?.transactionId
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log({ data });
+      setLoginChecks({
+        ...loginChecks,
+        isOtpVerify: true,
+      })
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle the error accordingly
+    }
   }
 
   return (
-    <form onSubmit={handleOtpSubmit} className='flex flex-col w-full mt-5'>
+    <div className='flex flex-col w-full mt-5'>
       <label className=''>Enter 6 digit OTP</label>
       <div className="flex justify-between items-center mt-3">
         {otp?.map((value, index) => (
@@ -268,12 +350,12 @@ const OtpInput: React.FC<FormControlForOTPProps> = ({ setLoginChecks, loginCheck
       </div>
       <div className='mt-5 mb-5'>
         <button
-          type="submit"
+          onClick={handleOtpSubmit}
           className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
         >
           CONTINUE
         </button>
       </div>
-    </form>
+    </div>
   );
 };
