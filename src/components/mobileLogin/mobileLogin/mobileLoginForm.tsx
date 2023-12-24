@@ -12,25 +12,23 @@ interface Country {
   flag: string;
 }
 
+
 interface LoginChecks {
   isOtpSent: boolean;
   isOtpVerify: boolean;
   isAbhaAddressSelected: boolean;
   transactionId: string;
-  type: string
+  type: string;
+  addresses: string[];
 };
 
 type SetLoginChecks = React.Dispatch<React.SetStateAction<LoginChecks>>;
 
-interface FormControlForMobileNoProps {
+interface FormControlProps {
   setLoginChecks: SetLoginChecks;
   loginChecks: LoginChecks;
 }
 
-interface FormControlForOTPProps {
-  setLoginChecks: SetLoginChecks;
-  loginChecks: LoginChecks;
-}
 
 const countries: Country[] = [
   { code: 'us', name: 'United States', flag: '🇺🇸' },
@@ -42,23 +40,32 @@ const countries: Country[] = [
 export const LoginWithMobileNumber: React.FC = () => {
 
   // const typeVal = localStorage.getItem('typeVal');
-  const [loginChecks, setLoginChecks] = useState({
-    isOtpSent: false,
-    isOtpVerify: false,
-    isAbhaAddressSelected: false,
-    transactionId: '',
-    type: 'mobileNumber'
-  });
+  // Retrieve the value from local storage
+  const storedLoginChecks = localStorage.getItem('loginChecks');
+
+  // Check if the stored value exists and parse it, otherwise use the default state
+  const initialState = storedLoginChecks
+    ? JSON.parse(storedLoginChecks)
+    : {
+      isOtpSent: false,
+      isOtpVerify: false,
+      isAbhaAddressSelected: false,
+      transactionId: '',
+      type: 'mobileNumber',
+      addresses: [],
+    };
+
+  const [loginChecks, setLoginChecks] = useState(initialState);
+
 
   console.log(loginChecks);
-  console.log({ "url": process.env.NEXT_PUBLIC_SERVER_URL });
 
-  const handleToggleType = (value: string) => {
+  const handleToggleType = (value: string): void => {
     localStorage.setItem('typeVal', value);
     setLoginChecks({
       ...loginChecks,
       type: value,
-    })
+    });
   };
 
   const addresses = [
@@ -149,22 +156,7 @@ export const LoginWithMobileNumber: React.FC = () => {
                   <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-xl xl:text-2xl mb-4 text-center">Select the ABHA Address through which you wish to login</span>
                 </div>
                 <div className="flex flex-col items-center w-full m-auto p-1">
-                  {
-                    addresses?.map((address) => {
-                      return <div className="border border-solid border-gray-700 w-full flex flex-col p-2 pl-7 rounded-md m-2">
-                        <span className="text-gray-500">{address?.address}</span>
-                        <span className="font-medium">{address?.username}</span>
-                      </div>
-                    })
-                  }
-                  <div className='mt-5 mb-5 w-full'>
-                    <button
-                      type="submit"
-                      className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
-                    >
-                      LOGIN
-                    </button>
-                  </div>
+                  <SelectAddress setLoginChecks={setLoginChecks} loginChecks={loginChecks} />
                 </div>
               </div>
             )
@@ -188,12 +180,12 @@ export const LoginWithMobileNumber: React.FC = () => {
 
 
 
-const FormControlForMobileNo: React.FC<FormControlForMobileNoProps> = ({ setLoginChecks, loginChecks }) => {
+const FormControlForMobileNo: React.FC<FormControlProps> = ({ setLoginChecks, loginChecks }) => {
 
   const [mobileNumber, setMobileNumber] = useState<string>('');
   const [selectedCountry, setSelectedCountry] = useState<string>(countries[0].code);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     console.log({ "ENV": process.env.NEXT_BASE_URL })
     console.log(`Country: ${selectedCountry}, Mobile Number: ${mobileNumber}`);
@@ -218,10 +210,18 @@ const FormControlForMobileNo: React.FC<FormControlForMobileNoProps> = ({ setLogi
         isOtpSent: true,
         transactionId: data?.transactionId,
       });
+
     } catch (error) {
       console.error('Error:', error);
     }
+
+
+    // setLoginChecks({
+    //   ...loginChecks,
+    //   isOtpSent: true,
+    // });
   };
+
 
   return (
     <form onSubmit={handleSubmit} className='pt-5 pb5'>
@@ -263,7 +263,7 @@ const FormControlForMobileNo: React.FC<FormControlForMobileNoProps> = ({ setLogi
 
 
 
-const OtpInput: React.FC<FormControlForOTPProps> = ({ setLoginChecks, loginChecks }) => {
+const OtpInput: React.FC<FormControlProps> = ({ setLoginChecks, loginChecks }) => {
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const refs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
@@ -293,12 +293,10 @@ const OtpInput: React.FC<FormControlForOTPProps> = ({ setLoginChecks, loginCheck
       "transactionId": loginChecks?.transactionId
     });
 
-    // if (!loginChecks?.transactionId) {
-    //   throw new Error('Transaction Id Not found!');
-    // }
+
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + 'phr/api/login/verifyOtp', {
+      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/verifyOtp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -319,11 +317,17 @@ const OtpInput: React.FC<FormControlForOTPProps> = ({ setLoginChecks, loginCheck
       setLoginChecks({
         ...loginChecks,
         isOtpVerify: true,
+        addresses: data?.mappedPhrAddress,
       })
     } catch (error) {
       console.error('Error:', error);
-      // Handle the error accordingly
     }
+
+    // setLoginChecks({
+    //   ...loginChecks,
+    //   isOtpVerify: true,
+    //   // addresses: data?.mappedPhrAddress,
+    // })
   }
 
   return (
@@ -344,7 +348,6 @@ const OtpInput: React.FC<FormControlForOTPProps> = ({ setLoginChecks, loginCheck
         ))}
       </div>
       <div className="flex flex-row w-full justify-between mt-5">
-        {/* <span className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-red-500">Expires in 58s</span> */}
         <CountdownTimer />
         <span className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-teal-400">RESEND OTP</span>
       </div>
@@ -357,5 +360,67 @@ const OtpInput: React.FC<FormControlForOTPProps> = ({ setLoginChecks, loginCheck
         </button>
       </div>
     </div>
+  );
+};
+
+
+
+const SelectAddress: React.FC<FormControlProps> = ({ setLoginChecks, loginChecks }) => {
+
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const handleItemClick = (item: string) => {
+    setSelectedItem(item);
+  };
+
+  const handleSelectAddress = async () => {
+    try {
+      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/abhaAddConfirm', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "abhaAdd": selectedItem,
+          "transactionId": "",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log({ data });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
+  return (
+    <>
+      <div className='w-full'>
+        {loginChecks?.addresses?.map((item, index) => (
+          <div key={index} className="border border-solid border-gray-700 w-full flex p-2 pl-3 rounded-md mt-2">
+            <input
+              type="radio"
+              id={`item_${index}`}
+              name="items"
+              checked={selectedItem === item}
+              onChange={() => handleItemClick(item)}
+            />
+            <label className='ml-3' htmlFor={`item_${index}`}>{item}</label>
+          </div>
+        ))}
+      </div>
+      <div className='mt-5 mb-5 w-full'>
+        <button
+          onClick={handleSelectAddress}
+          className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
+        >
+          LOGIN
+        </button>
+      </div>
+    </>
   );
 };
