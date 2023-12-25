@@ -1,14 +1,15 @@
 import CountdownTimer from "@/components/countDown/expiresIn";
-import { FormControlProps } from "@/components/mobileLogin/mobileLogin/mobileLoginForm";
 import { ChangeEvent, useRef, useState } from "react";
 import React, { KeyboardEvent } from 'react';
 
+interface OtpInputProps {
+     onSetOtp: (otpValue: string) => void;
+}
 
-export const OtpInput: React.FC<FormControlProps> = ({ setLoginChecks, loginChecks }) => {
+export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp }) => {
 
      const [otp, setOtp] = useState(['', '', '', '', '', '']);
      const refs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
-     console.log({ loginChecks });
 
      const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
           const value = event.target.value;
@@ -29,64 +30,64 @@ export const OtpInput: React.FC<FormControlProps> = ({ setLoginChecks, loginChec
 
 
      const handleOtpSubmit = async () => {
+          onSetOtp(otp?.join(''));
+          // try {
+          //      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/verifyOtp', {
+          //           method: 'POST',
+          //           headers: {
+          //                'Content-Type': 'application/json',
+          //           },
+          //           body: JSON.stringify({
+          //                "otp": otp.join(''),
+          //                "type": loginChecks?.type,
+          //                "transactionId": loginChecks?.transactionId
+          //           }),
+          //      });
 
-          try {
-               const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/verifyOtp', {
-                    method: 'POST',
-                    headers: {
-                         'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                         "otp": otp.join(''),
-                         "type": loginChecks?.type,
-                         "transactionId": loginChecks?.transactionId
-                    }),
-               });
+          //      if (!response.ok) {
+          //           throw new Error('Network response was not ok');
+          //      }
 
-               if (!response.ok) {
-                    throw new Error('Network response was not ok');
-               }
-
-               const data = await response.json();
-               console.log({ data });
-               setLoginChecks({
-                    ...loginChecks,
-                    isOtpVerify: true,
-                    addresses: data?.mappedPhrAddress,
-               })
-          } catch (error) {
-               console.error('Error:', error);
-          }
+          //      const data = await response.json();
+          //      console.log({ data });
+          //      setLoginChecks({
+          //           ...loginChecks,
+          //           isOtpVerify: true,
+          //           addresses: data?.mappedPhrAddress,
+          //      })
+          // } catch (error) {
+          //      console.error('Error:', error);
+          // }
      }
 
      const resendOtpFunc = async () => {
-          if (loginChecks?.mobileNum && loginChecks?.type) {
-               try {
-                    const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/sendOtp', {
-                         method: 'POST',
-                         headers: {
-                              'Content-Type': 'application/json',
-                         },
-                         body: JSON.stringify({ value: loginChecks?.mobileNum, type: loginChecks?.type }), // Send the necessary data in the body
-                    });
+          // if (loginChecks?.mobileNum && loginChecks?.type) {
+          //      try {
+          //           const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/sendOtp', {
+          //                method: 'POST',
+          //                headers: {
+          //                     'Content-Type': 'application/json',
+          //                },
+          //                body: JSON.stringify({ value: loginChecks?.mobileNum, type: loginChecks?.type }), // Send the necessary data in the body
+          //           });
 
-                    if (!response.ok) {
-                         throw new Error('Network response was not ok');
-                    }
+          //           if (!response.ok) {
+          //                throw new Error('Network response was not ok');
+          //           }
 
-                    const data = await response.json();
-                    setLoginChecks({
-                         ...loginChecks,
-                         isOtpSent: true,
-                         transactionId: data?.transactionId,
-                    });
+          //           const data = await response.json();
+          //           setLoginChecks({
+          //                ...loginChecks,
+          //                isOtpSent: true,
+          //                transactionId: data?.transactionId,
+          //           });
 
-               } catch (error) {
-                    console.error('Error:', error);
-               }
-          } else {
-               console.log("missing data");
-          }
+          //      } catch (error) {
+          //           console.error('Error:', error);
+          //      }
+          // } else {
+          //      console.log("missing data");
+          // }
      }
 
      return (

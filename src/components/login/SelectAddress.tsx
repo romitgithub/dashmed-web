@@ -1,48 +1,36 @@
-import { FormControlProps } from "@/components/mobileLogin/mobileLogin/mobileLoginForm";
+import { FormControlChecks } from "@/app/login/page";
 import { useState } from "react";
 
-const SelectAddress: React.FC<FormControlProps> = ({ setLoginChecks, loginChecks }) => {
 
-     const [selectedItem, setSelectedItem] = useState<string | null>(null);
+interface SelectAddressProps {
+     onSelectAddress: (otpValue: string) => void;
+     formControl: FormControlChecks | null | undefined;
+};
+
+const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, formControl }) => {
+
+     const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
 
      const handleItemClick = (item: string) => {
-          setSelectedItem(item);
+          setSelectedAddress(item);
      };
 
      const handleSelectAddress = async () => {
-          try {
-               const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/abhaAddConfirm', {
-                    method: 'POST',
-                    headers: {
-                         'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                         "abhaAdd": selectedItem,
-                         "transactionId": "",
-                    }),
-               });
-
-               if (!response.ok) {
-                    throw new Error('Network response was not ok');
-               }
-               const data = await response.json();
-               console.log({ data });
-          } catch (error) {
-               console.error('Error:', error);
+          if (onSelectAddress && selectedAddress) {
+               onSelectAddress(selectedAddress);
           }
      };
-
 
      return (
           <>
                <div className='w-full'>
-                    {loginChecks?.addresses?.map((item, index) => (
+                    {formControl?.addresses?.map((item, index) => (
                          <div key={index} className="border border-solid border-gray-700 w-full flex p-2 pl-3 rounded-md mt-2">
                               <input
                                    type="radio"
                                    id={`item_${index}`}
                                    name="items"
-                                   checked={selectedItem === item}
+                                   checked={selectedAddress === item}
                                    onChange={() => handleItemClick(item)}
                               />
                               <label className='ml-3' htmlFor={`item_${index}`}>{item}</label>
