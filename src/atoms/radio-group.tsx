@@ -1,5 +1,5 @@
+import { classNames } from "@/utils/styles";
 import { RadioGroup } from "@headlessui/react";
-import { classNames } from "utils/styles";
 
 export default function AppRadioGroup({ options, selected, onChange }: any) {
   return (

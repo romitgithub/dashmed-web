@@ -1,4 +1,4 @@
-import { classNames } from "../utils/style";
+import { classNames } from "../utils/styles";
 
 interface SpinnerProps {
   size?: "small" | "medium" | "large";

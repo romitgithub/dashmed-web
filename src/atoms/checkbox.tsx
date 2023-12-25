@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { classNames } from "utils/styles";
+import { classNames } from "@/utils/styles";
+
 
 export interface CheckboxProps {
   checked?: boolean;
@@ -43,7 +44,7 @@ export const Checkbox: FC<CheckboxProps> = ({
           className="focus:ring-0 focus:ring-accent-ring h-4 w-4 text-accent-text border-gray-300 rounded"
         />
       </div>
-      <div className="ml-1 text-sm">
+      <div className="ml-3 text-sm">
         <label
           htmlFor={id}
           className={classNames(labelStyles, "font-medium text-gray-700")}
