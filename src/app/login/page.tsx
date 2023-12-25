@@ -98,66 +98,17 @@ const Login: React.FC = () => {
   };
 
 
-  // const handleSetOtp = async (otpValue: string) => {
-  //   if (otpValue && formControl?.type && formControl?.transactionId) {
-  //     console.log({ otpValue, formControl });
-
-  //     const newData = {
-  //       "otp": otpValue,
-  //       "type": formControl?.type,
-  //       "transactionId": formControl?.transactionId,
-  //     };
-  //     console.log({ newData });
-  //     const data = await loginFunc('/phr/api/login/verifyOtp', newData);
-  //     console.log({ 'data when otp submitted:': data });
-
-  //     if (data?.mappedPhrAddress) {
-  //       setFormControl({
-  //         ...formControl,
-  //         transactionId: data?.transactionId,
-  //         otp: otpValue,
-  //         viewSection: ADDRESS_SECTION,
-  //         addresses: data?.mappedPhrAddress?.length > 0 ? data?.mappedPhrAddress : [],
-  //       });
-  //     }
-  //   }
-  // };
-
-
-  // const handleSelectAddress = async (selectedAddressValue: string) => {
-  //   setFormControl({
-  //     ...formControl,
-  //     selectedAddress: selectedAddressValue,
-  //   });
-  //   console.log({ selectedAddressValue, formControl });
-
-  //   if (selectedAddressValue && formControl?.transactionId) {
-  //     const newData = {
-  //       "abhaAdd": selectedAddressValue || formControl?.selectedAddress,
-  //       "transactionId": formControl?.transactionId,
-  //     };
-  //     console.log({ newData });
-  //     const data = await loginFunc('/phr/api/login/abhaAddConfirm', newData);
-  //     console.log({ 'data when address submitted:': data });
-
-  //     if (data?.mappedPhrAddress) {
-  //       setFormControl({
-  //         ...formControl,
-  //         addresses: data?.mappedPhrAddress || [],
-  //       });
-  //     }
-  //   }
-  // }
-
   // save the otp value and make network request
   const handleSetOtp = async (otpValue: string) => {
     await handleSetOtpFunc(otpValue, formControl, setFormControl, ADDRESS_SECTION);
   };
 
+
   // save the selected address value and make network request
   const handleSelectAddress = async (selectedAddressValue: string) => {
     await handleSelectAddressFunc(selectedAddressValue, formControl, setFormControl);
   };
+
 
   // save the ABHA address as the value and make network request
   const handleSubmitAbhaAddress = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -173,6 +124,7 @@ const Login: React.FC = () => {
     }
   };
 
+
   // while doing login with abha credential and forget password
   const handleForgetAbhaPassword = () => {
     setFormControl({
@@ -180,6 +132,7 @@ const Login: React.FC = () => {
       forgetAbhaPassword: true,
     });
   };
+
 
   // one step back from otp-section-view
   const handleBackFromOtpPage = () => {
@@ -204,8 +157,8 @@ const Login: React.FC = () => {
     );
   };
 
-  console.log({ formControl })
-    ;
+  console.log({ formControl });
+
   return (
     <>
       {/* lOGIN WITH MOBILE  */}

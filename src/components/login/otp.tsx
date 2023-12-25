@@ -31,63 +31,10 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp }) => {
 
      const handleOtpSubmit = async () => {
           onSetOtp(otp?.join(''));
-          // try {
-          //      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/verifyOtp', {
-          //           method: 'POST',
-          //           headers: {
-          //                'Content-Type': 'application/json',
-          //           },
-          //           body: JSON.stringify({
-          //                "otp": otp.join(''),
-          //                "type": loginChecks?.type,
-          //                "transactionId": loginChecks?.transactionId
-          //           }),
-          //      });
-
-          //      if (!response.ok) {
-          //           throw new Error('Network response was not ok');
-          //      }
-
-          //      const data = await response.json();
-          //      console.log({ data });
-          //      setLoginChecks({
-          //           ...loginChecks,
-          //           isOtpVerify: true,
-          //           addresses: data?.mappedPhrAddress,
-          //      })
-          // } catch (error) {
-          //      console.error('Error:', error);
-          // }
      }
 
      const resendOtpFunc = async () => {
-          // if (loginChecks?.mobileNum && loginChecks?.type) {
-          //      try {
-          //           const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/phr/api/login/sendOtp', {
-          //                method: 'POST',
-          //                headers: {
-          //                     'Content-Type': 'application/json',
-          //                },
-          //                body: JSON.stringify({ value: loginChecks?.mobileNum, type: loginChecks?.type }), // Send the necessary data in the body
-          //           });
 
-          //           if (!response.ok) {
-          //                throw new Error('Network response was not ok');
-          //           }
-
-          //           const data = await response.json();
-          //           setLoginChecks({
-          //                ...loginChecks,
-          //                isOtpSent: true,
-          //                transactionId: data?.transactionId,
-          //           });
-
-          //      } catch (error) {
-          //           console.error('Error:', error);
-          //      }
-          // } else {
-          //      console.log("missing data");
-          // }
      }
 
      return (
