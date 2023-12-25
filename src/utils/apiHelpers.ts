@@ -1,5 +1,5 @@
-import { FormControlChecks } from "@/app/login/page";
-import { SetStateAction } from "react";
+import { FormControlChecks, LOGIN_STATES } from "@/views/login";
+import { Dispatch, SetStateAction } from "react";
 
 
 export async function loginFunc<T = any, Args = any>(
@@ -28,74 +28,49 @@ export async function loginFunc<T = any, Args = any>(
 
 
 
-export const handleSubmitMobileNumberFunc = async (formControl: FormControlChecks, setFormControl: { (value: SetStateAction<FormControlChecks>): void; (arg0: any): void; }, MOBILE: string, OTP_SECTION: string) => {
-
+export const handleResendOTPFunc = async (formControl: FormControlChecks, setFormControl: { (value: SetStateAction<FormControlChecks>): void; (arg0: any): void; }) => {
      if (formControl?.value && formControl?.type) {
           const newData = {
                value: formControl?.value,
-               type: MOBILE || formControl?.type,
+               type: formControl?.type,
           };
-          console.log({ newData });
+          console.log({ 'resend-otp': newData });
           const data = await loginFunc('/phr/api/login/sendOtp', newData);
-          console.log({ 'data when mobile no sent:': data });
+          console.log({ 'data after resending otp:': data });
 
           if (data?.transactionId) {
                setFormControl({
                     ...formControl,
                     transactionId: data.transactionId,
-                    type: MOBILE,
-                    viewSection: OTP_SECTION,
                });
           }
      }
 };
 
 
-export const handleSubmitEmailIdFunc = async (formControl: FormControlChecks, setFormControl: { (value: SetStateAction<FormControlChecks>): void; (arg0: any): void; }, EMAIL: string, OTP_SECTION: string) => {
-     if (formControl?.value && formControl?.type) {
+export const handleCommonSubmitFunc = async (formControl: FormControlChecks, setFormControl: { (value: SetStateAction<FormControlChecks>): void; (arg0: any): void; }, setLoginState: Dispatch<SetStateAction<string>>, loginType: string) => {
+     if (formControl?.value && formControl?.type && loginType) {
           const newData = {
                value: formControl?.value,
-               type: EMAIL || formControl?.type,
+               type: loginType || formControl?.type,
           };
           console.log({ newData });
           const data = await loginFunc('/phr/api/login/sendOtp', newData);
-          console.log({ 'data when email id sent:': data });
+          console.log(`data sent for ${loginType} otp:`, data);
 
           if (data?.transactionId) {
+               setLoginState(LOGIN_STATES.OTP_VIEW);
                setFormControl({
                     ...formControl,
                     transactionId: data?.transactionId,
-                    type: EMAIL,
-                    viewSection: OTP_SECTION,
+                    type: loginType,
                });
           }
      }
 };
 
 
-export const handleSubmitAbhaNumberFunc = async (formControl: FormControlChecks, setFormControl: { (value: SetStateAction<FormControlChecks>): void; (arg0: any): void; }, ABHA_NO: string, OTP_SECTION: string) => {
-     if (formControl?.value && formControl?.type) {
-          const newData = {
-               value: formControl?.value,
-               type: ABHA_NO || formControl?.type,
-          };
-          console.log({ newData });
-          const data = await loginFunc('/phr/api/login/sendOtp', newData);
-          console.log({ 'data when abha no sent:': data });
-
-          if (data?.transactionId) {
-               setFormControl({
-                    ...formControl,
-                    transactionId: data.transactionId,
-                    type: ABHA_NO,
-                    viewSection: OTP_SECTION,
-               });
-          }
-     }
-};
-
-
-export const handleSetOtpFunc = async (otpValue: string, formControl: FormControlChecks, setFormControl: { (value: SetStateAction<FormControlChecks>): void; (arg0: any): void; }, ADDRESS_SECTION: string) => {
+export const handleSetOtpFunc = async (otpValue: string, formControl: FormControlChecks, setFormControl: { (value: SetStateAction<FormControlChecks>): void; (arg0: any): void; }, setLoginState: Dispatch<SetStateAction<string>>,) => {
      if (otpValue && formControl?.type && formControl?.transactionId) {
           console.log({ otpValue, formControl });
 
@@ -109,11 +84,11 @@ export const handleSetOtpFunc = async (otpValue: string, formControl: FormContro
           console.log({ 'data when otp submitted:': data });
 
           if (data?.mappedPhrAddress) {
+               setLoginState(LOGIN_STATES.ADDRESS_VIEW);
                setFormControl({
                     ...formControl,
                     transactionId: data?.transactionId || '12345',
                     otp: otpValue,
-                    viewSection: ADDRESS_SECTION,
                     addresses: data?.mappedPhrAddress?.length > 0 ? data?.mappedPhrAddress : ['ram', 'rahim'],
                });
           }
@@ -139,12 +114,5 @@ export const handleSelectAddressFunc = async (
           console.log({ newData });
           const data = await loginFunc('/phr/api/login/abhaAddConfirm', newData);
           console.log({ 'data when address submitted:': data });
-
-          // if (data?.mappedPhrAddress) {
-          //      setFormControl({
-          //           ...formControl,
-          //           addresses: data?.mappedPhrAddress || [],
-          //      });
-          // }
      }
 };

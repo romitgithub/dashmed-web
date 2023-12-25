@@ -4,9 +4,10 @@ import React, { KeyboardEvent } from 'react';
 
 interface OtpInputProps {
      onSetOtp: (otpValue: string) => void;
+     onResendOTP: () => void;
 }
 
-export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp }) => {
+export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp, onResendOTP }) => {
 
      const [otp, setOtp] = useState(['', '', '', '', '', '']);
      const refs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
@@ -34,8 +35,8 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp }) => {
      }
 
      const resendOtpFunc = async () => {
-
-     }
+          onResendOTP();
+     };
 
      return (
           <div className='flex flex-col w-full mt-5'>
