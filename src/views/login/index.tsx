@@ -5,9 +5,8 @@ import { FooterSection } from "./footer";
 import { LoginHeader } from "./header";
 import { FormControlSection } from "./formControl";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
-import { OtpInput } from "@/components/login/otp";
-import { SelectAddress } from "@/components/login/SelectAddress";
-
+import { OtpInput } from "@/components/authCommonComponents/otp";
+import { SelectAddress } from "@/components/authCommonComponents/SelectAddress";
 
 export const LOGIN_TYPES = {
      ABHA_ADD: 'ABHA_ADD',
@@ -16,13 +15,11 @@ export const LOGIN_TYPES = {
      EMAIL: 'EMAIL',
 };
 
-
 export const LOGIN_STATES = {
      DEFAULT_VIEW: 'DEFAULT_VIEW',
      OTP_VIEW: 'OTP_VIEW',
      ADDRESS_VIEW: 'ADDRESS_VIEW',
 };
-
 
 
 export const LoginView = () => {
