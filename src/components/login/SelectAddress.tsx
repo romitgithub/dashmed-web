@@ -1,14 +1,13 @@
 import { Button } from "@/atoms/button";
-import { FormControlChecks } from "@/views/login";
 import { useState } from "react";
 
 
 interface SelectAddressProps {
      onSelectAddress: (otpValue: string) => void;
-     formControl: FormControlChecks | null | undefined;
+     addresses: string[] | null;
 };
 
-const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, formControl }) => {
+const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, addresses }) => {
 
      const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
 
@@ -24,8 +23,11 @@ const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, formCont
 
      return (
           <>
+               <div className="flex flex-row items-center justify-center mt-5">
+                    <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-xl xl:text-2xl mb-4 text-center">Select the ABHA Address through which you wish to login</span>
+               </div>
                <div className='w-full'>
-                    {formControl?.addresses?.map((item, index) => (
+                    {addresses?.map((item, index) => (
                          <div key={index} className="border border-solid border-gray-700 w-full flex p-2 pl-3 rounded-md mt-2">
                               <input
                                    type="radio"
@@ -39,7 +41,7 @@ const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, formCont
                     ))}
                </div>
                <div className='mt-5 mb-5 w-full'>
-                    <Button/>
+                    <Button />
                     <button
                          onClick={handleSelectAddress}
                          className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"

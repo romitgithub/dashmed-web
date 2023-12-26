@@ -1,6 +1,5 @@
-export const ABHA_ADD = 'ABHA_ADD';
-export const ABHA_NO = 'ABHA_NO';
-export const MOBILE = 'MOBILE';
-export const EMAIL = 'EMAIL';
-export const OTP_SECTION = 'OTP_SECTION';
-export const ADDRESS_SECTION = 'ADDRESS_SECTION';
+export const REDIRECT_URI = "redirectUri";
+export const ACCESS_TOKEN = "ACCESS_TOKEN";
+export const PLAN_SELECTED = "PLAN_SELECTED";
+export const IMAGES_POST_DATA = "IMAGES_POST_DATA";
+export const PAYMENT_REQUIRED_ERR_MESSAGE = "payment_required";

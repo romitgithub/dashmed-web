@@ -8,13 +8,12 @@ const LOGIN_TYPES = {
      EMAIL: 'EMAIL',
 };
 
-interface HeaderSectionProps {
+interface LoginHeaderProps {
      loginType: string;
      loginState: string;
-     setLoginType: React.Dispatch<React.SetStateAction<string>>;
-     setLoginState: React.Dispatch<React.SetStateAction<string>>;
-     resetFormControl: () => void;
-};
+     onChangeLoginState: (newState: string) => void;
+     onChangeLoginType: (newType: string) => void;
+}
 
 
 // Constants for login type text
@@ -26,22 +25,20 @@ const loginTypeTextMap: Record<string, string> = {
 };
 
 
-export const HeaderSection: React.FC<HeaderSectionProps> = ({
+export const LoginHeader: React.FC<LoginHeaderProps> = ({
      loginType,
      loginState,
-     setLoginType,
-     setLoginState,
-     resetFormControl,
+     onChangeLoginState,
+     onChangeLoginType,
 }) => {
 
      const handleBackButtonClick = () => {
           if (loginState === LOGIN_STATES.ADDRESS_VIEW) {
-               setLoginState(LOGIN_STATES.OTP_VIEW);
+               onChangeLoginState(LOGIN_STATES.OTP_VIEW);
           } else if (loginState === LOGIN_STATES.OTP_VIEW) {
-               setLoginState(LOGIN_STATES.DEFAULT_VIEW);
+               onChangeLoginState(LOGIN_STATES.DEFAULT_VIEW);
           } else if (loginState === LOGIN_STATES.DEFAULT_VIEW) {
-               setLoginType(LOGIN_TYPES.MOBILE);
-               resetFormControl();
+               onChangeLoginType(LOGIN_TYPES.MOBILE);
           }
      };
 

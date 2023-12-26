@@ -1,37 +1,32 @@
 import { useState } from "react";
-import { FormControlChecks, LOGIN_TYPES } from ".";
+import { LOGIN_TYPES } from ".";
 import { ViewPasswordIcon } from "@/atoms/showPasswordIcon";
 import { HidePasswordIcon } from "@/atoms/hidePasswordIcon";
 import { Checkbox } from "@/atoms/checkbox";
 
+
 interface FormControlSectionProps {
-     formControl?: FormControlChecks;
      loginType?: string;
-     setFormControl?: React.Dispatch<React.SetStateAction<FormControlChecks>>;
-     setLoginState: React.Dispatch<React.SetStateAction<string>>;
-     handleSubmit: () => void;
+     onSubmit: (formData: Record<string, any>) => void;
 };
 
-export const FormControlSection: React.FC<FormControlSectionProps> = ({ handleSubmit, loginType, formControl, setFormControl }) => {
+
+export const FormControlSection: React.FC<FormControlSectionProps> = ({ onSubmit, loginType }) => {
 
      const [showPassword, setShowPassword] = useState<boolean>(false);
+     const [loginFormData, setLoginFormData] = useState<Record<string, any>>({});
 
-     // manage input fields in forms
      const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          const { value, name, type } = e.target;
-          if (setFormControl) {
-               setFormControl({
-                    ...formControl!,
-                    [name]: value,
-               });
-          }
+          const { value, name } = e.target;
+          setLoginFormData({
+               ...loginFormData,
+               [name]: value,
+          });
      };
 
-     const handleSubmitFunc = (event: { preventDefault: () => void; }): void => {
+     const handleSubmitFunc = (event: React.FormEvent<HTMLFormElement>): void => {
           event.preventDefault();
-          if (handleSubmit) {
-               handleSubmit();
-          }
+          if (onSubmit) onSubmit(loginFormData);
      };
 
 
@@ -46,7 +41,7 @@ export const FormControlSection: React.FC<FormControlSectionProps> = ({ handleSu
                                         type="tel"
                                         className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
                                         placeholder="Enter mobile number"
-                                        value={formControl?.value}
+                                        value={loginFormData?.value}
                                         name='value'
                                         onChange={handleInputChange}
                                    />
@@ -62,7 +57,7 @@ export const FormControlSection: React.FC<FormControlSectionProps> = ({ handleSu
                                         type="tel"
                                         className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
                                         placeholder="Enter ABHA Number"
-                                        value={formControl?.value}
+                                        value={loginFormData?.value}
                                         name='value'
                                         onChange={handleInputChange}
                                         maxLength={14}
@@ -81,7 +76,7 @@ export const FormControlSection: React.FC<FormControlSectionProps> = ({ handleSu
                                         type="email"
                                         className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
                                         placeholder="Example@gmail.com"
-                                        value={formControl?.value}
+                                        value={loginFormData?.value}
                                         name='value'
                                         onChange={handleInputChange}
                                    />
@@ -97,7 +92,7 @@ export const FormControlSection: React.FC<FormControlSectionProps> = ({ handleSu
                                         type="email"
                                         className="p-2 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
                                         placeholder="Example@abdm"
-                                        value={formControl?.value}
+                                        value={loginFormData?.value}
                                         name='value'
                                         onChange={handleInputChange}
                                    />
@@ -108,7 +103,7 @@ export const FormControlSection: React.FC<FormControlSectionProps> = ({ handleSu
                                         type={showPassword ? "text" : "password"}
                                         className="p-2   flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
                                         placeholder="Enter ABHA password"
-                                        value={formControl?.abhaPassword}
+                                        value={loginFormData?.abhaPassword}
                                         name='abhaPassword'
                                         onChange={handleInputChange}
                                         maxLength={14}
@@ -153,7 +148,7 @@ export const FormControlSection: React.FC<FormControlSectionProps> = ({ handleSu
 
 
      return (
-          <form onSubmit={handleSubmitFunc} className="pt-5 pb5">
+          <form onSubmit={handleSubmitFunc} className="pt-5 pb5 w-full">
                {renderLoginSection()}
                {/* Submit button */}
                <div className='mt-5 mb-5'>
