@@ -1,4 +1,5 @@
-import { FormControlChecks } from "@/app/login/page";
+import { Button } from "@/atoms/button";
+import { FormControlChecks } from "@/views/login";
 import { useState } from "react";
 
 
@@ -38,6 +39,7 @@ const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, formCont
                     ))}
                </div>
                <div className='mt-5 mb-5 w-full'>
+                    <Button/>
                     <button
                          onClick={handleSelectAddress}
                          className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"

@@ -1,6 +1,12 @@
-import { LOGIN_STATES, LOGIN_TYPES } from ".";
+import { LOGIN_STATES } from ".";
 import { LeftArrowIcon } from "@/atoms/leftIArrowIcon";
 
+const LOGIN_TYPES = {
+     ABHA_ADD: 'ABHA_ADD',
+     ABHA_NO: 'ABHA_NO',
+     MOBILE: 'MOBILE',
+     EMAIL: 'EMAIL',
+};
 
 interface HeaderSectionProps {
      loginType: string;
@@ -27,7 +33,6 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
      setLoginState,
      resetFormControl,
 }) => {
-     console.log({ LOGIN_TYPES });
 
      const handleBackButtonClick = () => {
           if (loginState === LOGIN_STATES.ADDRESS_VIEW) {
@@ -44,7 +49,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
 
      return (
           <div className="flex flex-row items-center justify-center relative p-2 w-full">
-               <span className="flex absolute cursor-pointer top-2 left-2 mt-0 ml-0 p-1" onClick={handleBackButtonClick}>
+               <span className="flex absolute cursor-pointer top-2 left-0 mt-0 ml-0 p-1" onClick={handleBackButtonClick}>
                     <LeftArrowIcon />
                </span>
                <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4">

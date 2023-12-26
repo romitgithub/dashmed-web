@@ -10,7 +10,6 @@ interface FooterSectionProps {
 export const FooterSection: React.FC<FooterSectionProps> = ({ handleChangeLoginType }) => {
 
      const handleToggleType = (value: string) => {
-          console.log({ value });
           handleChangeLoginType(value);
      };
 

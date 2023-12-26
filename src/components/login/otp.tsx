@@ -5,7 +5,7 @@ import React, { KeyboardEvent } from 'react';
 interface OtpInputProps {
      onSetOtp: (otpValue: string) => void;
      onResendOTP: () => void;
-}
+};
 
 export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp, onResendOTP }) => {
 
@@ -32,7 +32,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp, onResendOTP }) => 
 
      const handleOtpSubmit = async () => {
           onSetOtp(otp?.join(''));
-     }
+     };
 
      const resendOtpFunc = async () => {
           onResendOTP();
