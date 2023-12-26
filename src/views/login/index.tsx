@@ -84,7 +84,7 @@ export const LoginView = () => {
                     abhaAdd: selectedAddressValue,
                     transactionId,
                };
-               fetchPostJSONExternal('/phr/api/login/verifyOtp', data)
+               fetchPostJSONExternal('/phr/api/login/abhaAddConfirm', data)
                     .then((res) => {
                          console.log({ res });
                          if (res?.mappedPhrAddress && res?.transactionId) {
