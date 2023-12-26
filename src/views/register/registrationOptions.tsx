@@ -17,20 +17,17 @@ const options: Option[] = [
 export const OptionForRegisterView = () => {
 
      const {
-          registerFormData,
-          setRegisterFormData,
           registerType,
           setRegisterType,
           registerState,
           setRegisterState,
-          resetRegisterFormControl,
           handleChangeRegisterType,
      } = useContext(RegisterFormDataContext);
 
      const [selectedOption, setSelectedOption] = useState<string>('');
 
      const handleContinue = () => {
-          if(selectedOption){
+          if (selectedOption) {
                setRegisterType(selectedOption);
           }
           console.log('Selected Option:', selectedOption);

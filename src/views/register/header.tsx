@@ -1,7 +1,6 @@
 import { LeftArrowIcon } from "@/atoms/leftIArrowIcon";
-import { REGISTER_STATES, REGISTER_TYPES } from "@/utils/registerHelper";
 import { useContext } from "react";
-import { RegisterFormDataContext } from "./registerDataProvider";
+import { REGISTER_STATES, REGISTER_TYPES, RegisterFormDataContext } from "./registerDataProvider";
 
 
 // Constants for register type text
@@ -16,13 +15,10 @@ const registerTypeTextMap: Record<string, string> = {
 export const RegisterHeaderSection: React.FC = () => {
 
      const {
-          registerFormData,
-          setRegisterFormData,
           registerType,
           setRegisterType,
           registerState,
           setRegisterState,
-          resetRegisterFormControl,
           handleChangeRegisterType,
      } = useContext(RegisterFormDataContext);
 
@@ -38,7 +34,6 @@ export const RegisterHeaderSection: React.FC = () => {
           } else if (registerState === REGISTER_STATES.DEFAULT_VIEW) {
                // change register type at this time we are changing type for to select the default options type
                setRegisterType(REGISTER_TYPES.DEFAULT_TYPE);
-               resetRegisterFormControl();
           }
      };
 

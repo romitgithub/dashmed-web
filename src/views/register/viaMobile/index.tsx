@@ -1,17 +1,13 @@
 import { useContext } from "react";
-import { REGISTER_STATES } from "@/utils/registerHelper";
-import { RegisterFormDataContext } from "../registerDataProvider";
+import { REGISTER_STATES, RegisterFormDataContext } from "../registerDataProvider";
 
 export const RegisterViaMobileNumber = () => {
 
      const {
-          registerFormData,
-          setRegisterFormData,
           registerType,
           setRegisterType,
           registerState,
           setRegisterState,
-          resetRegisterFormControl,
           handleChangeRegisterType,
      } = useContext(RegisterFormDataContext);
 

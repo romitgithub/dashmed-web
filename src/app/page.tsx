@@ -8,7 +8,7 @@ export default function Home() {
         <span className="mt-5 flex text-sm sm:text-md md:text-lg lg:text-lg xl:text-xl text-center font-medium">It is a citizen facing application, that will enable you to view, manage and do consent-based sharing of health records</span>
       </div>
       <div className="mt-5 flex flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 p-1">
-        <Link href={"/login"} className="w-full">
+        <Link href={"/login"} className="w-full cursor-pointer">
           <button
             type="submit"
             className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
@@ -19,7 +19,7 @@ export default function Home() {
       </div>
       <div className="flex flex-col align-middle justify-center items-center mt-10">
         <span className="text-center text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg">Dont have an ABHA Address?</span>
-        <Link href={'#'}> <span className="text-teal-700 font-semibold">Register</span></Link>
+        <Link href={'/register'} className="cursor-pointer"> <span className="text-teal-700 font-semibold">Register</span></Link>
       </div>
     </main>
   );
