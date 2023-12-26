@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { LOGIN_TYPES } from ".";
 
 type ChangeLoginType = (value: string) => void;
@@ -27,7 +28,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({ handleChangeLoginT
                <div className="mt-5">
                     <div className="mt-5">
                          <span className="font-medium block text-center text-xs sm:text-xs md:text-sm lg:text-md xl:text-lg">{"Don't have an ABHA Address?"}</span>
-                         <span className="flex justify-center align-middle font-medium text-teal-700">Register</span>
+                         <Link href={'/register'} className="cursor-pointer"><span className="flex justify-center align-middle font-medium text-teal-700">Register</span></Link>
                     </div>
                     <div className="mt-4 mb-4">
                          <span className="font-medium block text-center text-xs sm:text-xs md:text-sm lg:text-md xl:text-lg">{"Don't have an ABHA number?"}</span>
