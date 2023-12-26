@@ -4,14 +4,14 @@ import { LOGIN_TYPES } from ".";
 type ChangeLoginType = (value: string) => void;
 
 interface FooterSectionProps {
-     handleChangeLoginType: ChangeLoginType;
+     onChangeLoginType: ChangeLoginType;
 };
 
 
-export const FooterSection: React.FC<FooterSectionProps> = ({ handleChangeLoginType }) => {
+export const FooterSection: React.FC<FooterSectionProps> = ({ onChangeLoginType }) => {
 
      const handleToggleType = (value: string) => {
-          handleChangeLoginType(value);
+          onChangeLoginType(value);
      };
 
      return (

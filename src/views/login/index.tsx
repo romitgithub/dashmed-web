@@ -108,7 +108,7 @@ export const LoginView = () => {
                {loginState === LOGIN_STATES.DEFAULT_VIEW && <FormControlSection onSubmit={handleSubmit} loginType={loginType} loginState={loginState} />}
                {loginState === LOGIN_STATES.OTP_VIEW && <OtpInput onSetOtp={handleSetOtp} onResendOTP={handleResendOTP} />}
                {loginState === LOGIN_STATES.ADDRESS_VIEW && <SelectAddress onSelectAddress={handleSelectAddress} addresses={addresses} />}
-               {loginType === LOGIN_TYPES.MOBILE && LOGIN_STATES.DEFAULT_VIEW === loginState && <FooterSection handleChangeLoginType={handleChangeLoginType} />}
+               {loginType === LOGIN_TYPES.MOBILE && LOGIN_STATES.DEFAULT_VIEW === loginState && <FooterSection onChangeLoginType={handleChangeLoginType} />}
           </div>
      );
 };
