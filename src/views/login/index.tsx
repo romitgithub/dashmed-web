@@ -105,7 +105,7 @@ export const LoginView = () => {
      return (
           <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
                <LoginHeader loginType={loginType} loginState={loginState} onChangeLoginState={handleChangeLoginState} onChangeLoginType={handleChangeLoginType} />
-               {loginState === LOGIN_STATES.DEFAULT_VIEW && <FormControlSection onSubmit={handleSubmit} loginType={loginType} loginState={loginState} />}
+               {loginState === LOGIN_STATES.DEFAULT_VIEW && <FormControlSection onSubmit={handleSubmit} loginType={loginType} />}
                {loginState === LOGIN_STATES.OTP_VIEW && <OtpInput onSetOtp={handleSetOtp} onResendOTP={handleResendOTP} />}
                {loginState === LOGIN_STATES.ADDRESS_VIEW && <SelectAddress onSelectAddress={handleSelectAddress} addresses={addresses} />}
                {loginType === LOGIN_TYPES.MOBILE && LOGIN_STATES.DEFAULT_VIEW === loginState && <FooterSection onChangeLoginType={handleChangeLoginType} />}

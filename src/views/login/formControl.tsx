@@ -4,12 +4,11 @@ import AbhaAddressInputField from "./abhaAddressInputFields";
 
 interface FormControlSectionProps {
      loginType?: string;
-     loginState?: string;
      onSubmit: (formData: Record<string, any>) => void;
 };
 
 
-export const FormControlSection: React.FC<FormControlSectionProps> = ({ onSubmit, loginType, loginState }) => {
+export const FormControlSection: React.FC<FormControlSectionProps> = ({ onSubmit, loginType }) => {
 
      const [loginFormData, setLoginFormData] = useState<Record<string, any> | null>(null);
 
@@ -28,7 +27,7 @@ export const FormControlSection: React.FC<FormControlSectionProps> = ({ onSubmit
 
      useEffect(() => {
           setLoginFormData(null); // Reset loginFormData to null or initial empty state when loginType changes
-     }, [loginState, loginType]);
+     }, [loginType]);
 
 
      const renderLoginSection = () => {
