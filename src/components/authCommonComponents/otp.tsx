@@ -1,4 +1,4 @@
-import CountdownTimer from "@/components/countDown/expiresIn";
+import OtpTimer from "@/components/authCommonComponents/otpTimer";
 import { ChangeEvent, useRef, useState } from "react";
 import React, { KeyboardEvent } from 'react';
 
@@ -56,7 +56,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp, onResendOTP }) => 
                     ))}
                </div>
                <div className="flex flex-row w-full justify-between mt-5">
-                    <CountdownTimer />
+                    <OtpTimer />
                     <span className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-teal-400" onClick={resendOtpFunc}>RESEND OTP</span>
                </div>
                <div className='mt-5 mb-5'>

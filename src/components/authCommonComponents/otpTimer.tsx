@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const CountdownTimer: React.FC = () => {
+const OtpTimer: React.FC = () => {
      
      const [timer, setTimer] = useState(60);
 
@@ -25,4 +25,4 @@ const CountdownTimer: React.FC = () => {
      </span>;
 };
 
-export default CountdownTimer;
+export default OtpTimer;
