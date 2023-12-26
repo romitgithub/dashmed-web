@@ -84,10 +84,8 @@ export const LoginView = () => {
                fetchPostJSONExternal('/phr/api/login/abhaAddConfirm', data)
                     .then((res) => {
                          console.log({ res });
-                         if (res?.mappedPhrAddress && res?.transactionId) {
-                              setTransactionId(res?.transactionId);
-                              setAddresses(res?.mappedPhrAddress);
-                              setLoginState(LOGIN_STATES.ADDRESS_VIEW);
+                         if (res?.token) {
+                              console.log({ token: res?.token });
                          };
                     })
                     .catch((err) => console.log({ err }));
@@ -110,6 +108,7 @@ export const LoginView = () => {
                {loginState === LOGIN_STATES.DEFAULT_VIEW && <FormControlSection onSubmit={handleSubmit} loginType={loginType} />}
                {loginState === LOGIN_STATES.OTP_VIEW && <OtpInput onSetOtp={handleSetOtp} onResendOTP={handleResendOTP} />}
                {loginState === LOGIN_STATES.ADDRESS_VIEW && <SelectAddress onSelectAddress={handleSelectAddress} addresses={addresses} />}
+               {LOGIN_TYPES.MOBILE === loginType && LOGIN_STATES.DEFAULT_VIEW === loginState && <FooterSection handleChangeLoginType={handleChangeLoginType} />}
                {LOGIN_TYPES.MOBILE === loginType && LOGIN_STATES.DEFAULT_VIEW === loginState && <FooterSection handleChangeLoginType={handleChangeLoginType} />}
           </div>
      );
