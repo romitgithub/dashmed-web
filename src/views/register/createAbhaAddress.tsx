@@ -1,23 +1,18 @@
-// "": "hardyboy1234@sbx",
-// "password":
-
-
 import { Button, ButtonProps } from '@/atoms/button';
-import { districts, states } from '@/constants';
 import React, { useState } from 'react';
 
 interface Props {
-     onSubmit: (formData: Record<string, any>) => void;
+     onSubmit: (formData: { phrAddress: string | null; password: string | null }) => void;
 };
 
 
 export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
 
-     const [phrAddress, setPhrAddress] = useState(null);
-     const [password, setPassword] = useState(null);
-     const [confirmPassword, setConfirmPassword] = useState(null);
+     const [phrAddress, setPhrAddress] = useState<string | null>(null);
+     const [password, setPassword] = useState<string | null>(null);
+     const [confirmPassword, setConfirmPassword] = useState<string | null>(null);
 
-     const handleSubmit = (e: { preventDefault: () => void; }) => {
+     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
           onSubmit({ phrAddress, password });
      };
@@ -27,7 +22,6 @@ export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
           type: "submit",
      };
 
-
      return (
           <form onSubmit={handleSubmit} className='w-full'>
                <div className='w-full flex flex-col'>
@@ -36,7 +30,7 @@ export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
                          className="p-2 rounded border border-gray-300 flex-1 w-full mt-2"
                          type="text"
                          name={"phrAddress"}
-                         value={phrAddress}
+                         value={phrAddress || ''}
                          onChange={(e) => setPhrAddress(e.target.value)}
                          placeholder="Example@abdm"
                     />
@@ -48,7 +42,7 @@ export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
                          className="p-2 rounded border border-gray-300 flex-1 w-full mt-2"
                          type="password"
                          name={"password"}
-                         value={password}
+                         value={password || ''}
                          onChange={(e) => setPassword(e.target.value)}
                          placeholder="Password"
                     />
@@ -56,7 +50,7 @@ export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
                          className="p-2 rounded border border-gray-300 flex-1 w-full mt-3"
                          type="password"
                          name={"confirmPassword"}
-                         value={confirmPassword}
+                         value={confirmPassword || ''}
                          onChange={(e) => setConfirmPassword(e.target.value)}
                          placeholder="Confirm password"
                     />

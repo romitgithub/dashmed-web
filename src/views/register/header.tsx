@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({
                <span className="flex absolute cursor-pointer top-2 left-0 mt-0 ml-0 p-1" onClick={handleBack}>
                     {registerType !== REGISTER_TYPES.DEFAULT_TYPE && <LeftArrowIcon />}
                </span>
-               <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4 pl-3">
+               <span className="ml-0 font-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4 pl-4">
                     {title}
                </span>
           </div>

@@ -80,9 +80,9 @@ export const RegisterView = () => {
                //      .catch((err) => console.log({ err }));
           }
           else console.log({ "missing": { ...data } });
-          setRegisterState(REGISTER_STATES.CREATE_ABHA_ADDRESS_VIEW);
+          setRegisterState(REGISTER_STATES.REGISTRATION_SUCCESSFUL);
      };
-     
+
 
      // save the otp value and make network request
      const handleSetOtp = async (otpValue: string) => {
@@ -154,6 +154,7 @@ export const RegisterView = () => {
                     {registerState === REGISTER_STATES.ADDRESS_VIEW && <SelectAddress onSelectAddress={handleSelectAddress} addresses={addresses} label={"Still want to create new ABHA address"} />}
                     {registerState === REGISTER_STATES.USER_DETAILS_FORM_VIEW && <UserDetailsForm onSubmit={handleSubmitUserDetails} />}
                     {registerState === REGISTER_STATES.CREATE_ABHA_ADDRESS_VIEW && <CreateAbhaAddress onSubmit={handleCreateAbhaAddress} />}
+                    {registerState === REGISTER_STATES.REGISTRATION_SUCCESSFUL && <></>}
                </>)}
           </div>
      );

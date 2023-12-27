@@ -1,35 +1,33 @@
 import { Button, ButtonProps } from '@/atoms/button';
 import { districts, states } from '@/constants';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
-const USER_DETAILS = {
-     countryCode: "countryCode",
-     dayOfBirth: "dayOfBirth",
-     districtName: "districtName",
-     email: "email",
-     firstName: "firstName",
-     gender: "gender",
-     lastName: "lastName",
-     middleName: "middleName",
-     mobile: "mobile",
-     monthOfBirth: "monthOfBirth",
-     pinCode: "pinCode",
-     stateName: "stateName",
-     yearOfBirth: "yearOfBirth",
-     address: "address"
+interface UserDetails {
+     countryCode?: string;
+     dayOfBirth?: string;
+     districtName?: string;
+     email?: string;
+     firstName?: string;
+     gender?: string;
+     lastName?: string;
+     middleName?: string;
+     mobile?: string;
+     monthOfBirth?: string;
+     pinCode?: string;
+     stateName?: string;
+     yearOfBirth?: string;
+     address?: string;
 };
-
 
 interface Props {
-     onSubmit: (formData: Record<string, any>) => void;
+     onSubmit: (formData: UserDetails) => void;
 };
-
 
 export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
 
-     const [formData, setFormData] = useState({});
+     const [formData, setFormData] = useState<UserDetails>({});
 
-     const handleChange = (e: { target: { name: any; value: any; }; }) => {
+     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
           const { name, value } = e.target;
           setFormData({
                ...formData,
@@ -37,7 +35,9 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
           });
      };
 
-     const onDateChange = (field: string, value: number) => setFormData((prevDate) => ({ ...prevDate, [field]: value.toString() }));
+     const onDateChange = (field: any, value: any) => {
+          setFormData((prevDate) => ({ ...prevDate, [field]: value }));
+     };
 
      const generateOptions = (start: number, end: number) =>
           Array.from({ length: end - start + 1 }, (_, index) => start + index).map((value) => (
@@ -46,9 +46,8 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                </option>
           ));
 
-     const handleSubmit = (e: { preventDefault: () => void; }) => {
+     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
-          console.log('Form Data:', formData);
           onSubmit(formData);
      };
 
@@ -56,7 +55,6 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
           label: 'CONTINUE',
           type: "submit",
      };
-
 
      return (
           <form onSubmit={handleSubmit}>
@@ -66,7 +64,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          <input
                               className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2 m-1"
                               type="text"
-                              name={USER_DETAILS?.firstName}
+                              name={formData?.firstName}
                               value={formData?.firstName || ''}
                               onChange={handleChange}
                               placeholder="First Name"
@@ -74,7 +72,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          <input
                               className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2 m-1"
                               type="text"
-                              name={USER_DETAILS?.middleName}
+                              name={formData?.middleName}
                               value={formData?.middleName || ''}
                               onChange={handleChange}
                               placeholder="Middle Name"
@@ -82,7 +80,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          <input
                               className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2 m-1"
                               type="text"
-                              name={USER_DETAILS?.lastName}
+                              name={formData?.lastName}
                               value={formData?.lastName || ''}
                               onChange={handleChange}
                               placeholder="Last Name"
@@ -93,30 +91,27 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                     <div className='flex flex-col m-1 w-1/3'>
                          <label>Day:</label>
                          <select
-                              placeholder="Day"
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
                               value={formData?.dayOfBirth || ''}
-                              onChange={(e) => onDateChange(USER_DETAILS?.dayOfBirth, parseInt(e.target.value))}>
+                              onChange={(e) => onDateChange(formData?.dayOfBirth || '', parseInt(e.target.value))}>
                               {generateOptions(1, 31)}
                          </select>
                     </div>
                     <div className='flex flex-col m-1 w-1/3'>
                          <label>Month:</label>
                          <select
-                              placeholder="Month"
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
                               value={formData?.monthOfBirth || ''}
-                              onChange={(e) => onDateChange(USER_DETAILS?.monthOfBirth, parseInt(e.target.value))}>
+                              onChange={(e) => onDateChange(formData?.monthOfBirth || '', parseInt(e.target.value))}>
                               {generateOptions(1, 12)}
                          </select>
                     </div>
                     <div className='flex flex-col m-1 w-1/3'>
                          <label>Year:</label>
                          <select
-                              placeholder="Year"
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
                               value={formData?.yearOfBirth || ''}
-                              onChange={(e) => onDateChange(USER_DETAILS?.yearOfBirth, parseInt(e.target.value))}>
+                              onChange={(e) => onDateChange(formData?.yearOfBirth || '', parseInt(e.target.value))}>
                               {generateOptions(1900, new Date().getFullYear())}
                          </select>
                     </div>
@@ -126,10 +121,9 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                <div className='w-full flex flex-col mt-5'>
                     <label>State</label>
                     <select
-                         placeholder="Select State"
                          className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
                          value={formData?.stateName || ''}
-                         onChange={(e) => onDateChange(USER_DETAILS?.yearOfBirth, parseInt(e.target.value))}>
+                         onChange={(e) => onDateChange(formData?.yearOfBirth, parseInt(e.target.value))}>
                          {states?.map(el => <option key={el.value} value={el.value}>{el.name}</option>)}
                     </select>
                </div>
@@ -139,7 +133,6 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                     <select
                          className="p-2 rounded border border-gray-300 flex-1 w-full"
                          value={formData?.gender}
-                         placeholder="Gender"
                          onChange={handleChange}>
                          <option value="M">Male</option>
                          <option value="F">Female</option>
@@ -149,10 +142,9 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                <div className='w-full flex flex-col mt-5'>
                     <label>District Name</label>
                     <select
-                         placeholder="Select district"
                          className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
                          value={formData?.districtName || ''}
-                         onChange={(e) => onDateChange(USER_DETAILS?.yearOfBirth, parseInt(e.target.value))}>
+                         onChange={(e) => onDateChange(formData?.yearOfBirth, parseInt(e.target.value))}>
                          {districts?.map(el => <option key={el.value} value={el.value}>{el.name}</option>)}
                     </select>
                </div>
@@ -162,7 +154,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          className="p-2 rounded border border-gray-300 flex-1 w-full"
                          type="email"
                          placeholder="Enter email"
-                         name={USER_DETAILS?.email}
+                         name={formData?.email}
                          value={formData?.email || ''}
                          onChange={handleChange}
                     />
@@ -173,7 +165,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          placeholder="Enter mobile no."
                          className="p-2 rounded border border-gray-300 flex-1 w-full"
                          type="tel"
-                         name={USER_DETAILS?.mobile}
+                         name={formData?.mobile}
                          value={formData?.mobile || ''}
                          onChange={handleChange}
                     />
@@ -184,7 +176,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          placeholder="Enter pin-code"
                          className="p-2 rounded border border-gray-300 flex-1 w-full"
                          type="number"
-                         name={USER_DETAILS?.pinCode}
+                         name={formData?.pinCode}
                          value={formData?.pinCode || ''}
                          onChange={handleChange}
                     />
@@ -195,7 +187,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          placeholder="Enter address"
                          className="p-2 rounded border border-gray-300 flex-1 w-full"
                          type="text"
-                         name={USER_DETAILS?.address}
+                         name={formData?.address}
                          value={formData?.address || ''}
                          onChange={handleChange}
                     />

@@ -14,7 +14,9 @@ export const REGISTER_STATES = {
      ADDRESS_VIEW: 'ADDRESS_VIEW',
      USER_DETAILS_FORM_VIEW: 'USER_DETAILS_FORM_VIEW',
      CREATE_ABHA_ADDRESS_VIEW: 'CREATE_ABHA_ADDRESS_VIEW',
+     REGISTRATION_SUCCESSFUL: "REGISTRATION_SUCCESSFUL",
 };
+
 
 interface RegisterFormDataProviderProps {
      children: ReactNode;
@@ -22,12 +24,11 @@ interface RegisterFormDataProviderProps {
 
 export const RegisterFormDataContext = createContext<any>(null);
 
-
 export const RegisterFormDataProvider = ({ children }: RegisterFormDataProviderProps) => {
 
      const [registerType, setRegisterType] = useState<string>(REGISTER_TYPES.DEFAULT_TYPE);
      const [registerState, setRegisterState] = useState<string>(REGISTER_STATES.DEFAULT_VIEW);
-     
+
      const handleChangeRegisterType = (value: string) => {
           setRegisterType(value);
      };
