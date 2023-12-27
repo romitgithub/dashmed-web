@@ -7,7 +7,8 @@ import { OptionForRegisterView } from "./registrationOptions";
 import { OtpInput } from "@/components/authCommonComponents/otp";
 import { SelectAddress } from "@/components/authCommonComponents/SelectAddress";
 import { RegisterVia } from "./registerVia";
-import { UserDetailsForm } from "./useDetails";
+import { UserDetailsForm } from "./userDetailsForm";
+import { CreateAbhaAddress } from "./createAbhaAddress";
 
 
 // Constants for register type text
@@ -46,6 +47,42 @@ export const RegisterView = () => {
           else console.log({ "missing": { ...data } });
           setRegisterState(REGISTER_STATES.OTP_VIEW);
      };
+
+
+     const handleSubmitUserDetails = (data: any) => {
+          console.log({ "data": { ...data, type: registerType } });
+          if (data) {
+               // fetchPostJSONExternal('/phr/api/login/sendOtp', { ...data, type: loginType })
+               //      .then((res) => {
+               //           console.log({ res });
+               //           if (res?.transactionId) {
+               //                setTransactionId(res?.transactionId);
+               //                setRegisterState(REGISTER_STATES.OTP_VIEW);
+               //           };
+               //      })
+               //      .catch((err) => console.log({ err }));
+          }
+          else console.log({ "missing": { ...data } });
+          setRegisterState(REGISTER_STATES.CREATE_ABHA_ADDRESS_VIEW);
+     };
+
+     const handleCreateAbhaAddress = (data: any) => {
+          console.log({ "data": { ...data, type: registerType } });
+          if (data) {
+               // fetchPostJSONExternal('/phr/api/login/sendOtp', { ...data, type: loginType })
+               //      .then((res) => {
+               //           console.log({ res });
+               //           if (res?.transactionId) {
+               //                setTransactionId(res?.transactionId);
+               //                setRegisterState(REGISTER_STATES.OTP_VIEW);
+               //           };
+               //      })
+               //      .catch((err) => console.log({ err }));
+          }
+          else console.log({ "missing": { ...data } });
+          setRegisterState(REGISTER_STATES.CREATE_ABHA_ADDRESS_VIEW);
+     };
+     
 
      // save the otp value and make network request
      const handleSetOtp = async (otpValue: string) => {
@@ -115,8 +152,8 @@ export const RegisterView = () => {
                     {registerState === REGISTER_STATES.DEFAULT_VIEW && <RegisterVia onSubmit={handleSubmit} />}
                     {registerState === REGISTER_STATES.OTP_VIEW && <OtpInput onSetOtp={handleSetOtp} onResendOTP={handleResendOTP} label={`We have sent you an OTP`} />}
                     {registerState === REGISTER_STATES.ADDRESS_VIEW && <SelectAddress onSelectAddress={handleSelectAddress} addresses={addresses} label={"Still want to create new ABHA address"} />}
-                    {registerState === REGISTER_STATES.USER_DETAILS_FORM_VIEW && <UserDetailsForm onSubmit={handleSubmit} />}
-                    {registerState === REGISTER_STATES.CREATE_ABHA_ADDRESS_VIEW && <>create abha address view</>}
+                    {registerState === REGISTER_STATES.USER_DETAILS_FORM_VIEW && <UserDetailsForm onSubmit={handleSubmitUserDetails} />}
+                    {registerState === REGISTER_STATES.CREATE_ABHA_ADDRESS_VIEW && <CreateAbhaAddress onSubmit={handleCreateAbhaAddress} />}
                </>)}
           </div>
      );
