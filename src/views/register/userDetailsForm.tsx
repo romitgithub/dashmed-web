@@ -35,9 +35,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
           });
      };
 
-     const onDateChange = (field: any, value: any) => {
-          setFormData((prevDate) => ({ ...prevDate, [field]: value }));
-     };
+     const onDateChange = (field: any, value: any) => setFormData((prevDate) => ({ ...prevDate, [field]: value }));
 
      const generateOptions = (start: number, end: number) =>
           Array.from({ length: end - start + 1 }, (_, index) => start + index).map((value) => (
@@ -65,7 +63,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                               className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2 m-1"
                               type="text"
                               name={formData?.firstName}
-                              value={formData?.firstName || ''}
+                              value={formData?.firstName}
                               onChange={handleChange}
                               placeholder="First Name"
                          />
@@ -73,7 +71,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                               className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2 m-1"
                               type="text"
                               name={formData?.middleName}
-                              value={formData?.middleName || ''}
+                              value={formData?.middleName}
                               onChange={handleChange}
                               placeholder="Middle Name"
                          />
@@ -81,7 +79,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                               className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2 m-1"
                               type="text"
                               name={formData?.lastName}
-                              value={formData?.lastName || ''}
+                              value={formData?.lastName}
                               onChange={handleChange}
                               placeholder="Last Name"
                          />
@@ -92,8 +90,8 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          <label>Day:</label>
                          <select
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
-                              value={formData?.dayOfBirth || ''}
-                              onChange={(e) => onDateChange(formData?.dayOfBirth || '', parseInt(e.target.value))}>
+                              value={formData?.dayOfBirth}
+                              onChange={(e) => onDateChange(formData?.dayOfBirth, parseInt(e.target.value))}>
                               {generateOptions(1, 31)}
                          </select>
                     </div>
@@ -101,8 +99,8 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          <label>Month:</label>
                          <select
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
-                              value={formData?.monthOfBirth || ''}
-                              onChange={(e) => onDateChange(formData?.monthOfBirth || '', parseInt(e.target.value))}>
+                              value={formData?.monthOfBirth}
+                              onChange={(e) => onDateChange(formData?.monthOfBirth, parseInt(e.target.value))}>
                               {generateOptions(1, 12)}
                          </select>
                     </div>
@@ -110,8 +108,8 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          <label>Year:</label>
                          <select
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
-                              value={formData?.yearOfBirth || ''}
-                              onChange={(e) => onDateChange(formData?.yearOfBirth || '', parseInt(e.target.value))}>
+                              value={formData?.yearOfBirth}
+                              onChange={(e) => onDateChange(formData?.yearOfBirth, parseInt(e.target.value))}>
                               {generateOptions(1900, new Date().getFullYear())}
                          </select>
                     </div>
@@ -122,7 +120,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                     <label>State</label>
                     <select
                          className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
-                         value={formData?.stateName || ''}
+                         value={formData?.stateName}
                          onChange={(e) => onDateChange(formData?.yearOfBirth, parseInt(e.target.value))}>
                          {states?.map(el => <option key={el.value} value={el.value}>{el.name}</option>)}
                     </select>
@@ -143,9 +141,9 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                     <label>District Name</label>
                     <select
                          className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
-                         value={formData?.districtName || ''}
+                         value={formData?.districtName}
                          onChange={(e) => onDateChange(formData?.yearOfBirth, parseInt(e.target.value))}>
-                         {districts?.map(el => <option key={el.value} value={el.value}>{el.name}</option>)}
+                         {districts?.map(el => <option key={el?.value} value={el?.value}>{el?.name}</option>)}
                     </select>
                </div>
                <div className='w-full flex flex-col mt-5'>
@@ -155,7 +153,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          type="email"
                          placeholder="Enter email"
                          name={formData?.email}
-                         value={formData?.email || ''}
+                         value={formData?.email}
                          onChange={handleChange}
                     />
                </div>
@@ -166,7 +164,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          className="p-2 rounded border border-gray-300 flex-1 w-full"
                          type="tel"
                          name={formData?.mobile}
-                         value={formData?.mobile || ''}
+                         value={formData?.mobile}
                          onChange={handleChange}
                     />
                </div>
@@ -177,7 +175,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          className="p-2 rounded border border-gray-300 flex-1 w-full"
                          type="number"
                          name={formData?.pinCode}
-                         value={formData?.pinCode || ''}
+                         value={formData?.pinCode}
                          onChange={handleChange}
                     />
                </div>
@@ -188,7 +186,7 @@ export const UserDetailsForm: React.FC<Props> = ({ onSubmit }) => {
                          className="p-2 rounded border border-gray-300 flex-1 w-full"
                          type="text"
                          name={formData?.address}
-                         value={formData?.address || ''}
+                         value={formData?.address}
                          onChange={handleChange}
                     />
                </div>
