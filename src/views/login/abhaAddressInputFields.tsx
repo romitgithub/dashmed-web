@@ -15,9 +15,7 @@ const AbhaAddressInputField: React.FC<AbhaAddressInputFieldProps> = ({ onAbhaInp
      const [showPassword, setShowPassword] = useState<boolean>(false);
 
      const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          if (onAbhaInputChange) {
-               onAbhaInputChange(e);
-          }
+          if (onAbhaInputChange) onAbhaInputChange(e)
      };
 
      return (

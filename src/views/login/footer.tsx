@@ -1,18 +1,14 @@
 import Link from "next/link";
 import { LOGIN_TYPES } from ".";
 
-type ChangeLoginType = (value: string) => void;
-
 interface FooterSectionProps {
-     onChangeLoginType: ChangeLoginType;
+     onToggleLoginType: (loginType: string) => void;
 };
 
 
-export const FooterSection: React.FC<FooterSectionProps> = ({ onChangeLoginType }) => {
+export const FooterSection: React.FC<FooterSectionProps> = ({ onToggleLoginType }) => {
 
-     const handleToggleType = (value: string) => {
-          onChangeLoginType(value);
-     };
+     const handleToggleType = (value: string) => onToggleLoginType(value);
 
      return (
           <div className="w-full flex flex-col justify-between">

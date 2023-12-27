@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { FooterSection } from "./footer";
-import { LoginHeader } from "./header";
 import { FormControlSection } from "./formControl";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
 import { OtpInput } from "@/components/authCommonComponents/otp";
 import { SelectAddress } from "@/components/authCommonComponents/SelectAddress";
+import { ACCESS_TOKEN } from "@/constants";
+import Header from "./header";
 
 export const LOGIN_TYPES = {
      ABHA_ADD: 'ABHA_ADD',
@@ -22,6 +23,15 @@ export const LOGIN_STATES = {
 };
 
 
+// Constants for login type text
+const loginTypeTextMap: Record<string, string> = {
+     [LOGIN_TYPES?.MOBILE]: "Mobile Number",
+     [LOGIN_TYPES?.ABHA_ADD]: "ABHA address",
+     [LOGIN_TYPES?.ABHA_NO]: "ABHA Number",
+     [LOGIN_TYPES?.EMAIL]: "Email Id",
+};
+
+
 export const LoginView = () => {
 
      const [loginType, setLoginType] = useState<string>(LOGIN_TYPES.MOBILE);
@@ -30,10 +40,9 @@ export const LoginView = () => {
      const [addresses, setAddresses] = useState([]);
 
 
-
      // on saving anything among ABHA num, Abha Address, Mobile num, Email-id and making a network request.
      const handleSubmit = async (data: any) => {
-          if (loginType && data?.value) {
+          if (data?.value) {
                fetchPostJSONExternal('/phr/api/login/sendOtp', { ...data, type: loginType })
                     .then((res) => {
                          console.log({ res });
@@ -53,7 +62,7 @@ export const LoginView = () => {
 
      // save the otp value and make network request
      const handleSetOtp = async (otpValue: string) => {
-          if (otpValue && transactionId && loginType) {
+          if (otpValue && transactionId) {
                const data = {
                     otp: otpValue,
                     transactionId,
@@ -76,7 +85,7 @@ export const LoginView = () => {
 
      // save the selected address value and make network request
      const handleSelectAddress = async (selectedAddressValue: string) => {
-          if (selectedAddressValue && transactionId && loginType) {
+          if (selectedAddressValue && transactionId) {
                const data = {
                     abhaAdd: selectedAddressValue,
                     transactionId,
@@ -85,6 +94,7 @@ export const LoginView = () => {
                     .then((res) => {
                          console.log({ res });
                          if (res?.token) {
+                              localStorage.setItem(ACCESS_TOKEN, res.token);
                               console.log({ token: res?.token });
                          };
                     })
@@ -93,22 +103,21 @@ export const LoginView = () => {
           else console.log({ "missing": { abhaAdd: selectedAddressValue, transactionId } });
      };
 
-     const handleChangeLoginType = (value: string) => {
-          setLoginType(value);
+     const handleBackButtonClick = () => {
+          if (loginState === LOGIN_STATES.ADDRESS_VIEW) setLoginState(LOGIN_STATES.OTP_VIEW)
+          else if (loginState === LOGIN_STATES.OTP_VIEW) setLoginState(LOGIN_STATES.DEFAULT_VIEW)
+          else if (loginState === LOGIN_STATES.DEFAULT_VIEW) setLoginType(LOGIN_TYPES.MOBILE)
      };
 
-     const handleChangeLoginState = (value: string) => {
-          setLoginState(value);
-     };
-
+     const handleToggleLoginType = (value: string) => setLoginType(value);
 
      return (
           <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
-               <LoginHeader loginType={loginType} loginState={loginState} onChangeLoginState={handleChangeLoginState} onChangeLoginType={handleChangeLoginType} />
+               <Header onBackClick={handleBackButtonClick} title={`Login with ${loginTypeTextMap[loginType]}` || "Unknown"} />
                {loginState === LOGIN_STATES.DEFAULT_VIEW && <FormControlSection onSubmit={handleSubmit} loginType={loginType} />}
                {loginState === LOGIN_STATES.OTP_VIEW && <OtpInput onSetOtp={handleSetOtp} onResendOTP={handleResendOTP} />}
                {loginState === LOGIN_STATES.ADDRESS_VIEW && <SelectAddress onSelectAddress={handleSelectAddress} addresses={addresses} />}
-               {loginType === LOGIN_TYPES.MOBILE && LOGIN_STATES.DEFAULT_VIEW === loginState && <FooterSection onChangeLoginType={handleChangeLoginType} />}
+               {loginType === LOGIN_TYPES.MOBILE && LOGIN_STATES.DEFAULT_VIEW === loginState && <FooterSection onToggleLoginType={handleToggleLoginType} />}
           </div>
      );
 };

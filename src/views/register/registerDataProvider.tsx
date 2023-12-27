@@ -12,7 +12,7 @@ export const REGISTER_STATES = {
      DEFAULT_VIEW: 'DEFAULT_VIEW',
      OTP_VIEW: 'OTP_VIEW',
      ADDRESS_VIEW: 'ADDRESS_VIEW',
-     FORM_CONTROL_VIEW: 'FORM_CONTROL_VIEW',
+     USER_DETAILS_FORM_VIEW: 'USER_DETAILS_FORM_VIEW',
      CREATE_ABHA_ADDRESS_VIEW: 'CREATE_ABHA_ADDRESS_VIEW',
 };
 
@@ -27,9 +27,7 @@ export const RegisterFormDataProvider = ({ children }: RegisterFormDataProviderP
 
      const [registerType, setRegisterType] = useState<string>(REGISTER_TYPES.DEFAULT_TYPE);
      const [registerState, setRegisterState] = useState<string>(REGISTER_STATES.DEFAULT_VIEW);
-     const [transactionId, setTransactionId] = useState(null);
-     const [addresses, setAddresses] = useState([]);
-
+     
      const handleChangeRegisterType = (value: string) => {
           setRegisterType(value);
      };
@@ -41,10 +39,6 @@ export const RegisterFormDataProvider = ({ children }: RegisterFormDataProviderP
                     setRegisterType,
                     registerState,
                     setRegisterState,
-                    transactionId,
-                    setTransactionId,
-                    addresses,
-                    setAddresses,
                     handleChangeRegisterType,
                }}
           >
