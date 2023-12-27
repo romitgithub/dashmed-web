@@ -1,14 +1,15 @@
-import { Button } from "@/atoms/button";
+import { Button, ButtonProps } from "@/atoms/button";
 import { useState } from "react";
 
 
 interface SelectAddressProps {
      onSelectAddress: (otpValue: string) => void;
+     onContinue?: () => void;
      addresses: string[] | null;
      label?: string;
 };
 
-const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, addresses, label }) => {
+const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, onContinue, addresses, label }) => {
 
      const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
 
@@ -17,9 +18,15 @@ const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, addresse
      };
 
      const handleSelectAddress = async () => {
-          if (onSelectAddress && selectedAddress) {
-               onSelectAddress(selectedAddress);
-          }
+          if (onSelectAddress && selectedAddress) onSelectAddress(selectedAddress);
+     };
+
+     const handleContinue = () => {
+          if (onContinue) onContinue();
+     };
+
+     const buttonProps: ButtonProps = {
+          label: 'LOGIN',
      };
 
      return (
@@ -42,21 +49,16 @@ const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, addresse
                     ))}
                </div>
                <div className='mt-5 mb-5 w-full'>
-                    <Button />
-                    <button
+                    <Button
+                         {...buttonProps}
+                         className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
                          onClick={handleSelectAddress}
-                         className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
-                    >
-                         LOGIN
-                    </button>
+                    />
                </div>
-               {
-                    label &&
-                    <div className="flex flex-col justify-center align-middle text-center mt-3">
-                         <span className="font-semibold">Or</span>
-                         <span className="text-teal-600 font-semibold mt-3 mb-5 text-base sm:text-lg md:text-xl lg:text-2xl">{label}</span>
-                    </div>
-               }
+               {label && <div className="flex flex-col justify-center align-middle text-center mt-3">
+                    <span className="font-semibold">Or</span>
+                    <span className="cursor-pointer text-teal-600 font-semibold mt-3 mb-5 text-base sm:text-lg md:text-xl lg:text-2xl" onClick={handleContinue}>{label}</span>
+               </div>}
           </>
      );
 };

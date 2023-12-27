@@ -7,7 +7,6 @@ export const REGISTER_TYPES = {
      EMAIL_ID: 'EMAIL',
 };
 
-
 export const REGISTER_STATES = {
      DEFAULT_VIEW: 'DEFAULT_VIEW',
      OTP_VIEW: 'OTP_VIEW',
@@ -15,7 +14,6 @@ export const REGISTER_STATES = {
      USER_DETAILS_FORM_VIEW: 'USER_DETAILS_FORM_VIEW',
      CREATE_ABHA_ADDRESS_VIEW: 'CREATE_ABHA_ADDRESS_VIEW',
 };
-
 
 interface RegisterFormDataProviderProps {
      children: ReactNode;
@@ -27,10 +25,7 @@ export const RegisterFormDataProvider = ({ children }: RegisterFormDataProviderP
 
      const [registerType, setRegisterType] = useState<string>(REGISTER_TYPES.DEFAULT_TYPE);
      const [registerState, setRegisterState] = useState<string>(REGISTER_STATES.DEFAULT_VIEW);
-
-     const handleChangeRegisterType = (value: string) => {
-          setRegisterType(value);
-     };
+     const handleChangeRegisterType = (value: string) => setRegisterType(value);
 
      return (
           <RegisterFormDataContext.Provider

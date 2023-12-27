@@ -10,26 +10,30 @@ interface InputConfig {
      inputLabel: string;
      inputType: 'text' | 'tel' | 'email';
      maxLength: number;
+     minLength: number;
      placeholder: string;
 };
 
 const inputConfigs: Record<string, InputConfig> = {
-     [REGISTER_TYPES.MOBILE_NUMBER]: {
+     [REGISTER_TYPES?.MOBILE_NUMBER]: {
           inputLabel: 'Enter Mobile Number',
           inputType: 'tel',
           maxLength: 10,
+          minLength: 10,
           placeholder: 'Enter mobile number',
      },
-     [REGISTER_TYPES.ABHA_NUMBER]: {
+     [REGISTER_TYPES?.ABHA_NUMBER]: {
           inputLabel: 'Enter ABHA Number',
           inputType: 'tel',
           maxLength: 14,
+          minLength: 14,
           placeholder: 'Enter ABHA number',
      },
-     [REGISTER_TYPES.EMAIL_ID]: {
+     [REGISTER_TYPES?.EMAIL_ID]: {
           inputLabel: 'Enter Email',
           inputType: 'email',
           maxLength: 50,
+          minLength: 5,
           placeholder: 'Enter email',
      },
 };
@@ -38,8 +42,7 @@ export const RegisterVia: React.FC<RegisterViaProps> = ({ onSubmit }) => {
 
      const { registerType } = useContext(RegisterFormDataContext);
      const [inputValue, setInputValue] = useState<string>('');
-     const [isLoading, setIsLoading] = useState(false);
-     const { inputLabel, inputType, maxLength, placeholder } = inputConfigs[registerType] || {};
+     const { inputLabel, inputType, maxLength, minLength, placeholder } = inputConfigs[registerType] || {};
 
      const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
           event.preventDefault();
@@ -62,6 +65,7 @@ export const RegisterVia: React.FC<RegisterViaProps> = ({ onSubmit }) => {
                               value={inputValue}
                               onChange={(e) => setInputValue(e.target.value)}
                               maxLength={maxLength}
+                              minLength={minLength}
                               required
                               placeholder={placeholder}
                               className="p-2 rounded border border-gray-300 flex-1 w-full"

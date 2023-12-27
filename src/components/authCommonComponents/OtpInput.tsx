@@ -1,14 +1,15 @@
+import { Button, ButtonProps } from "@/atoms/button";
 import OtpTimer from "@/components/authCommonComponents/otpTimer";
 import { ChangeEvent, useRef, useState } from "react";
 import React, { KeyboardEvent } from 'react';
 
 interface OtpInputProps {
-     onSetOtp: (otpValue: string) => void;
+     onSubmitOtp: (otpValue: string) => void;
      label?: string;
      onResendOTP: () => void;
 };
 
-export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp, onResendOTP, label }) => {
+export const OtpInput: React.FC<OtpInputProps> = ({ onSubmitOtp, onResendOTP, label }) => {
 
      const [otp, setOtp] = useState(['', '', '', '', '', '']);
      const refs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
@@ -32,11 +33,15 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp, onResendOTP, label
 
 
      const handleOtpSubmit = async () => {
-          onSetOtp(otp?.join(''));
+          onSubmitOtp(otp?.join(''));
      };
 
      const resendOtpFunc = async () => {
           onResendOTP();
+     };
+
+     const buttonProps: ButtonProps = {
+          label: 'CONTINUE',
      };
 
      return (
@@ -61,12 +66,10 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp, onResendOTP, label
                     <span className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-teal-400" onClick={resendOtpFunc}>RESEND OTP</span>
                </div>
                <div className='mt-5 mb-5'>
-                    <button
+                    <Button
+                         {...buttonProps}
                          onClick={handleOtpSubmit}
-                         className="p-2 w-full text-sm sm:text-md md:text-md lg:text-lg xl:text-xl bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
-                    >
-                         CONTINUE
-                    </button>
+                         className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300" />
                </div>
           </div>
      );

@@ -28,6 +28,7 @@ const AbhaAddressInputField: React.FC<AbhaAddressInputFieldProps> = ({ onAbhaInp
                          placeholder="Example@abdm"
                          value={loginFormData?.value}
                          name="value"
+                         required
                          onChange={handleInputChange}
                     />
                </div>
@@ -40,8 +41,7 @@ const AbhaAddressInputField: React.FC<AbhaAddressInputFieldProps> = ({ onAbhaInp
                          value={loginFormData?.password}
                          name="abhaPassword"
                          onChange={handleInputChange}
-                         maxLength={14}
-                         minLength={14}
+                         required
                     />
                     <span onClick={() => setShowPassword((prev) => !prev)} className="pr-4">
                          {!showPassword ? <ViewPasswordIcon /> : <HidePasswordIcon />}

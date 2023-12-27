@@ -2,6 +2,7 @@
 
 import { useContext, useState } from "react";
 import { REGISTER_TYPES, RegisterFormDataContext } from "./registerDataProvider";
+import { Button, ButtonProps } from "@/atoms/button";
 
 interface Option {
      name: string;
@@ -16,14 +17,7 @@ const options: Option[] = [
 
 export const OptionForRegisterView = () => {
 
-     const {
-          registerType,
-          setRegisterType,
-          registerState,
-          setRegisterState,
-          handleChangeRegisterType,
-     } = useContext(RegisterFormDataContext);
-
+     const { setRegisterType } = useContext(RegisterFormDataContext);
      const [selectedOption, setSelectedOption] = useState<string>('');
 
      const handleContinue = () => {
@@ -33,28 +27,31 @@ export const OptionForRegisterView = () => {
           console.log('Selected Option:', selectedOption);
      };
 
+     const buttonProps: ButtonProps = {
+          label: 'CONTINUE',
+     };
+
      return (
           <div className="w-full px-3">
-               {options.map((option, index) => (
+               {options?.map((option, index) => (
                     <div key={index} className="p-2">
                          <input
                               type="radio"
                               id={`option-${index}`}
                               name="options"
                               value={option.value}
-                              checked={selectedOption === option.value}
-                              onChange={() => setSelectedOption(option.value)}
+                              checked={selectedOption === option?.value}
+                              onChange={() => setSelectedOption(option?.value)}
                          />
                          <label className="ml-1 font-semibold text-teal-600" htmlFor={`option-${index}`}>{option.name}</label>
                     </div>
                ))}
                <div className='mt-5 mb-5'>
-                    <button
-                         onClick={handleContinue}
+                    <Button
+                         {...buttonProps}
                          className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
-                    >
-                         {"CONTINUE"}
-                    </button>
+                         onClick={handleContinue}
+                    />
                </div>
           </div>
      );
