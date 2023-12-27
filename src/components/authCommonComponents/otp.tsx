@@ -4,10 +4,11 @@ import React, { KeyboardEvent } from 'react';
 
 interface OtpInputProps {
      onSetOtp: (otpValue: string) => void;
+     label?: string;
      onResendOTP: () => void;
 };
 
-export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp, onResendOTP }) => {
+export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp, onResendOTP, label }) => {
 
      const [otp, setOtp] = useState(['', '', '', '', '', '']);
      const refs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
@@ -40,7 +41,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSetOtp, onResendOTP }) => 
 
      return (
           <div className='flex flex-col w-full mt-5'>
-               <label className=''>Enter 6 digit OTP</label>
+               <label className=''>{label ? label : "Enter 6 digit OTP"}</label>
                <div className="flex justify-between items-center mt-3">
                     {otp?.map((value, index) => (
                          <input

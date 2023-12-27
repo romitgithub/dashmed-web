@@ -5,9 +5,10 @@ import { useState } from "react";
 interface SelectAddressProps {
      onSelectAddress: (otpValue: string) => void;
      addresses: string[] | null;
+     label?: string;
 };
 
-const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, addresses }) => {
+const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, addresses, label }) => {
 
      const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
 
@@ -49,6 +50,13 @@ const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, addresse
                          LOGIN
                     </button>
                </div>
+               {
+                    label &&
+                    <div className="flex flex-col justify-center align-middle text-center mt-3">
+                         <span className="font-semibold">Or</span>
+                         <span className="text-teal-600 font-semibold mt-3 mb-5 text-base sm:text-lg md:text-xl lg:text-2xl">{label}</span>
+                    </div>
+               }
           </>
      );
 };

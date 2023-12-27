@@ -1,83 +1,40 @@
-import { useContext } from "react";
-import { REGISTER_STATES, RegisterFormDataContext } from "../registerDataProvider";
+import { useState } from "react";
 
-export const RegisterViaMobileNumber = () => {
-
-     const {
-          registerType,
-          setRegisterType,
-          registerState,
-          setRegisterState,
-          handleChangeRegisterType,
-     } = useContext(RegisterFormDataContext);
+interface ViaMobileNoProps {
+     onSubmit: (formData: Record<string, any>) => void;
+};
 
 
-     const moveToNextState = () => {
-          switch (registerState) {
-               case REGISTER_STATES.DEFAULT_VIEW:
-                    // Logic to proceed to OTP_VIEW
-                    setRegisterState(REGISTER_STATES.OTP_VIEW);
-                    break;
-               case REGISTER_STATES.OTP_VIEW:
-                    // Logic to proceed to ADDRESS_VIEW
-                    setRegisterState(REGISTER_STATES.ADDRESS_VIEW);
-                    break;
-               case REGISTER_STATES.ADDRESS_VIEW:
-                    // Logic to proceed to FORM_CONTROL_VIEW
-                    setRegisterState(REGISTER_STATES.FORM_CONTROL_VIEW);
-                    break;
-               case REGISTER_STATES.FORM_CONTROL_VIEW:
-                    // Logic to proceed to CREATE_ABHA_ADDRESS_VIEW
-                    setRegisterState(REGISTER_STATES.CREATE_ABHA_ADDRESS_VIEW);
-                    break;
-               default:
-                    // Handle other cases or end of the flow
-                    break;
-          }
+export const ViaMobileNo: React.FC<ViaMobileNoProps> = ({ onSubmit }) => {
+
+     const [inputValue, setInputValue] = useState('');
+
+     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+          event.preventDefault();
+          if (onSubmit && inputValue) onSubmit({ value: inputValue });
      };
-
-     const moveToPreviousState = () => {
-          switch (registerState) {
-               case REGISTER_STATES.CREATE_ABHA_ADDRESS_VIEW:
-                    // Logic to move back to FORM_CONTROL_VIEW
-                    setRegisterState(REGISTER_STATES.FORM_CONTROL_VIEW);
-                    break;
-               case REGISTER_STATES.FORM_CONTROL_VIEW:
-                    // Logic to move back to ADDRESS_VIEW
-                    setRegisterState(REGISTER_STATES.ADDRESS_VIEW);
-                    break;
-               case REGISTER_STATES.ADDRESS_VIEW:
-                    // Logic to move back to OTP_VIEW
-                    setRegisterState(REGISTER_STATES.OTP_VIEW);
-                    break;
-               case REGISTER_STATES.OTP_VIEW:
-                    // Logic to move back to DEFAULT_VIEW
-                    setRegisterState(REGISTER_STATES.DEFAULT_VIEW);
-                    break;
-               default:
-                    // Handle other cases or end of the flow
-                    break;
-          }
-     };
-
 
      return (
-          <>
-               {registerState === REGISTER_STATES.DEFAULT_VIEW && (
-                    <>default view</>
-               )}
-               {registerState === REGISTER_STATES.OTP_VIEW && (
-                    <>otp view</>
-               )}
-               {registerState === REGISTER_STATES.ADDRESS_VIEW && (
-                    <>address view</>
-               )}
-               {registerState === REGISTER_STATES.FORM_CONTROL_VIEW && (
-                    <>form control view</>
-               )}
-               {registerState === REGISTER_STATES.CREATE_ABHA_ADDRESS_VIEW && (
-                    <>create abha address view</>
-               )}
-          </>
+          <form onSubmit={handleSubmit} className="w-full">
+               <label>Enter mobile number</label>
+               <div className="flex items-center space-x-2 mt-3">
+                    <input
+                         type="tel"
+                         className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
+                         placeholder="Enter mobile number"
+                         value={inputValue}
+                         name='value'
+                         required
+                         onChange={(e) => setInputValue(e.target.value)}
+                         maxLength={10}
+                    />
+               </div>
+               <button
+                    type="submit"
+                    className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300 mt-10 mb-5"
+               >
+                    {"CONTINUE"}
+               </button>
+          </form>
      );
 };

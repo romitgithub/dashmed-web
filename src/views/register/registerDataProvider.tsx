@@ -1,11 +1,10 @@
 import React, { createContext, useState, ReactNode } from 'react';
 
-
 export const REGISTER_TYPES = {
      DEFAULT_TYPE: 'DEFAULT_TYPE',
-     ABHA_NUMBER: 'ABHA_NUMBER',
-     MOBILE_NUMBER: 'MOBILE_NUMBER',
-     EMAIL_ID: 'EMAIL_ID',
+     ABHA_NUMBER: 'ABHA_NO',
+     MOBILE_NUMBER: 'MOBILE',
+     EMAIL_ID: 'EMAIL',
 };
 
 
@@ -28,6 +27,8 @@ export const RegisterFormDataProvider = ({ children }: RegisterFormDataProviderP
 
      const [registerType, setRegisterType] = useState<string>(REGISTER_TYPES.DEFAULT_TYPE);
      const [registerState, setRegisterState] = useState<string>(REGISTER_STATES.DEFAULT_VIEW);
+     const [transactionId, setTransactionId] = useState(null);
+     const [addresses, setAddresses] = useState([]);
 
      const handleChangeRegisterType = (value: string) => {
           setRegisterType(value);
@@ -40,6 +41,10 @@ export const RegisterFormDataProvider = ({ children }: RegisterFormDataProviderP
                     setRegisterType,
                     registerState,
                     setRegisterState,
+                    transactionId,
+                    setTransactionId,
+                    addresses,
+                    setAddresses,
                     handleChangeRegisterType,
                }}
           >
