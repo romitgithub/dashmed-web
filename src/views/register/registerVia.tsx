@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { REGISTER_TYPES, RegisterFormDataContext } from './registerDataProvider';
-import { Button, ButtonProps } from '@/atoms/button';
+import { Button } from '@/atoms/button';
 
 interface RegisterViaProps {
      onSubmit: (formData: Record<string, any>) => void;
@@ -49,12 +49,6 @@ export const RegisterVia: React.FC<RegisterViaProps> = ({ onSubmit }) => {
           if (inputValue && onSubmit) onSubmit({ value: inputValue });
      };
 
-     const buttonProps: ButtonProps = {
-          label: 'CONTINUE',
-          type: "submit",
-     };
-
-
      return (
           <form onSubmit={handleSubmit} className='w-full'>
                {inputLabel && (
@@ -74,9 +68,7 @@ export const RegisterVia: React.FC<RegisterViaProps> = ({ onSubmit }) => {
                )}
 
                <div className='mt-5'>
-                    <Button
-                         {...buttonProps}
-                         className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300" />
+                    <Button className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300" >CONTINUE</Button>
                </div>
           </form>
      );

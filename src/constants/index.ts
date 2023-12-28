@@ -43,7 +43,7 @@ export const states = [
 
 
 export const districts = [
-     { code: 'AG', name: 'Agar' },
+     { code: 'AG', name: 'Agar Malwa' },
      { code: 'AL', name: 'Alirajpur' },
      { code: 'AN', name: 'Anuppur' },
      { code: 'AK', name: 'Ashoknagar' },

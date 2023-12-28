@@ -11,6 +11,7 @@ import { RegisterDetails } from "./registerDetails";
 import { CreateAbhaAddress } from "./createAbhaAddress";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
 import { ACCESS_TOKEN } from "@/constants";
+import { toast } from "react-toastify";
 
 
 // Constants for register type text
@@ -42,13 +43,17 @@ export const RegisterView = () => {
                          setRegisterState(REGISTER_STATES?.OTP_VIEW);
                     };
                })
-               .catch((err) => console.log({ err }));
+               .catch((err) => {
+                    toast.error("Registration failed. Please try again.");
+                    console.log({ err });
+               });
      };
 
 
      const handleSubmitRegisterDetails = (data: any) => {
           fetchPostJSONExternal('/phr/api/register/registerDetails', {
                ...data,
+               countryCode: "+91",  // temporary
                transactionId,
                type: registerType
           })
@@ -59,7 +64,10 @@ export const RegisterView = () => {
                          setRegisterState(REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW);
                     };
                })
-               .catch((err) => console.log({ err }));
+               .catch((err) => {
+                    toast.error("Registration details invalid. Please try again.");
+                    console.log({ err });
+               });
      };
 
      const handleCreateAbhaAddress = (data: any) => {

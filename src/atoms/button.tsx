@@ -7,7 +7,6 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   label?: string;
   disabled?: boolean;
   isLoading?: boolean;
-  type?: string;
 }
 
 export const Button: FC<ButtonProps> = ({ href = "", ...props }) => {

@@ -53,7 +53,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
           });
      };
 
-     const onSelectOption = (field: any, value: any) => setRegisterDetails((prevDate) => ({ ...prevDate, [field]: value }));
+     const handleSelect = (field: any, value: any) => setRegisterDetails((prevDate) => ({ ...prevDate, [field]: value }));
 
      const generateOptions = (start: number, end: number) =>
           Array.from({ length: end - start + 1 }, (_, index) => start + index).map((value) => (
@@ -65,11 +65,6 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
           onSubmit(registerDetails);
-     };
-
-     const buttonProps: ButtonProps = {
-          label: 'CONTINUE',
-          type: "submit",
      };
 
      return (
@@ -112,7 +107,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
                               value={registerDetails?.dayOfBirth}
                               required
-                              onChange={(e) => onSelectOption(USER_DETAILS?.dayOfBirth, parseInt(e.target.value))}>
+                              onChange={(e) => handleSelect(USER_DETAILS?.dayOfBirth, parseInt(e.target.value))}>
                               {generateOptions(1, 31)}
                          </select>
                     </div>
@@ -122,7 +117,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
                               value={registerDetails?.monthOfBirth}
                               required
-                              onChange={(e) => onSelectOption(USER_DETAILS?.monthOfBirth, parseInt(e.target.value))}>
+                              onChange={(e) => handleSelect(USER_DETAILS?.monthOfBirth, parseInt(e.target.value))}>
                               {generateOptions(1, 12)}
                          </select>
                     </div>
@@ -132,7 +127,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
                               value={registerDetails?.yearOfBirth}
                               required
-                              onChange={(e) => onSelectOption(USER_DETAILS?.yearOfBirth, parseInt(e.target.value))}>
+                              onChange={(e) => handleSelect(USER_DETAILS?.yearOfBirth, parseInt(e.target.value))}>
                               {generateOptions(1900, new Date().getFullYear())}
                          </select>
                     </div>
@@ -145,7 +140,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                          className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
                          value={registerDetails?.stateName}
                          required
-                         onChange={(e) => onSelectOption(USER_DETAILS?.stateName, e.target.value)}>
+                         onChange={(e) => handleSelect(USER_DETAILS?.stateName, e.target.value)}>
                          {states?.map(el => <option key={el?.code} value={el?.code}>{el.name}</option>)}
                     </select>
                </div>
@@ -156,7 +151,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                          className="p-2 rounded border border-gray-300 flex-1 w-full"
                          value={registerDetails?.gender}
                          required
-                         onChange={(e) => onSelectOption(USER_DETAILS?.gender, e.target.value)}>
+                         onChange={(e) => handleSelect(USER_DETAILS?.gender, e.target.value)}>
                          <option value="M">Male</option>
                          <option value="F">Female</option>
                     </select>
@@ -168,7 +163,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                          className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
                          value={registerDetails?.districtName}
                          required
-                         onChange={(e) => onSelectOption(USER_DETAILS?.districtName, e.target.value)}>
+                         onChange={(e) => handleSelect(USER_DETAILS?.districtName, e.target.value)}>
                          {districts?.map(el => <option key={el?.code} value={el?.name}>{el?.name}</option>)}
                     </select>
                </div>
@@ -221,9 +216,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                     />
                </div>
                <div className='mt-5'>
-                    <Button
-                         {...buttonProps}
-                         className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300" />
+                    <Button className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300" >{'CONTINUE'}</Button>
                </div>
           </form>
      );
