@@ -88,8 +88,8 @@ export const RegisterView = () => {
           })
                .then((res) => {
                     console.log({ res });
-                    if (res?.mappedPhrAddress && res?.transaction_id) {
-                         setTransactionId(res?.transaction_id);
+                    if (res?.mappedPhrAddress && res?.transactionId) {
+                         setTransactionId(res?.transactionId);
                          setAddresses(res?.mappedPhrAddress);
                          setRegisterState(REGISTER_STATES?.ADDRESS_VIEW);
                     };
