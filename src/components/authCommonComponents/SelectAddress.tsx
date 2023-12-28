@@ -1,7 +1,6 @@
 import { Button } from "@/atoms/button";
 import { useState } from "react";
 
-
 interface SelectAddressProps {
      onSelectAddress: (otpValue: string) => void;
      onContinue?: () => void;
@@ -12,7 +11,6 @@ interface SelectAddressProps {
 const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, onContinue, addresses, label }) => {
 
      const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
-
      const handleItemClick = (item: string) => setSelectedAddress(item);
 
      const handleSelectAddress = async () => {

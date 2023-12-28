@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { AuthInputForm } from "@/components/authCommonComponents/authInputForm";
 import Header from "@/components/authCommonComponents/header";
 import { OtpInput } from "@/components/authCommonComponents/OtpInput";
+import { useRouter } from "next/navigation";
 
 
 // Constants for register type text
@@ -66,6 +67,7 @@ export const RegisterView = () => {
 
      const [transactionId, setTransactionId] = useState<string | null>(null);
      const [addresses, setAddresses] = useState<string[]>([]);
+     const router = useRouter();
 
      const handleSubmit = (data: any) => {
           fetchPostJSONExternal('/phr/api/register/sendOtp', { ...data, type: registerType })
@@ -163,6 +165,7 @@ export const RegisterView = () => {
                     if (res?.token) {
                          localStorage.setItem(ACCESS_TOKEN, res?.token);
                          console.log({ token: res?.token });
+                         router.push('/login');
                     };
                })
                .catch((err) => console.log({ err }));

@@ -14,14 +14,13 @@ const withUser = <P extends wcProps>(WrappedComponent: ComponentType<P>): React.
 
           useEffect(() => {
                const token = localStorage.getItem(ACCESS_TOKEN);
-               if (!token) {
-                    router.replace("/login"); // Redirect to login if no token
-               }
-          }, []);
+               const isLoginPage = router?.pathname === "/login";
+               const isRegisterPage = router?.pathname === "/register";
+               if (!token && !isLoginPage && !isRegisterPage && router) router.replace("/login");
+          }, [router?.pathname]);
 
           return <WrappedComponent {...props} />;
      };
-
      return ComponentWithUser;
 };
 

@@ -8,6 +8,7 @@ import { ACCESS_TOKEN } from "@/constants";
 import { LoginVia } from "./loginVia";
 import Header from "@/components/authCommonComponents/header";
 import { OtpInput } from "@/components/authCommonComponents/OtpInput";
+import { useRouter } from "next/navigation";
 
 export const LOGIN_TYPES = {
      ABHA_ADD: 'ABHA_ADD',
@@ -38,7 +39,7 @@ export const LoginView = () => {
      const [loginState, setLoginState] = useState<string>(LOGIN_STATES.DEFAULT_VIEW);
      const [transactionId, setTransactionId] = useState(null);
      const [addresses, setAddresses] = useState([]);
-
+     const router = useRouter();
 
      // on saving anything among ABHA num, Abha Address, Mobile num, Email-id and making a network request.
      const handleSubmit = async (data: any) => {
@@ -90,8 +91,10 @@ export const LoginView = () => {
                     if (res?.token) {
                          localStorage.setItem(ACCESS_TOKEN, res?.token);
                          console.log({ token: res?.token });
+                         router.push('/dashboard');
                     };
                })
+               .then(() => console.log("navigate"))
                .catch((err) => console.log({ err }));
      };
 
