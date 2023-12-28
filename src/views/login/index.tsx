@@ -103,17 +103,13 @@ export const LoginView = () => {
           if (loginState === LOGIN_STATES.ADDRESS_VIEW) setLoginState(LOGIN_STATES.OTP_VIEW)
           else if (loginState === LOGIN_STATES.OTP_VIEW) setLoginState(LOGIN_STATES.DEFAULT_VIEW)
           else if (loginState === LOGIN_STATES.DEFAULT_VIEW) setLoginType(LOGIN_TYPES.MOBILE)
-          else if (loginType === LOGIN_TYPES.MOBILE) {
-               console.log("yes")
-               router.replace('/');
-          }
      };
 
      const handleToggleLoginType = (value: string) => setLoginType(value);
 
      return (
           <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
-               <Header title={`Login with ${loginTypeTextMap[loginType]}` || "Unknown"} onBackClick={handleBackButtonClick} />
+               <Header title={`Login with ${loginTypeTextMap[loginType]}` || "Unknown"} onBackClick={handleBackButtonClick} showBackButton={loginType !== LOGIN_TYPES.MOBILE} />
                {loginState === LOGIN_STATES.DEFAULT_VIEW && <LoginVia onSubmit={handleSubmit} loginType={loginType} />}
                {loginState === LOGIN_STATES.OTP_VIEW && <OtpInput onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} />}
                {loginState === LOGIN_STATES.ADDRESS_VIEW && <SelectAddress onSelectAddress={handleSelectAddress} addresses={addresses} />}

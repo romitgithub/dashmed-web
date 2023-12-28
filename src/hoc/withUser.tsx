@@ -21,9 +21,9 @@ const withUser = <P extends wcProps>(WrappedComponent: ComponentType<P>): React.
 
                if (!token && !isLoginPage && !isRegisterPage && router) router.replace("/login");
                if (token && pathname === "/login") router.replace("/scan");
-               console.log({ token, pathname });
 
           }, [pathname, router]);
+
           return <WrappedComponent {...props} />;
      };
 

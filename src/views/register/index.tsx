@@ -184,7 +184,7 @@ export const RegisterView = () => {
      return (
           <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
                {/* <Header onBackClick={handleBackButtonClick} title={`${registerTypeTextMap[registerType]}` || "Unknown"} /> */}
-               <Header title={`${registerTypeTextMap[registerType]}` || "Unknown"} onBackClick={handleBackButtonClick} showBackButton={true} />
+               <Header title={`${registerTypeTextMap[registerType]}` || "Unknown"} onBackClick={handleBackButtonClick} showBackButton={registerType !== REGISTER_TYPES.DEFAULT_TYPE} />
                {registerType === REGISTER_TYPES?.DEFAULT_TYPE ? (
                     <OptionForRegisterView />
                ) : (<>
