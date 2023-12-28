@@ -19,19 +19,19 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSubmitOtp, onResendOTP, la
           const value = event.target.value;
           setOtp([...otp?.slice(0, index), value, ...otp?.slice(index + 1)]);
           // Auto focus to the next input
-          if (value !== '' && index < 5 && refs[index + 1]?.current)  refs[index + 1]?.current?.focus();
+          if (value !== '' && index < 5 && refs[index + 1]?.current) refs[index + 1]?.current?.focus();
      };
 
      const handleKeyDown = (index: number, event: KeyboardEvent<HTMLInputElement>) => {
           // Handle backspace to move focus to the previous input
-          if (event?.key === 'Backspace' && index > 0 && otp && otp[index] === '' && refs[index - 1]?.current)  refs[index - 1]?.current?.focus();
+          if (event?.key === 'Backspace' && index > 0 && otp && otp[index] === '' && refs[index - 1]?.current) refs[index - 1]?.current?.focus();
      };
 
-     const handleOtpSubmit = async () => onSubmitOtp(otp?.join(''));
-     const resendOtpFunc = async () =>  onResendOTP();
+     const handleSubmitOtp = async () => onSubmitOtp(otp?.join(''));
+     const resendOtpFunc = async () => onResendOTP();
 
      return (
-          <div className='flex flex-col w-full mt-5'>
+          <form onSubmit={handleSubmitOtp} className='flex flex-col w-full mt-5'>
                <label className=''>{label ? label : "Enter 6 digit OTP"}</label>
                <div className="flex justify-between items-center mt-3">
                     {otp?.map((value, index) => (
@@ -41,6 +41,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSubmitOtp, onResendOTP, la
                               type="text"
                               maxLength={1}
                               value={value}
+                              required
                               onChange={(e) => handleInputChange(index, e)}
                               onKeyDown={(e) => handleKeyDown(index, e)}
                               className="w-12 h-12 mx-1 text-4xl text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500 sm:text-3xl extra-small:text-sm small:text-md extra-small:w-8 extra-small:h-8 small:w-10 small:h-10 grid-cols-6 extra-small:grid-cols-1"
@@ -52,8 +53,8 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSubmitOtp, onResendOTP, la
                     <span className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-teal-400" onClick={resendOtpFunc}>RESEND OTP</span>
                </div>
                <div className='mt-5 mb-5'>
-                    <Button onClick={handleOtpSubmit} className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300">CONTINUE</Button>
+                    <Button className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300">CONTINUE</Button>
                </div>
-          </div>
+          </form>
      );
 };
