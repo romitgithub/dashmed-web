@@ -73,10 +73,10 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
      };
 
      return (
-          <form onSubmit={handleSubmit}>
-               <div className='w-full flex flex-col'>
+          <form onSubmit={handleSubmit} className='w-full'>
+               <div className='w-full flex flex-col '>
                     <label>Full Name</label>
-                    <div className='flex w-full'>
+                    <div className='flex w-full flex-col md:flex-row lg:flex-row'>
                          <input
                               className="p-2 rounded border border-gray-300 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2 m-1"
                               type="text"
@@ -106,7 +106,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                     </div>
                </div>
                <div className='w-full flex mt-5'>
-                    <div className='flex flex-col m-1 w-1/3'>
+                    <div className='flex flex-col m-1 w-2/6'>
                          <label>Day:</label>
                          <select
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
@@ -116,7 +116,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                               {generateOptions(1, 31)}
                          </select>
                     </div>
-                    <div className='flex flex-col m-1 w-1/3'>
+                    <div className='flex flex-col m-1 w-2/6'>
                          <label>Month:</label>
                          <select
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
@@ -126,7 +126,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                               {generateOptions(1, 12)}
                          </select>
                     </div>
-                    <div className='flex flex-col m-1 w-1/3'>
+                    <div className='flex flex-col m-1 w-3/6'>
                          <label>Year:</label>
                          <select
                               className="p-2 rounded border border-gray-300 flex-1 w-full m-1"
