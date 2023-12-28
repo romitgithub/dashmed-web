@@ -1,7 +1,8 @@
-import { Button, ButtonProps } from "@/atoms/button";
 import OtpTimer from "@/components/authCommonComponents/otpTimer";
 import { ChangeEvent, useRef, useState } from "react";
 import React, { KeyboardEvent } from 'react';
+import { Button } from '@/atoms/button';
+
 
 interface OtpInputProps {
      onSubmitOtp: (otpValue: string) => void;
@@ -17,32 +18,17 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSubmitOtp, onResendOTP, la
      const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
           const value = event.target.value;
           setOtp([...otp?.slice(0, index), value, ...otp?.slice(index + 1)]);
-
           // Auto focus to the next input
-          if (value !== '' && index < 5 && refs[index + 1]?.current) {
-               refs[index + 1]?.current?.focus();
-          }
+          if (value !== '' && index < 5 && refs[index + 1]?.current)  refs[index + 1]?.current?.focus();
      };
 
      const handleKeyDown = (index: number, event: KeyboardEvent<HTMLInputElement>) => {
           // Handle backspace to move focus to the previous input
-          if (event?.key === 'Backspace' && index > 0 && otp && otp[index] === '' && refs[index - 1]?.current) {
-               refs[index - 1]?.current?.focus();
-          }
+          if (event?.key === 'Backspace' && index > 0 && otp && otp[index] === '' && refs[index - 1]?.current)  refs[index - 1]?.current?.focus();
      };
 
-
-     const handleOtpSubmit = async () => {
-          onSubmitOtp(otp?.join(''));
-     };
-
-     const resendOtpFunc = async () => {
-          onResendOTP();
-     };
-
-     const buttonProps: ButtonProps = {
-          label: 'CONTINUE',
-     };
+     const handleOtpSubmit = async () => onSubmitOtp(otp?.join(''));
+     const resendOtpFunc = async () =>  onResendOTP();
 
      return (
           <div className='flex flex-col w-full mt-5'>
@@ -66,10 +52,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({ onSubmitOtp, onResendOTP, la
                     <span className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-teal-400" onClick={resendOtpFunc}>RESEND OTP</span>
                </div>
                <div className='mt-5 mb-5'>
-                    <Button
-                         {...buttonProps}
-                         onClick={handleOtpSubmit}
-                         className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300" />
+                    <Button onClick={handleOtpSubmit} className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300">CONTINUE</Button>
                </div>
           </div>
      );

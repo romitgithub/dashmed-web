@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const OtpTimer: React.FC = () => {
-     
+
      const [timer, setTimer] = useState(60);
 
      useEffect(() => {
@@ -14,15 +14,14 @@ const OtpTimer: React.FC = () => {
                     return prevTimer - 1;
                });
           }, 1000);
-
-          return () => {
-               clearInterval(countdown);
-          };
+          return () => clearInterval(countdown);
      }, []);
 
-     return <span className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-red-500">
-          {`Expires in ${timer}s`}
-     </span>;
+     return (
+          <span className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-red-500">
+               {`Expires in ${timer}s`}
+          </span>
+     );
 };
 
 export default OtpTimer;

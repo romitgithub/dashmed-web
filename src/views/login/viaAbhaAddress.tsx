@@ -2,34 +2,36 @@ import { useState } from 'react';
 import { Checkbox } from '@/atoms/checkbox';
 import { ViewPasswordIcon } from '@/atoms/showPasswordIcon';
 import { HidePasswordIcon } from '@/atoms/hidePasswordIcon';
+import { Button } from '@/atoms/button';
 
-
-interface AbhaAddressInputFieldProps {
-     onAbhaInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-     loginFormData: any;
+interface ViaAbhaAddressProps {
+     onSubmit: (formData: Record<string, any>) => void;
 };
 
 
-const AbhaAddressInputField: React.FC<AbhaAddressInputFieldProps> = ({ onAbhaInputChange, loginFormData }) => {
+export const ViaAbhaAddress: React.FC<ViaAbhaAddressProps> = ({ onSubmit }) => {
 
+     const [abhaAddress, setAbhaAddress] = useState<string>('');
+     const [password, setPassword] = useState<string>('');
      const [showPassword, setShowPassword] = useState<boolean>(false);
 
-     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          if (onAbhaInputChange) onAbhaInputChange(e)
+     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+          event.preventDefault();
+          if (onSubmit) onSubmit({ value: abhaAddress, password });
      };
 
      return (
-          <>
+          <form onSubmit={handleSubmit} className='w-full'>
                <label>Enter your ABHA address</label>
                <div className="rounded border border-gray-300 flex mt-2 items-center space-x-2 mb-5">
                     <input
                          type="email"
                          className="p-2 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
                          placeholder="Example@abdm"
-                         value={loginFormData?.value}
+                         value={abhaAddress}
                          name="value"
                          required
-                         onChange={handleInputChange}
+                         onChange={(e) => setAbhaAddress(e.target.value)}
                     />
                </div>
                <label className="mt-5">Enter your password</label>
@@ -38,9 +40,8 @@ const AbhaAddressInputField: React.FC<AbhaAddressInputFieldProps> = ({ onAbhaInp
                          type={showPassword ? 'text' : 'password'}
                          className="p-2   flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
                          placeholder="Enter ABHA password"
-                         value={loginFormData?.password}
-                         name="abhaPassword"
-                         onChange={handleInputChange}
+                         value={password}
+                         onChange={(e) => setPassword(e.target.value)}
                          required
                     />
                     <span onClick={() => setShowPassword((prev) => !prev)} className="pr-4">
@@ -67,8 +68,11 @@ const AbhaAddressInputField: React.FC<AbhaAddressInputFieldProps> = ({ onAbhaInp
                          </label>
                     </div>
                </div>
-          </>
+               <div className='mt-5'>
+                    <Button className='p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300'>
+                         LOGIN
+                    </Button>
+               </div>
+          </form>
      );
 };
-
-export default AbhaAddressInputField;

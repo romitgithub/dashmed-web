@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from "@/atoms/button";
+import { Button } from "@/atoms/button";
 import { useState } from "react";
 
 
@@ -13,9 +13,7 @@ const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, onContin
 
      const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
 
-     const handleItemClick = (item: string) => {
-          setSelectedAddress(item);
-     };
+     const handleItemClick = (item: string) => setSelectedAddress(item);
 
      const handleSelectAddress = async () => {
           if (onSelectAddress && selectedAddress) onSelectAddress(selectedAddress);
@@ -23,10 +21,6 @@ const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, onContin
 
      const handleContinue = () => {
           if (onContinue) onContinue();
-     };
-
-     const buttonProps: ButtonProps = {
-          label: 'LOGIN',
      };
 
      return (
@@ -50,10 +44,9 @@ const SelectAddress: React.FC<SelectAddressProps> = ({ onSelectAddress, onContin
                </div>
                <div className='mt-5 mb-5 w-full'>
                     <Button
-                         {...buttonProps}
                          className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
                          onClick={handleSelectAddress}
-                    />
+                    >LOGIN</Button>
                </div>
                {label && <div className="flex flex-col justify-center align-middle text-center mt-3">
                     <span className="font-semibold">Or</span>

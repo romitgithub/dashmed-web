@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { FooterSection } from "./footer";
-import { FormControlSection } from "./formControl";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
-import { OtpInput } from "@/components/authCommonComponents/OtpInput";
 import { SelectAddress } from "@/components/authCommonComponents/SelectAddress";
 import { ACCESS_TOKEN } from "@/constants";
-import Header from "./header";
+import { LoginVia } from "./loginVia";
+import Header from "@/components/authCommonComponents/header";
+import { OtpInput } from "@/components/authCommonComponents/OtpInput";
 
 export const LOGIN_TYPES = {
      ABHA_ADD: 'ABHA_ADD',
@@ -105,8 +105,8 @@ export const LoginView = () => {
 
      return (
           <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
-               <Header onBackClick={handleBackButtonClick} title={`Login with ${loginTypeTextMap[loginType]}` || "Unknown"} />
-               {loginState === LOGIN_STATES.DEFAULT_VIEW && <FormControlSection onSubmit={handleSubmit} loginType={loginType} />}
+               <Header title={`Login with ${loginTypeTextMap[loginType]}` || "Unknown"} onBackClick={handleBackButtonClick} showBackButton={true} />
+               {loginState === LOGIN_STATES.DEFAULT_VIEW && <LoginVia onSubmit={handleSubmit} loginType={loginType} />}
                {loginState === LOGIN_STATES.OTP_VIEW && <OtpInput onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} />}
                {loginState === LOGIN_STATES.ADDRESS_VIEW && <SelectAddress onSelectAddress={handleSelectAddress} addresses={addresses} />}
                {loginType === LOGIN_TYPES.MOBILE && LOGIN_STATES.DEFAULT_VIEW === loginState && <FooterSection onToggleLoginType={handleToggleLoginType} />}

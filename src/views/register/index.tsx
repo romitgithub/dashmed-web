@@ -2,16 +2,16 @@
 
 import { useContext, useState } from "react";
 import { REGISTER_STATES, REGISTER_TYPES, RegisterFormDataContext } from "./registerDataProvider";
-import { Header } from "./header";
 import { OptionForRegisterView } from "./registrationOptions";
-import { OtpInput } from "@/components/authCommonComponents/OtpInput";
 import { SelectAddress } from "@/components/authCommonComponents/SelectAddress";
-import { RegisterVia } from "./registerVia";
 import { RegisterDetails } from "./registerDetails";
 import { CreateAbhaAddress } from "./createAbhaAddress";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
 import { ACCESS_TOKEN } from "@/constants";
 import { toast } from "react-toastify";
+import { AuthInputForm } from "@/components/authCommonComponents/authInputForm";
+import Header from "@/components/authCommonComponents/header";
+import { OtpInput } from "@/components/authCommonComponents/OtpInput";
 
 
 // Constants for register type text
@@ -21,6 +21,39 @@ const registerTypeTextMap: Record<string, string> = {
      [REGISTER_TYPES?.ABHA_NUMBER]: "Register with ABHA Number",
      [REGISTER_TYPES?.EMAIL_ID]: "Register with Email-Id",
 };
+
+interface InputConfig {
+     inputLabel: string;
+     inputType: 'text' | 'tel' | 'email';
+     maxLength: number;
+     minLength: number;
+     placeholder: string;
+};
+
+const registerInputConfigs: Record<string, InputConfig> = {
+     [REGISTER_TYPES?.MOBILE_NUMBER]: {
+          inputLabel: 'Enter Mobile Number',
+          inputType: 'tel',
+          maxLength: 10,
+          minLength: 10,
+          placeholder: 'Enter mobile number',
+     },
+     [REGISTER_TYPES?.ABHA_NUMBER]: {
+          inputLabel: 'Enter ABHA Number',
+          inputType: 'tel',
+          maxLength: 14,
+          minLength: 14,
+          placeholder: 'Enter ABHA number',
+     },
+     [REGISTER_TYPES?.EMAIL_ID]: {
+          inputLabel: 'Enter Email',
+          inputType: 'email',
+          maxLength: 50,
+          minLength: 5,
+          placeholder: 'Enter email',
+     },
+};
+
 
 export const RegisterView = () => {
 
@@ -106,7 +139,18 @@ export const RegisterView = () => {
      };
 
      const handleResendOTP = async () => {
-          console.log('NO-ACTION-YET');
+          fetchPostJSONExternal('/phr/api/register/resendOtp', { transactionId, type: registerType })
+               .then((res) => {
+                    console.log({ res });
+                    if (res?.transaction_id) {
+                         setTransactionId(res?.transaction_id);
+                         setRegisterState(REGISTER_STATES?.OTP_VIEW);
+                    };
+               })
+               .catch((err) => {
+                    toast.error("Please try again.");
+                    console.log({ err });
+               });
      };
 
      // save the selected address value and make network request
@@ -137,11 +181,12 @@ export const RegisterView = () => {
 
      return (
           <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
-               <Header onBackClick={handleBackButtonClick} title={`${registerTypeTextMap[registerType]}` || "Unknown"} />
+               {/* <Header onBackClick={handleBackButtonClick} title={`${registerTypeTextMap[registerType]}` || "Unknown"} /> */}
+               <Header title={`${registerTypeTextMap[registerType]}` || "Unknown"} onBackClick={handleBackButtonClick} showBackButton={true} />
                {registerType === REGISTER_TYPES?.DEFAULT_TYPE ? (
                     <OptionForRegisterView />
                ) : (<>
-                    {registerState === REGISTER_STATES?.DEFAULT_VIEW && <RegisterVia onSubmit={handleSubmit} />}
+                    {registerState === REGISTER_STATES?.DEFAULT_VIEW && <AuthInputForm onSubmit={handleSubmit} inputType={registerType} inputConfigs={registerInputConfigs} />}
                     {registerState === REGISTER_STATES?.OTP_VIEW && <OtpInput onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} label={`We have sent you an OTP`} />}
                     {registerState === REGISTER_STATES?.ADDRESS_VIEW && <SelectAddress onSelectAddress={handleSelectAddress} onContinue={handleContinue} addresses={addresses} label={"Still want to create new ABHA address"} />}
                     {registerState === REGISTER_STATES?.USER_DETAILS_FORM_VIEW && <RegisterDetails onSubmit={handleSubmitRegisterDetails} />}
