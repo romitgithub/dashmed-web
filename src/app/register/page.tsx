@@ -11,5 +11,6 @@ const Register = () => {
     </RegisterFormDataProvider>
   );
 };
+// export default Register;
 
 export default withUser<wcProps>(Register);

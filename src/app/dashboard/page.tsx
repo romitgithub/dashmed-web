@@ -1,5 +1,5 @@
 "use client";
 
 import withUser, { wcProps } from "@/hoc/withUser";
-import DashboardView from "@/views/dash";
-export default withUser<wcProps>(DashboardView);
+import ScanView from "@/views/scan";
+export default withUser<wcProps>(ScanView);
