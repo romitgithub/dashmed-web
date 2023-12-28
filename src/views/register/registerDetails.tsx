@@ -64,7 +64,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
 
      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
-          onSubmit(registerDetails);
+          onSubmit({ ...registerDetails, countryCode: "+91" });
      };
 
      return (

@@ -86,7 +86,6 @@ export const RegisterView = () => {
      const handleSubmitRegisterDetails = (data: any) => {
           fetchPostJSONExternal('/phr/api/register/registerDetails', {
                ...data,
-               countryCode: "+91",  // temporary
                transactionId,
                type: registerType
           })

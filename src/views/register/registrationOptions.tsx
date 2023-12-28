@@ -34,7 +34,7 @@ export const OptionForRegisterView = () => {
      return (
           <div className="w-full px-3">
                {options?.map((option, index) => (
-                    <div key={index} className="p-2">
+                    <div key={index} className="p-2 cursor-pointer">
                          <input
                               type="radio"
                               id={`option-${index}`}
