@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '@/atoms/button';
+import { Button } from '@/atoms/button';
 import React, { useState } from 'react';
 
 interface Props {
@@ -15,11 +15,6 @@ export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
           onSubmit({ phrAddress, password });
-     };
-
-     const buttonProps: ButtonProps = {
-          label: 'SUBMIT',
-          type: "submit",
      };
 
      return (
@@ -57,9 +52,7 @@ export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
                </div>
 
                <div className='mt-5'>
-                    <Button
-                         {...buttonProps}
-                         className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300" />
+                    <Button className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300" >SUBMIT</Button>
                </div>
           </form>
      );

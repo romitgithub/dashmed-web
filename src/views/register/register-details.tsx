@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '@/atoms/button';
+import { Button } from '@/atoms/button';
 import { districts, states } from '@/constants';
 import React, { ChangeEvent, useState } from 'react';
 

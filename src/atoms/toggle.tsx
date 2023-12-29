@@ -1,6 +1,6 @@
 import { Switch } from "@headlessui/react";
 import { useState, useEffect } from "react";
-import { classNames } from "utils/styles";
+import { classNames } from "@/utils/styles";
 
 export default function AppToggle({ onChange, isDefaultEnabled }: any) {
   const [enabled, setEnabled] = useState(!!isDefaultEnabled);

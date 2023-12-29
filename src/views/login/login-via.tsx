@@ -1,6 +1,6 @@
 import React from 'react';
-import { AuthInputForm } from '@/components/authInputForm';
-import { ViaAbhaAddress } from './viaAbhaAddress';
+import { AuthInputForm } from '@/components/auth-input-form';
+import { ViaAbhaAddress } from './via-abha-address';
 
 const LOGIN_TYPES = {
      ABHA_ADD: 'ABHA_ADD',

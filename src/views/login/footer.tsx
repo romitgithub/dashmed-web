@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LOGIN_TYPES } from ".";
+import { Button } from "@/atoms/button";
 
 interface FooterSectionProps {
      onToggleLoginType: (loginType: string) => void;
@@ -16,9 +17,9 @@ export const FooterSection: React.FC<FooterSectionProps> = ({ onToggleLoginType 
                     <span className="m-auto text-xl">Or</span>
                     <span className="block text-center mt-3 font-medium text-teal-700">Login via</span>
                     <div className="flex flex-col w-full justify-center align-middle mt-3">
-                         <button onClick={() => handleToggleType(LOGIN_TYPES.ABHA_ADD)} className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 mt-2 rounded-md text-#1b5887 font-medium transition duration-300 cursor-pointer">ABHA Address</button>
-                         <button onClick={() => handleToggleType(LOGIN_TYPES.EMAIL)} className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 mt-2 rounded-md text-#1b5887 font-medium transition duration-300 cursor-pointer">Email ID</button>
-                         <button onClick={() => handleToggleType(LOGIN_TYPES.ABHA_NO)} className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 mt-2 rounded-md text-#1b5887 font-medium transition duration-300 cursor-pointer">ABHA Number</button>
+                         <Button onClick={() => handleToggleType(LOGIN_TYPES.ABHA_ADD)} className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 mt-2 rounded-md text-#1b5887 font-medium transition duration-300 cursor-pointer">ABHA Address</Button>
+                         <Button onClick={() => handleToggleType(LOGIN_TYPES.EMAIL)} className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 mt-2 rounded-md text-#1b5887 font-medium transition duration-300 cursor-pointer">Email ID</Button>
+                         <Button onClick={() => handleToggleType(LOGIN_TYPES.ABHA_NO)} className="border border-#1b5887 text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg w-full py-1 px-1 mt-2 rounded-md text-#1b5887 font-medium transition duration-300 cursor-pointer">ABHA Number</Button>
                     </div>
                </div>
                <div className="mt-5">

@@ -1,8 +1,7 @@
 "use client";
 
-import withUser, { wcProps } from "@/hoc/withUser";
 import { RegisterView } from "@/views/register";
-import { RegisterFormDataProvider } from "@/views/register/registerDataProvider";
+import { RegisterFormDataProvider } from "@/views/register/register-data-provider";
 
 const Register = () => {
   return (

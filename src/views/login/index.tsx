@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { FooterSection } from "./footer";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
-import { SelectAddress } from "@/components/SelectAddress";
+import { SelectAddress } from "@/components/select-address";
 import { ACCESS_TOKEN } from "@/constants";
-import { LoginVia } from "./loginVia";
+import { LoginVia } from "./login-via";
 import Header from "@/components/header";
-import { OtpInput } from "@/components/OtpInput";
+import { OtpInput } from "@/components/otp-input";
 import { useRouter } from "next/navigation";
 
 export const LOGIN_TYPES = {

@@ -1,8 +1,8 @@
 "use client";
 
 import { useContext, useState } from "react";
-import { REGISTER_TYPES, RegisterFormDataContext } from "./registerDataProvider";
-import { Button, ButtonProps } from "@/atoms/button";
+import { REGISTER_TYPES, RegisterFormDataContext } from "./register-data-provider";
+import { Button } from "@/atoms/button";
 
 interface Option {
      name: string;
@@ -27,10 +27,6 @@ export const OptionForRegisterView = () => {
           console.log('Selected Option:', selectedOption);
      };
 
-     const buttonProps: ButtonProps = {
-          label: 'CONTINUE',
-     };
-
      return (
           <div className="w-full px-3">
                {options?.map((option, index) => (
@@ -48,10 +44,9 @@ export const OptionForRegisterView = () => {
                ))}
                <div className='mt-5 mb-5'>
                     <Button
-                         {...buttonProps}
                          className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
                          onClick={handleContinue}
-                    />
+                    >CONTINUE</Button>
                </div>
           </div>
      );

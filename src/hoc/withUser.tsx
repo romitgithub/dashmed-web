@@ -2,13 +2,9 @@ import { ComponentType, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ACCESS_TOKEN } from "@/constants";
 
-export interface wcProps {
-     user?: any;
-}
+const withUser = (WrappedComponent: any) => {
 
-const withUser = <P extends wcProps>(WrappedComponent: ComponentType<P>): React.FC<P> => {
-
-     const ComponentWithUser: React.FC<P> = (props) => {
+     const ComponentWithUser = (props: any) => {
 
           const router = useRouter();
           const pathname = usePathname();

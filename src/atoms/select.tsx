@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/24/solid";
-import { classNames } from "utils/styles";
+import { classNames } from "@/utils/styles";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
 export default function AppSelect({ options, onChange, defaultSelected }: any) {

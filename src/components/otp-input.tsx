@@ -1,4 +1,4 @@
-import OtpTimer from "@/components/otpTimer";
+import OtpTimer from "@/components/otp-timer";
 import { ChangeEvent, useRef, useState } from "react";
 import React, { KeyboardEvent } from 'react';
 import { Button } from '@/atoms/button';
