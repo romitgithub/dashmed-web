@@ -53,14 +53,17 @@ export async function fetchPostJSONExternal<T = any, Args = any>(
                data,
                { ...getAuthHeaders(), "Content-Type": "application/json" }
           );
+          
           if (response.status === 402) {
                throw new Error(PAYMENT_REQUIRED_ERR_MESSAGE);
           }
 
           const resData = await response.json();
+          console.log(resData);  
           return { ...resData, httpStatus: response.status };
           // return await response.json();
      } catch (err: any) {
+          console.log(err);
           throw new Error(err?.message);
      }
 }

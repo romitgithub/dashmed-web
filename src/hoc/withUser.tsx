@@ -3,27 +3,23 @@ import { usePathname, useRouter } from "next/navigation";
 import { ACCESS_TOKEN } from "@/constants";
 
 const withUser = (WrappedComponent: any) => {
+  const ComponentWithUser = (props: any) => {
+    const router = useRouter();
+    const pathname = usePathname();
 
-     const ComponentWithUser = (props: any) => {
+    useEffect(() => {
+      const token = localStorage.getItem(ACCESS_TOKEN);
+      const isLoginPage = pathname === "/login";
+      const isRegisterPage = pathname === "/register";
+      if (!token && !isLoginPage && !isRegisterPage && router)
+        router.replace("/login");
+      if (token && pathname === "/login") router.replace("/scan");
+    }, [pathname, router]);
 
-          const router = useRouter();
-          const pathname = usePathname();
+    return <WrappedComponent {...props} />;
+  };
 
-          useEffect(() => {
-
-               // const token = localStorage.getItem(ACCESS_TOKEN);
-               // const isLoginPage = pathname === "/login";
-               // const isRegisterPage = pathname === "/register";
-               // if (!token && !isLoginPage && !isRegisterPage && router) router.replace("/login");
-               // if (token && pathname === "/login") router.replace("/scan");
-               // // if (!token) router.replace("/login");
-
-          }, [pathname, router]);
-
-          return <WrappedComponent {...props} />;
-     };
-
-     return ComponentWithUser;
+  return ComponentWithUser;
 };
 
 export default withUser;

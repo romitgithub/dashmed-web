@@ -34,7 +34,7 @@ export const OptionForRegisterView = () => {
                          <input
                               type="radio"
                               id={`option-${index}`}
-                              name="options"
+                              
                               value={option.value}
                               checked={selectedOption === option?.value}
                               onChange={() => setSelectedOption(option?.value)}
