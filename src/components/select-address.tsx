@@ -11,20 +11,28 @@ interface SelectAddressProps {
 const SelectAddress: React.FC<SelectAddressProps> = ({
   onSelectAddress,
   onContinue,
-  addresses,
+  addresses = ["ram", "shyam"],
   label,
 }) => {
+
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   const handleItemClick = (item: string) => setSelectedAddress(item);
 
   const handleSubmitAddress = async (e: any) => {
     e.preventDefault();
+    if (!selectedAddress) {
+      setError('Please select a ABHA address');
+      return;
+    } else setError(null);
     if (onSelectAddress && selectedAddress) onSelectAddress(selectedAddress);
   };
 
   const handleContinue = () => {
     if (onContinue) onContinue();
   };
+
 
   return (
     <form onSubmit={handleSubmitAddress} className="w-full">
@@ -33,6 +41,7 @@ const SelectAddress: React.FC<SelectAddressProps> = ({
           Select the ABHA Address through which you wish to login
         </span>
       </div>
+      {error && <div className='text-red-500'>{error}</div>}
       <div className="w-full">
         {addresses?.map((item, index) => (
           <div
@@ -52,10 +61,7 @@ const SelectAddress: React.FC<SelectAddressProps> = ({
         ))}
       </div>
       <div className="mt-5 mb-5 w-full">
-        <Button
-          disabled={!selectedAddress}
-          className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300"
-        >
+        <Button className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300">
           LOGIN
         </Button>
       </div>

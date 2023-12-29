@@ -10,9 +10,9 @@ interface Option {
 };
 
 const options: Option[] = [
-     { name: 'ABHA Number', value: REGISTER_TYPES?.ABHA_NUMBER },
-     { name: 'Mobile Number', value: REGISTER_TYPES?.MOBILE_NUMBER },
-     { name: 'Email Id', value: REGISTER_TYPES?.EMAIL_ID },
+     { name: 'ABHA Number', value: REGISTER_TYPES?.ABHA_NO },
+     { name: 'Mobile Number', value: REGISTER_TYPES?.MOBILE },
+     { name: 'Email Id', value: REGISTER_TYPES?.EMAIL },
 ];
 
 export const OptionForRegisterView = () => {

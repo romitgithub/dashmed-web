@@ -2,9 +2,9 @@ import React, { createContext, useState, ReactNode } from 'react';
 
 export const REGISTER_TYPES = {
      DEFAULT_TYPE: 'DEFAULT_TYPE',
-     ABHA_NUMBER: 'ABHA_NO',
-     MOBILE_NUMBER: 'MOBILE',
-     EMAIL_ID: 'EMAIL',
+     ABHA_NO: 'ABHA_NO',
+     MOBILE: 'MOBILE',
+     EMAIL: 'EMAIL',
 };
 
 export const REGISTER_STATES = {

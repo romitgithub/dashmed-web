@@ -67,7 +67,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({
           <input
             key={index}
             ref={refs[index]}
-            type="text"
+            type="number"
             maxLength={1}
             value={value}
             required

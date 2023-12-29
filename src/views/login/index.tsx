@@ -39,7 +39,7 @@ export const LoginView = () => {
   const [loginState, setLoginState] = useState<string>(LOGIN_STATES.DEFAULT_VIEW);
   const [transactionId, setTransactionId] = useState(null);
   const [addresses, setAddresses] = useState([]);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(null); // store login-via email, abha no.,mobile no. credential value
   const router = useRouter();
 
   // on saving anything among ABHA num, Abha Address, Mobile num, Email-id and making a network request.

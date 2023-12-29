@@ -18,9 +18,9 @@ import { useRouter } from "next/navigation";
 // Constants for register type text
 const registerTypeTextMap: Record<string, string> = {
      [REGISTER_TYPES?.DEFAULT_TYPE]: "I want to create ABHA via",
-     [REGISTER_TYPES?.MOBILE_NUMBER]: "Register with Mobile Number",
-     [REGISTER_TYPES?.ABHA_NUMBER]: "Register with ABHA Number",
-     [REGISTER_TYPES?.EMAIL_ID]: "Register with Email-Id",
+     [REGISTER_TYPES?.MOBILE]: "Register with Mobile Number",
+     [REGISTER_TYPES?.ABHA_NO]: "Register with ABHA Number",
+     [REGISTER_TYPES?.EMAIL]: "Register with Email-Id",
 };
 
 interface InputConfig {
@@ -32,21 +32,21 @@ interface InputConfig {
 };
 
 const registerInputConfigs: Record<string, InputConfig> = {
-     [REGISTER_TYPES?.MOBILE_NUMBER]: {
+     [REGISTER_TYPES?.MOBILE]: {
           inputLabel: 'Enter Mobile Number',
           inputType: 'tel',
           maxLength: 10,
           minLength: 10,
           placeholder: 'Enter mobile number',
      },
-     [REGISTER_TYPES?.ABHA_NUMBER]: {
+     [REGISTER_TYPES?.ABHA_NO]: {
           inputLabel: 'Enter ABHA Number',
           inputType: 'tel',
           maxLength: 14,
           minLength: 14,
           placeholder: 'Enter ABHA number',
      },
-     [REGISTER_TYPES?.EMAIL_ID]: {
+     [REGISTER_TYPES?.EMAIL]: {
           inputLabel: 'Enter Email',
           inputType: 'email',
           maxLength: 50,
@@ -76,7 +76,7 @@ export const RegisterView = () => {
                     if (res?.transaction_id) {
                          setTransactionId(res?.transaction_id);
                          setRegisterState(REGISTER_STATES?.OTP_VIEW);
-                    } else toast.error("Something wend wrong. Please try again.");
+                    } else toast.error(res.error || "Something wend wrong. Please try again.");
                })
                .catch((err) => {
                     toast.error("Registration failed. Please try again.");

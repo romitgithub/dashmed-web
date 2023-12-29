@@ -6,36 +6,51 @@ import { Button } from "@/atoms/button";
 
 interface ViaAbhaAddressProps {
   onSubmit: (formData: Record<string, any>) => void;
-}
+};
 
 export const ViaAbhaAddress: React.FC<ViaAbhaAddressProps> = ({ onSubmit }) => {
+
   const [abhaAddress, setAbhaAddress] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [abhaAddressError, setAbhaAddressError] = useState<string | null>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (onSubmit) onSubmit({ value: abhaAddress, password });
+    if (!validateAbhaAddress(abhaAddress)) {
+      setAbhaAddressError('Please enter a valid ABHA address');
+      return;
+    } else setAbhaAddressError(null);
+    // if (onSubmit) onSubmit({ value: abhaAddress, password });
   };
 
+
+  const validateAbhaAddress = (value: any) => {
+    const abhaAddressRegex = /^[^\s@]+@abdm$/; // Adjust abha address as per requirements
+    if (!abhaAddressRegex.test(value)) return false;
+    else return true;
+  };
+
+
   return (
-    <form onSubmit={handleSubmit} className="w-full">
+    <form className="w-full" onSubmit={handleSubmit}>
       <label>Enter your ABHA address</label>
-      <div className="rounded border border-gray-300 flex mt-2 items-center space-x-2 mb-5">
+      <div className="flex w-full flex-col mt-2 items-center space-x-2 mb-5">
         <input
-          type="email"
-          className="p-2 flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
+          type="text"
+          className="rounded border border-gray-300 p-2 flex-1 w-full"
           placeholder="Example@abdm"
           value={abhaAddress}
           required
           onChange={(e) => setAbhaAddress(e.target.value)}
         />
+        {abhaAddressError && <div className='w-full text-red-500 text-left'>{abhaAddressError}</div>}
       </div>
       <label className="mt-5">Enter your password</label>
       <div className="rounded border border-gray-300 flex items-center space-x-2 mt-2 mb-5">
         <input
           type={showPassword ? "text" : "password"}
-          className="p-2   flex-1 w-full sm:w-auto md:w-1/2 lg:w-2/3 xl:w-1/2"
+          className="p-2   flex-1 w-full"
           placeholder="Enter ABHA password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -68,7 +83,7 @@ export const ViaAbhaAddress: React.FC<ViaAbhaAddressProps> = ({ onSubmit }) => {
         </div>
       </div>
       <div className="mt-5">
-        <Button className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300">
+        <Button className='p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300'>
           LOGIN
         </Button>
       </div>
