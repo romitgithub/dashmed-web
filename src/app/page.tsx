@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   return (
@@ -23,7 +21,6 @@ export default function Home() {
         <span className="text-center text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg">Dont have an ABHA Address?</span>
         <Link href={'/register'} className="cursor-pointer"> <span className="text-teal-700 font-semibold">Register</span></Link>
       </div>
-      <ToastContainer />
     </main>
   );
 };

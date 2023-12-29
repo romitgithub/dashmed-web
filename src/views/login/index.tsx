@@ -9,6 +9,8 @@ import { LoginVia } from "./login-via";
 import Header from "@/components/header";
 import { OtpInput } from "@/components/otp-input";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
 
 export const LOGIN_TYPES = {
   ABHA_ADD: "ABHA_ADD",
@@ -32,12 +34,12 @@ const loginTypeTextMap: Record<string, string> = {
 };
 
 export const LoginView = () => {
+
   const [loginType, setLoginType] = useState<string>(LOGIN_TYPES.MOBILE);
-  const [loginState, setLoginState] = useState<string>(
-    LOGIN_STATES.DEFAULT_VIEW
-  );
+  const [loginState, setLoginState] = useState<string>(LOGIN_STATES.DEFAULT_VIEW);
   const [transactionId, setTransactionId] = useState(null);
   const [addresses, setAddresses] = useState([]);
+  const [value, setValue] = useState(null);
   const router = useRouter();
 
   // on saving anything among ABHA num, Abha Address, Mobile num, Email-id and making a network request.
@@ -51,13 +53,31 @@ export const LoginView = () => {
         if (res?.transactionId) {
           setTransactionId(res?.transactionId);
           setLoginState(LOGIN_STATES.OTP_VIEW);
-        }
+          setValue(data?.value);
+        } else toast.error("Please try again.");
       })
-      .catch((err) => console.log({ err }));
+      .catch((err) => {
+        toast.error("Please try again.");
+        console.log({ err });
+      });
   };
 
   const handleResendOTP = async () => {
-    console.log("NO-ACTION-YET");
+    fetchPostJSONExternal("/phr/api/login/sendOtp", {
+      value,
+      type: loginType,
+    })
+      .then((res) => {
+        console.log({ res });
+        if (res?.transactionId) {
+          setTransactionId(res?.transactionId);
+          setLoginState(LOGIN_STATES.OTP_VIEW);
+        } else toast.error("Please try again.");
+      })
+      .catch((err) => {
+        toast.error("Please try again.");
+        console.log({ err });
+      });
   };
 
   // save the otp value and make network request
@@ -73,9 +93,12 @@ export const LoginView = () => {
           setTransactionId(res?.transactionId);
           setAddresses(res?.mappedPhrAddress);
           setLoginState(LOGIN_STATES.ADDRESS_VIEW);
-        }
+        } else toast.error("Please try again.");
       })
-      .catch((err) => console.log({ err }));
+      .catch((err) => {
+        toast.error("Please try again.");
+        console.log({ err });
+      });
   };
 
   // save the selected address value and make network request
@@ -90,10 +113,12 @@ export const LoginView = () => {
           localStorage.setItem(ACCESS_TOKEN, res?.token);
           console.log({ token: res?.token });
           router.push("/scan");
-        }
+        } else toast.error("Please try again.");
       })
-      .then(() => console.log("navigate"))
-      .catch((err) => console.log({ err }));
+      .catch((err) => {
+        toast.error("Login failed, Please try again.");
+        console.log({ err });
+      });
   };
 
   const handleBackButtonClick = () => {
@@ -115,18 +140,21 @@ export const LoginView = () => {
         onBackClick={handleBackButtonClick}
         showBackButton={loginType !== LOGIN_TYPES.MOBILE}
       />
+
       {loginState === LOGIN_STATES.DEFAULT_VIEW && (
         <LoginVia onSubmit={handleSubmit} loginType={loginType} />
       )}
+
       {loginState === LOGIN_STATES.OTP_VIEW && (
         <OtpInput onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} />
       )}
-      {loginState === LOGIN_STATES.ADDRESS_VIEW && (
-        <SelectAddress
+
+      {loginState === LOGIN_STATES.ADDRESS_VIEW && ( <SelectAddress
           onSelectAddress={handleSelectAddress}
           addresses={addresses}
         />
       )}
+
       {loginType === LOGIN_TYPES.MOBILE &&
         LOGIN_STATES.DEFAULT_VIEW === loginState && (
           <FooterSection onToggleLoginType={handleToggleLoginType} />

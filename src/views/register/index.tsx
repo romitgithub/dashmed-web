@@ -76,7 +76,7 @@ export const RegisterView = () => {
                     if (res?.transaction_id) {
                          setTransactionId(res?.transaction_id);
                          setRegisterState(REGISTER_STATES?.OTP_VIEW);
-                    };
+                    } else toast.error("Something wend wrong. Please try again.");
                })
                .catch((err) => {
                     toast.error("Registration failed. Please try again.");
@@ -96,7 +96,7 @@ export const RegisterView = () => {
                     if (res?.transaction_id) {
                          setTransactionId(res?.transactionId);
                          setRegisterState(REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW);
-                    };
+                    } else toast.error(res?.error || "Please try again.");
                })
                .catch((err) => {
                     toast.error("Registration details invalid. Please try again.");
@@ -115,9 +115,12 @@ export const RegisterView = () => {
                     if (res?.transaction_id) {
                          setTransactionId(res?.transactionId);
                          setRegisterState(REGISTER_STATES?.OTP_VIEW);
-                    };
+                    } else toast.error(res?.error || "Please try again.");
                })
-               .catch((err) => console.log({ err }));
+               .catch((err) => {
+                    toast.error("Details invalid. Please try again.");
+                    console.log({ err });
+               });
      };
 
 
@@ -134,9 +137,12 @@ export const RegisterView = () => {
                          setTransactionId(res?.transactionId);
                          setAddresses(res?.mappedPhrAddress);
                          setRegisterState(REGISTER_STATES?.ADDRESS_VIEW);
-                    };
+                    } else toast.error(res?.error || "Please try again.");
                })
-               .catch((err) => console.log({ err }));
+               .catch((err) => {
+                    toast.error("Something went wrong with OTP.");
+                    console.log({ err });
+               });
      };
 
      const handleResendOTP = async () => {
@@ -146,10 +152,10 @@ export const RegisterView = () => {
                     if (res?.transaction_id) {
                          setTransactionId(res?.transaction_id);
                          setRegisterState(REGISTER_STATES?.OTP_VIEW);
-                    };
+                    } else toast.error(res?.error || "Please try again.");
                })
                .catch((err) => {
-                    toast.error("Please try again.");
+                    toast.error("Something went wrong with OTP.");
                     console.log({ err });
                });
      };
@@ -166,9 +172,12 @@ export const RegisterView = () => {
                          localStorage.setItem(ACCESS_TOKEN, res?.token);
                          console.log({ token: res?.token });
                          router.push('/login');
-                    };
+                    } else toast.error(res?.error || "Please try again.");
                })
-               .catch((err) => console.log({ err }));
+               .catch((err) => {
+                    toast.error("Something went wrong with address.");
+                    console.log({ err });
+               });
      };
 
      const handleContinue = () => setRegisterState(REGISTER_STATES?.USER_DETAILS_FORM_VIEW);
@@ -183,7 +192,6 @@ export const RegisterView = () => {
 
      return (
           <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
-               {/* <Header onBackClick={handleBackButtonClick} title={`${registerTypeTextMap[registerType]}` || "Unknown"} /> */}
                <Header title={`${registerTypeTextMap[registerType]}` || "Unknown"} onBackClick={handleBackButtonClick} showBackButton={registerType !== REGISTER_TYPES.DEFAULT_TYPE} />
                {registerType === REGISTER_TYPES?.DEFAULT_TYPE ? (
                     <OptionForRegisterView />
