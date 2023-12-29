@@ -3,15 +3,15 @@
 import { useContext, useState } from "react";
 import { REGISTER_STATES, REGISTER_TYPES, RegisterFormDataContext } from "./registerDataProvider";
 import { OptionForRegisterView } from "./registrationOptions";
-import { SelectAddress } from "@/components/authCommonComponents/SelectAddress";
+import { SelectAddress } from "@/components/SelectAddress";
 import { RegisterDetails } from "./registerDetails";
 import { CreateAbhaAddress } from "./createAbhaAddress";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
 import { ACCESS_TOKEN } from "@/constants";
 import { toast } from "react-toastify";
-import { AuthInputForm } from "@/components/authCommonComponents/authInputForm";
-import Header from "@/components/authCommonComponents/header";
-import { OtpInput } from "@/components/authCommonComponents/OtpInput";
+import { AuthInputForm } from "@/components/authInputForm";
+import Header from "@/components/header";
+import { OtpInput } from "@/components/OtpInput";
 import { useRouter } from "next/navigation";
 
 

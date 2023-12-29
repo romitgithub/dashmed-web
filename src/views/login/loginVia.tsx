@@ -1,5 +1,5 @@
 import React from 'react';
-import { AuthInputForm } from '@/components/authCommonComponents/authInputForm';
+import { AuthInputForm } from '@/components/authInputForm';
 import { ViaAbhaAddress } from './viaAbhaAddress';
 
 const LOGIN_TYPES = {
