@@ -7,7 +7,7 @@
 .yarn/install-state.gz
 
 # editors settings
-/.vscode
+/.vscode/
 
 # testing
 /coverage
