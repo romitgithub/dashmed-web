@@ -8,12 +8,13 @@ const withUser = (WrappedComponent: any) => {
     const pathname = usePathname();
 
     useEffect(() => {
+
       const token = localStorage.getItem(ACCESS_TOKEN);
       const isLoginPage = pathname === "/login";
       const isRegisterPage = pathname === "/register";
-      if (!token && !isLoginPage && !isRegisterPage && router)
-        router.replace("/login");
+      if (!token && !isLoginPage && !isRegisterPage && router) router.replace("/login");
       if (token && pathname === "/login") router.replace("/scan");
+      
     }, [pathname, router]);
 
     return <WrappedComponent {...props} />;
