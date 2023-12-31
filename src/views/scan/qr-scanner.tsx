@@ -16,10 +16,8 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan }) => {
     setApplicationStatus,
   } = useContext(ScanDataContext);
 
-  const ref = useRef('video');
   const [showModal, setShowModal] = useState(false); // State to control modal visibility
   const [startScan, setStartScan] = useState(false);
-  const [isRecording, setIsRecording] = useState<boolean>(true);
   const [selected, setSelected] = useState("environment");
   const [scanResult, setScanResult] = useState(false);
 
@@ -27,8 +25,7 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan }) => {
   const openModal = () => setShowModal(true);
 
   const toggleScan = () => {
-    if (!startScan) setIsRecording(true); // Reset isScanning when starting the scan
-    setStartScan((prevState) => !prevState); // Toggle camera on/off
+    if (!startScan) setStartScan((prevState) => !prevState); // Toggle camera on/off
   };
 
 
@@ -36,12 +33,15 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan }) => {
     <div className="flex flex-col justify-center mt-10">
       <Button onClick={toggleScan}> {startScan ? "Stop Scan" : "Start Scan"}</Button>
       <>
-        <select onChange={(e) => setSelected(e.target.value)}>
+        <select
+          onChange={(e) => setSelected(e.target.value)}
+          className="p-2"
+        >
           <option value={"environment"}>Back Camera</option>
           <option value={"user"}>Front Camera</option>
         </select>
 
-        {!scanResult &&
+        {!scanResult && startScan &&
           <QrReader
             onResult={(result: any, error: any) => {
               if (!!result) {
@@ -55,7 +55,6 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan }) => {
             }}
             videoStyle={{ width: "200%" }}
             scanDelay={2000}
-            videoId={ref.current.value}
             constraints={{ facingMode: selected }} />
         }
       </>

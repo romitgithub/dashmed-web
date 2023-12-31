@@ -1,5 +1,7 @@
 "use client";
+
 import ScanView from "@/views/scan";
+import withUser from "@/hoc/withUser";
 import { ScanDataProvider } from "@/views/scan/scan-data-provider";
 
 const Scanner = () => {
@@ -10,11 +12,9 @@ const Scanner = () => {
   );
 };
 export default Scanner;
+// export default withUser(Scanner);
 
-// export default withUser<wcProps>(Register);
-
-
-
+// export default withUser(Register);
 // import withUser from "@/hoc/withUser";
 // import ScanView from "@/views/scan";
 // // export default withUser(ScanView);
