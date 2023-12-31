@@ -12,4 +12,4 @@ const Register = () => {
 };
 export default Register;
 
-// export default withUser<wcProps>(Register);
+// export default withUser(Register);
