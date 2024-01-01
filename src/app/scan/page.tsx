@@ -1,21 +1,5 @@
 "use client";
-
-import ScanView from "@/views/scan";
 import withUser from "@/hoc/withUser";
-import { ScanDataProvider } from "@/views/scan/scan-data-provider";
-
-const Scanner = () => {
-  return (
-    <ScanDataProvider>
-      <ScanView />
-    </ScanDataProvider>
-  );
-};
+import { Scanner } from "@/views/scanner";
 export default Scanner;
 // export default withUser(Scanner);
-
-// export default withUser(Register);
-// import withUser from "@/hoc/withUser";
-// import ScanView from "@/views/scan";
-// // export default withUser(ScanView);
-// export default ScanView;

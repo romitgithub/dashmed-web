@@ -65,7 +65,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='abhaNumber'
                                              className="border-0"
-                                             required
+                                             // required
                                         />
                                    </td>
                               </tr>
@@ -79,7 +79,8 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='abhaNumber'
                                              className="border-0"
-                                             required />
+                                             // required
+                                        />
                                    </td>
                               </tr>
                               <tr className="border-b border-gray-200">
@@ -92,7 +93,8 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='abhaAddress'
                                              className="border-0"
-                                             required />
+                                             // required
+                                        />
                                    </td>
                               </tr>
                               <tr className="border-b border-gray-200">
@@ -105,7 +107,8 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='name'
                                              className="border-0"
-                                             required />
+                                             // required
+                                        />
                                    </td>
                               </tr>
                               <tr className="border-b border-gray-200">
@@ -114,7 +117,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                         <select
                                              className="py-2 flex-1 w-full"
                                              value={details?.gender}
-                                             required
+                                             // required
                                              onChange={(e) => handleSelect("gender", e.target.value)}>
                                              <option value="M">Male</option>
                                              <option value="F">Female</option>
@@ -131,7 +134,8 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='dob'
                                              className="border-0"
-                                             required />
+                                             // required
+                                        />
                                    </td>
                               </tr>
                               <tr className="border-b border-gray-200">
@@ -144,7 +148,8 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='mobile'
                                              className="border-0"
-                                             required />
+                                             // required
+                                        />
                                    </td>
                               </tr>
                               <tr className="border-b border-gray-200">
@@ -157,7 +162,8 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='address'
                                              className="border-0"
-                                             required />
+                                             // required
+                                        />
                                    </td>
                               </tr>
                          </tbody>
