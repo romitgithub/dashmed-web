@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Header from "@/components/header";
 import { ScanToShareDetails } from "./scan-to-share-details";
 import TokenModal from "./token-card-pop-over";
-import { Button } from "@/atoms/button";
 import { useRouter } from "next/navigation";
 
 export const SCAN_FLOW_TYPES = {

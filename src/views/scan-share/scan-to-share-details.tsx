@@ -1,5 +1,7 @@
 import { Button } from "@/atoms/button";
 import AppInput from "@/atoms/input";
+import AppSelect from "@/atoms/select";
+import { gender } from "@/constants";
 import { ChangeEvent, useState } from "react";
 
 interface Details {
@@ -19,6 +21,7 @@ interface Props {
 };
 
 export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, onSubmit }) => {
+
      const [details, setDetails] = useState<Details>({});
 
      const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -31,17 +34,16 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
 
      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
-          console.log({ details });
-          if (onSubmit) onSubmit(details);
+          const data = {
+               ...details,
+               gender: details?.gender?.value || null,
+          };
+          console.log({ data });
+          // if (onSubmit) onSubmit(data);
      };
 
      const handleBack = () => console.log("back");
-     const handleSelect = (field: keyof Details, value: string) => {
-          setDetails((prevData) => ({
-               ...prevData,
-               [field]: value,
-          }));
-     };
+     const handleSelectGender = (selectedOption: any) => setDetails({ ...details, gender: selectedOption });
 
      return (
           <form onSubmit={handleSubmit} className="flex flex-col w-full">
@@ -114,14 +116,21 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                               <tr className="border-b border-gray-200">
                                    <td className="text-gray-500">Gender</td>
                                    <td>
-                                        <select
+                                        <AppSelect
+                                             options={gender}
+                                             onChange={handleSelectGender}
+                                             placeholder={"Gender"}
+                                             className="border-0 py-1 flex-1 w-full"
+                                             defaultSelected={details?.gender}
+                                        />
+                                        {/* <select
                                              className="py-2 flex-1 w-full"
                                              value={details?.gender}
                                              // required
                                              onChange={(e) => handleSelect("gender", e.target.value)}>
                                              <option value="M">Male</option>
                                              <option value="F">Female</option>
-                                        </select>
+                                        </select> */}
                                    </td>
                               </tr>
                               <tr className="border-b border-gray-200">
