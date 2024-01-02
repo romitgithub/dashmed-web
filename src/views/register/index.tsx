@@ -4,7 +4,6 @@ import { useContext, useState } from "react";
 import { REGISTER_STATES, REGISTER_TYPES, RegisterFormDataContext } from "./register-data-provider";
 import { OptionForRegisterView } from "./registration-options";
 import { SelectAddress } from "@/components/select-address";
-import { RegisterDetails } from "./register-details";
 import { CreateAbhaAddress } from "./create-abha-ddress";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
 import { ACCESS_TOKEN } from "@/constants";
@@ -13,6 +12,7 @@ import { AuthInputForm } from "@/components/auth-input-form";
 import Header from "@/components/header";
 import { OtpInput } from "@/components/otp-input";
 import { useRouter } from "next/navigation";
+import { RegisterDetails } from "./register-details";
 
 
 // Constants for register type text
@@ -149,10 +149,7 @@ export const RegisterView = () => {
           fetchPostJSONExternal('/phr/api/register/resendOtp', { transactionId, type: registerType })
                .then((res) => {
                     console.log({ res });
-                    if (res?.transaction_id) {
-                         setTransactionId(res?.transaction_id);
-                         setRegisterState(REGISTER_STATES?.OTP_VIEW);
-                    } else toast.error(res?.error || "Please try again.");
+                    if (!res?.success) toast.error(res?.error || "Please try again.");
                })
                .catch((err) => {
                     toast.error("Something went wrong with OTP.");
