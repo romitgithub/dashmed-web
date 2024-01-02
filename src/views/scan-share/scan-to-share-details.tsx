@@ -10,13 +10,13 @@ interface Details {
      dob?: string;
      mobile?: string;
      address?: string;
-}
+};
 
 interface Props {
      headingText: string;
      footerText: string;
      onSubmit: (details: Details) => void;
-}
+};
 
 export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, onSubmit }) => {
      const [details, setDetails] = useState<Details>({});
@@ -65,7 +65,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='abhaNumber'
                                              className="border-0"
-                                             // required
+                                        // required
                                         />
                                    </td>
                               </tr>
@@ -79,7 +79,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='abhaNumber'
                                              className="border-0"
-                                             // required
+                                        // required
                                         />
                                    </td>
                               </tr>
@@ -93,7 +93,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='abhaAddress'
                                              className="border-0"
-                                             // required
+                                        // required
                                         />
                                    </td>
                               </tr>
@@ -107,7 +107,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='name'
                                              className="border-0"
-                                             // required
+                                        // required
                                         />
                                    </td>
                               </tr>
@@ -134,7 +134,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='dob'
                                              className="border-0"
-                                             // required
+                                        // required
                                         />
                                    </td>
                               </tr>
@@ -148,7 +148,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='mobile'
                                              className="border-0"
-                                             // required
+                                        // required
                                         />
                                    </td>
                               </tr>
@@ -162,7 +162,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                              onChange={handleChange}
                                              name='address'
                                              className="border-0"
-                                             // required
+                                        // required
                                         />
                                    </td>
                               </tr>

@@ -5,6 +5,7 @@ import { classNames } from "@/utils/styles";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
 export default function AppSelect({ options, onChange, defaultSelected }: any) {
+
   const [selected, setSelected] = useState(defaultSelected ?? options[0]);
 
   useEffect(() => {
@@ -20,20 +21,14 @@ export default function AppSelect({ options, onChange, defaultSelected }: any) {
     <Listbox value={selected} onChange={handleChange}>
       {({ open }) => (
         <>
-          <div className="cursor-pointer relative w-40">
+          <div className="cursor-pointer relative w-full">
             <Listbox.Button className="relative w-full cursor-pointer rounded-md border border-gray-300 bg-white py-2.5 pl-3 pr-10 text-left shadow-sm focus:border-accent-focus focus:outline-none focus:ring-1 focus:ring-accent-focus sm:text-sm">
               <span className="block truncate">{selected.label}</span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 {open ? (
-                  <ChevronUpIcon
-                    className="h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
+                  <ChevronUpIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 ) : (
-                  <ChevronDownIcon
-                    className="h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
+                  <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 )}
               </span>
             </Listbox.Button>
@@ -49,32 +44,17 @@ export default function AppSelect({ options, onChange, defaultSelected }: any) {
                 {options.map((option: any) => (
                   <Listbox.Option
                     key={option.value}
-                    className={({ active }) =>
-                      classNames(
-                        active ? "text-blue-600 bg-accent" : "text-gray-900",
-                        "relative cursor-pointer select-none py-2 pl-3 pr-9"
-                      )
-                    }
+                    className={({ active }) => classNames(active ? "text-blue-600 bg-accent" : "text-gray-900", "relative cursor-pointer select-none py-2 pl-3 pr-9")}
                     value={option}
                   >
                     {({ selected, active }) => (
                       <>
-                        <span
-                          className={classNames(
-                            selected ? "font-semibold" : "font-normal",
-                            "block"
-                          )}
-                        >
+                        <span className={classNames(selected ? "font-semibold" : "font-normal", "block")}>
                           {option.label}
                         </span>
 
                         {selected ? (
-                          <span
-                            className={classNames(
-                              active ? "text-blue-600" : "text-accent",
-                              "absolute inset-y-0 right-0 flex items-center pr-4"
-                            )}
-                          >
+                          <span className={classNames(active ? "text-blue-600" : "text-accent", "absolute inset-y-0 right-0 flex items-center pr-4")}>
                             <CheckIcon className="h-5 w-5" aria-hidden="true" />
                           </span>
                         ) : null}

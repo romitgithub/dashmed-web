@@ -3,43 +3,13 @@ export const ACCESS_TOKEN = "ACCESS_TOKEN";
 export const PLAN_SELECTED = "PLAN_SELECTED";
 export const IMAGES_POST_DATA = "IMAGES_POST_DATA";
 export const PAYMENT_REQUIRED_ERR_MESSAGE = "payment_required";
+import { State } from "country-state-city";
 
-export const states = [
-     { code: 'AP', name: 'Andhra Pradesh' },
-     { code: 'AR', name: 'Arunachal Pradesh' },
-     { code: 'AS', name: 'Assam' },
-     { code: 'BR', name: 'Bihar' },
-     { code: 'CT', name: 'Chhattisgarh' },
-     { code: 'GA', name: 'Goa' },
-     { code: 'GJ', name: 'Gujarat' },
-     { code: 'HR', name: 'Haryana' },
-     { code: 'HP', name: 'Himachal Pradesh' },
-     { code: 'JH', name: 'Jharkhand' },
-     { code: 'KA', name: 'Karnataka' },
-     { code: 'KL', name: 'Kerala' },
-     { code: 'MP', name: 'Madhya Pradesh' },
-     { code: 'MH', name: 'Maharashtra' },
-     { code: 'MN', name: 'Manipur' },
-     { code: 'ML', name: 'Meghalaya' },
-     { code: 'MZ', name: 'Mizoram' },
-     { code: 'NL', name: 'Nagaland' },
-     { code: 'OR', name: 'Odisha' },
-     { code: 'PB', name: 'Punjab' },
-     { code: 'RJ', name: 'Rajasthan' },
-     { code: 'SK', name: 'Sikkim' },
-     { code: 'TN', name: 'Tamil Nadu' },
-     { code: 'TG', name: 'Telangana' },
-     { code: 'TR', name: 'Tripura' },
-     { code: 'UP', name: 'Uttar Pradesh' },
-     { code: 'UT', name: 'Uttarakhand' },
-     { code: 'WB', name: 'West Bengal' },
-     { code: 'AN', name: 'Andaman and Nicobar Islands' },
-     { code: 'CH', name: 'Chandigarh' },
-     { code: 'DH', name: 'Dadra and Nagar Haveli and Daman and Diu' },
-     { code: 'LD', name: 'Lakshadweep' },
-     { code: 'DL', name: 'Delhi' },
-     { code: 'PY', name: 'Puducherry' },
-];
+// all indian states
+const allSIndianStates = State.getStatesOfCountry("IN");
+export const states = allSIndianStates.map((el) => {
+     return { "value": el.isoCode, "label": el.name };
+});
 
 
 export const districts = [
@@ -94,4 +64,74 @@ export const districts = [
      { code: 'UJ', name: 'Ujjain' },
      { code: 'UM', name: 'Umaria' },
      { code: 'VD', name: 'Vidisha' },
+];
+
+interface YearObject {
+     value: number;
+     label: number;
+};
+
+const years: YearObject[] = [];
+const currentYear: number = new Date().getFullYear();
+const startYear: number = 1900;
+
+for (let year = startYear; year <= currentYear; year++) years.push({ value: year, label: year });
+export { years };
+export type { YearObject };
+
+
+export const days = [
+     { value: 1, label: 1 },
+     { value: 2, label: 2 },
+     { value: 3, label: 3 },
+     { value: 4, label: 4 },
+     { value: 5, label: 5 },
+     { value: 6, label: 6 },
+     { value: 7, label: 7 },
+     { value: 8, label: 8 },
+     { value: 9, label: 9 },
+     { value: 10, label: 10 },
+     { value: 11, label: 11 },
+     { value: 12, label: 12 },
+     { value: 13, label: 13 },
+     { value: 14, label: 14 },
+     { value: 15, label: 15 },
+     { value: 16, label: 16 },
+     { value: 17, label: 17 },
+     { value: 18, label: 18 },
+     { value: 19, label: 19 },
+     { value: 20, label: 20 },
+     { value: 21, label: 21 },
+     { value: 22, label: 22 },
+     { value: 23, label: 23 },
+     { value: 24, label: 24 },
+     { value: 25, label: 25 },
+     { value: 26, label: 26 },
+     { value: 27, label: 27 },
+     { value: 28, label: 28 },
+     { value: 29, label: 29 },
+     { value: 30, label: 30 },
+     { value: 31, label: 31 }
+];
+
+
+export const months = [
+     { value: 1, label: 1 },
+     { value: 2, label: 2 },
+     { value: 3, label: 3 },
+     { value: 4, label: 4 },
+     { value: 5, label: 5 },
+     { value: 6, label: 6 },
+     { value: 7, label: 7 },
+     { value: 8, label: 8 },
+     { value: 9, label: 9 },
+     { value: 10, label: 10 },
+     { value: 11, label: 11 },
+     { value: 12, label: 12 }
+];
+
+
+export const gender = [
+     { value: "M", label: "Male" },
+     { value: "F", label: "Female" },
 ];

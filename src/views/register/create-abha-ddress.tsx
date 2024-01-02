@@ -1,4 +1,5 @@
 import { Button } from '@/atoms/button';
+import AppInput from '@/atoms/input';
 import React, { useState } from 'react';
 
 interface Props {
@@ -21,32 +22,32 @@ export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
           <form onSubmit={handleSubmit} className='w-full'>
                <div className='w-full flex flex-col'>
                     <label>Create New ABHA Address</label>
-                    <input
+                    <AppInput
                          className="p-2 rounded border border-gray-300 flex-1 w-full mt-2"
                          type="text"
                          name={"phrAddress"}
                          value={phrAddress || ''}
-                         onChange={(e) => setPhrAddress(e.target.value)}
+                         onChange={(e: any) => setPhrAddress(e.target.value)}
                          placeholder="Example@abdm"
                     />
                </div>
 
                <div className='w-full flex flex-col mt-10'>
                     <label>Create Your Password</label>
-                    <input
+                    <AppInput
                          className="p-2 rounded border border-gray-300 flex-1 w-full mt-2"
                          type="password"
                          name={"password"}
                          value={password || ''}
-                         onChange={(e) => setPassword(e.target.value)}
+                         onChange={(e: any) => setPassword(e.target.value)}
                          placeholder="Password"
                     />
-                    <input
+                    <AppInput
                          className="p-2 rounded border border-gray-300 flex-1 w-full mt-3"
                          type="password"
                          name={"confirmPassword"}
                          value={confirmPassword || ''}
-                         onChange={(e) => setConfirmPassword(e.target.value)}
+                         onChange={(e: any) => setConfirmPassword(e.target.value)}
                          placeholder="Confirm password"
                     />
                </div>
