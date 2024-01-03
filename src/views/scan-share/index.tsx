@@ -53,6 +53,14 @@ const ScanView = () => {
           setScannedData(parsedData);
      }, [setScannedData]);
 
+     useEffect(() => {
+          const isDataScanned = window.localStorage.getItem("isDataScanned");
+          if (isDataScanned === "true") {
+               window.localStorage.setItem("isDataScanned", "false");
+               window.location.reload();
+          }
+     }, []);
+
      console.log({ scannedData });
 
      return (
