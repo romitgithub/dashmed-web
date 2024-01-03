@@ -3,6 +3,8 @@ import Header from "@/components/header";
 import { ScanToShareDetails } from "./scan-to-share-details";
 import TokenModal from "./token-card-pop-over";
 import { useRouter } from "next/navigation";
+import { fetchPostJSONExternal } from "@/utils/apiHelpers";
+import { toast } from "react-toastify";
 
 export const SCAN_FLOW_TYPES = {
      SHARE_DETAILS: "SHARE_DETAILS",
@@ -18,20 +20,37 @@ const ScanView = () => {
      const router = useRouter();
      const [scanType, setScanType] = useState<string>(SCAN_FLOW_TYPES.SHARE_DETAILS);
      const [scannedData, setScannedData] = useState(null);
+     const [tokenNum, setTokenNum] = useState<number | null>(null);
 
-     const handleSubmitDetails = (data: any) => {
+
+     const handleSubmit = (data: any) => {
           console.log({ data });
-          setScanType(SCAN_FLOW_TYPES.TOKEN);
+          fetchPostJSONExternal('/phr/api/scan/shareProfile', {
+               value: data?.mobile,
+               type: "MOBILE",
+          })
+               .then((res) => {
+                    console.log({ res });
+                    if (res?.success) setTokenNum(56);
+               })
+               .catch((err) => {
+                    toast.error("Something went wrong.");
+                    console.log({ err });
+               });
      };
+
 
      const handleBackButtonClick = useCallback(() => {
           if (scanType === SCAN_FLOW_TYPES.TOKEN) setScanType(SCAN_FLOW_TYPES.SHARE_DETAILS);
           else if (scanType === SCAN_FLOW_TYPES?.SHARE_DETAILS) router.push("/scan");
      }, [scanType, router]);
 
+
      useEffect(() => {
           const data = JSON.parse(window.localStorage.getItem("scannedData") || "null");
-          setScannedData(data);
+          const parsedData = JSON.parse(data?.text);
+          console.log({ data });
+          setScannedData(parsedData);
      }, [setScannedData]);
 
      console.log({ scannedData });
@@ -39,7 +58,14 @@ const ScanView = () => {
      return (
           <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
                <Header title={`Scan to share` || "Unknown"} onBackClick={handleBackButtonClick} showBackButton={true} />
-               {SCAN_FLOW_TYPES.SHARE_DETAILS === scanType && <ScanToShareDetails headingText={headingText} footerText={footerText} onSubmit={handleSubmitDetails} />}
+               {SCAN_FLOW_TYPES.SHARE_DETAILS === scanType &&
+                    <ScanToShareDetails
+                         data={scannedData}
+                         tokenNum={tokenNum}
+                         headingText={headingText}
+                         footerText={footerText}
+                         onSubmit={handleSubmit}
+                    />}
                {scanType === SCAN_FLOW_TYPES.TOKEN && <TokenModal />}
           </div>
      );

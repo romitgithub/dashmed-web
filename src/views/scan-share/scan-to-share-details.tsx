@@ -1,38 +1,45 @@
 import { Button } from "@/atoms/button";
 import AppInput from "@/atoms/input";
-import AppSelect from "@/atoms/select";
-import { gender } from "@/constants";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 interface Details {
-     abhaNumber?: string;
-     abhaAddress?: string;
-     name?: string;
-     gender?: { value: any; label: any };
-     dob?: string;
-     mobile?: string;
      address?: string;
+     "dist name"?: string;
+     distlgd?: string;
+     dob?: string;
+     gender: string;
+     hidn?: string;
+     mobile?: string;
+     name?: string;
+     phr?: string;
+     "state name"?: string;
+     statelgd?: string;
 };
 
 interface Props {
+     data: any;
+     tokenNum: number | null;
      headingText: string;
      footerText: string;
      onSubmit: (details: Details) => void;
 };
 
-const initialDetails = {
-     abhaNumber: "",
-     abhaAddress: "",
-     name: "",
-     gender: { value: "", label: "Select gender" },
-     dob: "",
-     mobile: "",
-     address: "",
-};
 
-export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, onSubmit }) => {
+export const ScanToShareDetails: React.FC<Props> = ({ data, tokenNum, headingText, footerText, onSubmit }) => {
 
-     const [details, setDetails] = useState<Details>(initialDetails);
+     const [details, setDetails] = useState<Details>({
+          address: "",
+          "dist name": "",
+          distlgd: "",
+          dob: "",
+          gender: "",
+          hidn: "",
+          mobile: "",
+          name: "",
+          phr: "",
+          "state name": "",
+          statelgd: "",
+     });
 
      const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
           const { name, value } = e.target;
@@ -44,16 +51,29 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
 
      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
-          const data = {
-               ...details,
-               gender: details?.gender?.value || null,
-          };
-          console.log({ data });
-          // if (onSubmit) onSubmit(data);
+          console.log({ details });
+          if (onSubmit) onSubmit(details);
      };
 
      const handleBack = () => console.log("back");
      const handleSelectGender = (selectedOption: any) => setDetails({ ...details, gender: selectedOption });
+
+     useEffect(() => {
+          setDetails((prevDetails) => ({
+               ...prevDetails,
+               address: data?.address || '',
+               "dist name": data?.["dist name"] || '',
+               distlgd: data?.distlgd || '',
+               dob: data?.dob || '',
+               gender: data?.gender || '',
+               hidn: data?.hidn || '',
+               mobile: data?.mobile || '',
+               name: data?.name || '',
+               phr: data?.phr || '',
+               "state name": data?.["state name"] || '',
+               statelgd: data?.statelgd || '',
+          }));
+     }, [data]);
 
      return (
           <form onSubmit={handleSubmit} className="flex flex-col w-full">
@@ -62,6 +82,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                </span>
                <span className="w-full ml-0 font-semibold sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4">
                     {headingText}
+                    {tokenNum && ` your Token Number is ${tokenNum}`}
                </span>
                <div className="w-full mt-5 mb-10">
                     <span className="w-full font-medium">Your details</span>
@@ -72,22 +93,8 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                    <td>
                                         <AppInput
                                              placeholder="XX-XXXX-XXXX-XXXX"
-                                             type="number"
-                                             value={details?.abhaNumber}
-                                             onChange={handleChange}
-                                             name='abhaNumber'
-                                             className="border-0"
-                                        // required
-                                        />
-                                   </td>
-                              </tr>
-                              <tr className="border-b border-gray-200">
-                                   <td className="text-gray-500">ABHA Number</td>
-                                   <td>
-                                        <AppInput
-                                             placeholder="XX-XXXX-XXXX-XXXX"
-                                             type="number"
-                                             value={details?.abhaNumber}
+                                             type="text"
+                                             value={details?.hidn}
                                              onChange={handleChange}
                                              name='abhaNumber'
                                              className="border-0"
@@ -101,7 +108,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                         <AppInput
                                              placeholder="Example123@abdm"
                                              type="text"
-                                             value={details?.abhaAddress}
+                                             value={details?.phr}
                                              onChange={handleChange}
                                              name='abhaAddress'
                                              className="border-0"
@@ -126,21 +133,15 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                               <tr className="border-b border-gray-200">
                                    <td className="text-gray-500">Gender</td>
                                    <td>
-                                        <AppSelect
-                                             options={gender}
-                                             onChange={handleSelectGender}
-                                             placeholder={"Gender"}
-                                             className="border-0 py-1 flex-1 w-full"
-                                             defaultSelected={details?.gender}
-                                        />
-                                        {/* <select
+                                        <select
                                              className="py-2 flex-1 w-full"
                                              value={details?.gender}
                                              // required
-                                             onChange={(e) => handleSelect("gender", e.target.value)}>
+                                             onChange={(e) => handleSelectGender(e.target.value)}
+                                        >
                                              <option value="M">Male</option>
                                              <option value="F">Female</option>
-                                        </select> */}
+                                        </select>
                                    </td>
                               </tr>
                               <tr className="border-b border-gray-200">
@@ -148,7 +149,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, o
                                    <td>
                                         <AppInput
                                              placeholder="DOB"
-                                             type="date"
+                                             type="text"
                                              value={details?.dob}
                                              onChange={handleChange}
                                              name='dob'

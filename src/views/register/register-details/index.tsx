@@ -139,6 +139,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                          options={getDistrictsByStateName(registerDetails?.stateName?.label)}
                          onChange={handleSelectDistrict}
                          defaultSelected={registerDetails?.districtName}
+                         className="p-2 rounded border border-gray-300 flex-1 w-full"
                     />
                     {districtError && <span className="text-red-500">{districtError}</span>}
                </div>

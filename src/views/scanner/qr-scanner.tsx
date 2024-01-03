@@ -12,7 +12,7 @@ export const QRScanner: React.FC<QRReaderProps> = ({ onScan }) => {
                onResult={(result: any, error: any) => {
                     if (!!result) {
                          onScan(result);
-                         ReactDOM.unmountComponentAtNode(QrReader);
+                         // ReactDOM.unmountComponentAtNode(QrReader);
                     }
                     if (!!error) console.log(error);
                }}
