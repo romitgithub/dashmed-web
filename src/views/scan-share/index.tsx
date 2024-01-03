@@ -5,6 +5,7 @@ import TokenModal from "./token-card-pop-over";
 import { useRouter } from "next/navigation";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
 import { toast } from "react-toastify";
+import { IS_DATA_SCANNED } from "@/constants";
 
 export const SCAN_FLOW_TYPES = {
      SHARE_DETAILS: "SHARE_DETAILS",
@@ -57,7 +58,7 @@ const ScanView = () => {
 
 
      useEffect(() => {
-          const isDataScanned = window.localStorage.getItem("isDataScanned");
+          const isDataScanned = window.localStorage.getItem(IS_DATA_SCANNED);
           if (isDataScanned === "true") {
                window.localStorage.setItem("isDataScanned", "false");
                window.location.reload();

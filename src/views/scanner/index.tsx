@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/header";
 import { QRScanner } from "./qr-scanner";
+import { IS_DATA_SCANNED } from "@/constants";
 
 export const Scanner: React.FC = React.memo(() => {
 
@@ -11,7 +12,7 @@ export const Scanner: React.FC = React.memo(() => {
 
      const handleScan = useCallback((data: any) => {
           window.localStorage.setItem("scannedData", JSON.stringify(data));
-          window.localStorage.setItem("isDataScanned", "true");
+          window.localStorage.setItem(IS_DATA_SCANNED, "true");
           setShouldScan(false);
           setIsVisible(false);
           router.push('/scan-share');
