@@ -21,7 +21,9 @@ const ScanView = () => {
      const [scanType, setScanType] = useState<string>(SCAN_FLOW_TYPES.SHARE_DETAILS);
      const [scannedData, setScannedData] = useState(null);
      const [tokenNum, setTokenNum] = useState<number | null>(null);
-
+     const [showToken, setShowToken] = useState(false);
+     const handleOpenCloseModal = () => setShowToken(prev => !prev);
+     
 
      const handleSubmit = (data: any) => {
           console.log({ data });
@@ -53,6 +55,7 @@ const ScanView = () => {
           setScannedData(parsedData);
      }, [setScannedData]);
 
+
      useEffect(() => {
           const isDataScanned = window.localStorage.getItem("isDataScanned");
           if (isDataScanned === "true") {
@@ -73,8 +76,10 @@ const ScanView = () => {
                          headingText={headingText}
                          footerText={footerText}
                          onSubmit={handleSubmit}
+                         onOkay={handleOpenCloseModal}
+                         onCancel={handleBackButtonClick}
                     />}
-               {scanType === SCAN_FLOW_TYPES.TOKEN && <TokenModal />}
+               <TokenModal isModalOpen={showToken} onCloseModal={handleOpenCloseModal} />
           </div>
      );
 };

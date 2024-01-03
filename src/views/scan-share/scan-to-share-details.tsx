@@ -22,10 +22,12 @@ interface Props {
      headingText: string;
      footerText: string;
      onSubmit: (details: Details) => void;
+     onOkay: () => void;
+     onCancel: () => void;
 };
 
 
-export const ScanToShareDetails: React.FC<Props> = ({ data, tokenNum, headingText, footerText, onSubmit }) => {
+export const ScanToShareDetails: React.FC<Props> = ({ data, tokenNum, headingText, footerText, onSubmit, onOkay, onCancel }) => {
 
      const [details, setDetails] = useState<Details>({
           address: "",
@@ -41,6 +43,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ data, tokenNum, headingTex
           statelgd: "",
      });
 
+
      const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
           const { name, value } = e.target;
           setDetails({
@@ -49,14 +52,16 @@ export const ScanToShareDetails: React.FC<Props> = ({ data, tokenNum, headingTex
           });
      };
 
+
      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
           console.log({ details });
           if (onSubmit) onSubmit(details);
      };
 
-     const handleBack = () => console.log("back");
+
      const handleSelectGender = (selectedOption: any) => setDetails({ ...details, gender: selectedOption });
+
 
      useEffect(() => {
           setDetails((prevDetails) => ({
@@ -75,6 +80,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ data, tokenNum, headingTex
           }));
      }, [data]);
 
+
      return (
           <form onSubmit={handleSubmit} className="flex flex-col w-full">
                <span className="w-full text-left font-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4">
@@ -83,6 +89,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ data, tokenNum, headingTex
                <span className="w-full ml-0 font-semibold sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4">
                     {headingText}
                     {tokenNum && ` your Token Number is ${tokenNum}`}
+                    {tokenNum && <Button className="p-1 px-3 ml-3 bg-blue-500 text-white rounded-md font-normal hover:bg-blue-700 transition duration-300" onClick={() => onOkay()}>OK</Button>}
                </span>
                <div className="w-full mt-5 mb-10">
                     <span className="w-full font-medium">Your details</span>
@@ -193,7 +200,7 @@ export const ScanToShareDetails: React.FC<Props> = ({ data, tokenNum, headingTex
                     {footerText}
                </span>
                <div className="flex justify-between align-middle mt-3 mb-5">
-                    <Button onClick={handleBack} className="p-2 bg-blue-500 text-white rounded-sm hover:bg-blue-700 transition duration-300">CANCEL</Button>
+                    <Button onClick={() => onCancel()} className="p-2 bg-blue-500 text-white rounded-sm hover:bg-blue-700 transition duration-300">CANCEL</Button>
                     <Button className="p-2 bg-blue-500 text-white rounded-sm hover:bg-blue-700 transition duration-300">SHARE</Button>
                </div>
           </form>

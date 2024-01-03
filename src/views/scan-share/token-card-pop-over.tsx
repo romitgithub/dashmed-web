@@ -1,21 +1,17 @@
 import { Button } from '@/atoms/button';
-import React, { useState } from 'react';
+import React from 'react';
 
 interface ModalProps {
-     onOpenModal: boolean;
-     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+     isModalOpen: boolean;
+     onCloseModal: () => void;
 };
 
-const TokenModal: React.FC = () => {
-
-     const [showToken, setShowToken] = useState(false);
-     const closeModal = () => setShowToken(false);
-     const handleOpenModal = () => setShowToken(true);
+const TokenModal: React.FC<ModalProps> = ({ isModalOpen, onCloseModal }) => {
 
      return (
           <>
-               <Button className="p-2 bg-blue-500 text-white rounded-sm hover:bg-blue-700 transition duration-300" onClick={handleOpenModal}>Show Token</Button>
-               {showToken ? (
+               {/* <Button className="p-2 bg-blue-500 text-white rounded-sm hover:bg-blue-700 transition duration-300" onClick={handleOpenModal}>Show Token</Button> */}
+               {isModalOpen ? (
                     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
                          <div className="fixed inset-0 bg-black opacity-50"></div>
                          <div className="relative z-50 w-11/12 small:w-7/12 sm:w-7/12 md:w-10/12  md:max-w-md mx-auto my-12 border border-gray-300 shadow-lg rounded-xl bg-white py-5">
@@ -28,7 +24,7 @@ const TokenModal: React.FC = () => {
                                    </p>
                               </div>
                               <div className="flex justify-center p-4 rounded-b">
-                                   <Button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-10 rounded focus:outline-none" onClick={closeModal}>OK</Button>
+                                   <Button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-10 rounded focus:outline-none" onClick={() => onCloseModal()}>OK</Button>
                               </div>
                          </div>
                     </div>
