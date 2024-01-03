@@ -2,7 +2,7 @@ import { Button } from "@/atoms/button";
 import AppInput from "@/atoms/input";
 import AppSelect from "@/atoms/select";
 import { gender, statesDistrict } from "@/constants";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useCallback, useState } from "react";
 import DateOfBirthInput from "./date-of-birth";
 import FullNameInput from "./full-name-input";
 
@@ -60,6 +60,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                [name]: value,
           }));
      };
+     
 
      function getDistrictsByStateName(stateName: string) {
           const state = statesDistrict.find(state => state.label === stateName);
@@ -68,13 +69,14 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
      };
 
 
-     const handleSelectDay = (selectedOption: any) => setRegisterDetails({ ...registerDetails, dayOfBirth: selectedOption });
-     const handleSelectMonth = (selectedOption: any) => setRegisterDetails({ ...registerDetails, monthOfBirth: selectedOption });
-     const handleSelectYear = (selectedOption: any) => setRegisterDetails({ ...registerDetails, yearOfBirth: selectedOption });
-     const handleSelectGender = (selectedOption: any) => setRegisterDetails({ ...registerDetails, gender: selectedOption });
-     const handleSelectState = (selectedOption: any) => setRegisterDetails({ ...registerDetails, stateName: selectedOption });
-     const handleSelectDistrict = (selectedOption: any) => setRegisterDetails({ ...registerDetails, districtName: selectedOption });
+     const handleSelectDay = useCallback((selectedOption: any) => setRegisterDetails({ ...registerDetails, dayOfBirth: selectedOption }), [registerDetails]);
+     const handleSelectMonth = useCallback((selectedOption: any) => setRegisterDetails({ ...registerDetails, monthOfBirth: selectedOption }), [registerDetails]);
+     const handleSelectYear = useCallback((selectedOption: any) => setRegisterDetails({ ...registerDetails, yearOfBirth: selectedOption }), [registerDetails]);
+     const handleSelectGender = useCallback((selectedOption: any) => setRegisterDetails({ ...registerDetails, gender: selectedOption }), [registerDetails]);
+     const handleSelectState = useCallback((selectedOption: any) => setRegisterDetails({ ...registerDetails, stateName: selectedOption }), [registerDetails]);
+     const handleSelectDistrict = useCallback((selectedOption: any) => setRegisterDetails({ ...registerDetails, districtName: selectedOption }), [registerDetails]);
 
+     
      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
           if (registerDetails?.dayOfBirth?.value === 0 || registerDetails?.monthOfBirth?.value === 0 || registerDetails?.yearOfBirth?.value === 1900) return setDobError('Please select a valid date of birth.');

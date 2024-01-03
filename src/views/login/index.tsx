@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FooterSection } from "./footer";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
 import { SelectAddress } from "@/components/select-address";
@@ -43,7 +43,7 @@ export const LoginView = () => {
   const router = useRouter();
 
   // on saving anything among ABHA num, Abha Address, Mobile num, Email-id and making a network request.
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = useCallback(async (data: any) => {
     fetchPostJSONExternal("/phr/api/login/sendOtp", {
       ...data,
       type: loginType,
@@ -60,9 +60,10 @@ export const LoginView = () => {
         toast.error("Please try again.");
         console.log({ err });
       });
-  };
+  }, [loginType]);
 
-  const handleResendOTP = async () => {
+
+  const handleResendOTP = useCallback(async () => {
     fetchPostJSONExternal("/phr/api/login/sendOtp", {
       value,
       type: loginType,
@@ -78,10 +79,11 @@ export const LoginView = () => {
         toast.error("Please try again.");
         console.log({ err });
       });
-  };
+  }, [loginType, value]);
+
 
   // save the otp value and make network request
-  const handleSubmitOtp = async (otpValue: string) => {
+  const handleSubmitOtp = useCallback(async (otpValue: string) => {
     fetchPostJSONExternal("/phr/api/login/verifyOtp", {
       otp: otpValue,
       transactionId,
@@ -99,10 +101,11 @@ export const LoginView = () => {
         toast.error("Please try again.");
         console.log({ err });
       });
-  };
+  }, [loginType, transactionId]);
+
 
   // save the selected address value and make network request
-  const handleSelectAddress = async (selectedAddressValue: string) => {
+  const handleSelectAddress = useCallback(async (selectedAddressValue: string) => {
     fetchPostJSONExternal("/phr/api/login/abhaAddConfirm", {
       abhaAdd: selectedAddressValue,
       transactionId,
@@ -119,19 +122,18 @@ export const LoginView = () => {
         toast.error("Login failed, Please try again.");
         console.log({ err });
       });
-  };
+  }, [transactionId]);
 
-  const handleBackButtonClick = () => {
-    console.log({ loginType, loginState });
-    if (loginState === LOGIN_STATES.ADDRESS_VIEW)
-      setLoginState(LOGIN_STATES.OTP_VIEW);
-    else if (loginState === LOGIN_STATES.OTP_VIEW)
-      setLoginState(LOGIN_STATES.DEFAULT_VIEW);
-    else if (loginState === LOGIN_STATES.DEFAULT_VIEW)
-      setLoginType(LOGIN_TYPES.MOBILE);
-  };
 
-  const handleToggleLoginType = (value: string) => setLoginType(value);
+  const handleBackButtonClick = useCallback(() => {
+    if (loginState === LOGIN_STATES.ADDRESS_VIEW) setLoginState(LOGIN_STATES.OTP_VIEW);
+    else if (loginState === LOGIN_STATES.OTP_VIEW) setLoginState(LOGIN_STATES.DEFAULT_VIEW);
+    else if (loginState === LOGIN_STATES.DEFAULT_VIEW) setLoginType(LOGIN_TYPES.MOBILE);
+  }, [loginType, loginState]);
+
+
+  const handleToggleLoginType = useCallback((value: string) => setLoginType(value), []);
+
 
   return (
     <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
@@ -149,10 +151,10 @@ export const LoginView = () => {
         <OtpInput onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} />
       )}
 
-      {loginState === LOGIN_STATES.ADDRESS_VIEW && ( <SelectAddress
-          onSelectAddress={handleSelectAddress}
-          addresses={addresses}
-        />
+      {loginState === LOGIN_STATES.ADDRESS_VIEW && (<SelectAddress
+        onSelectAddress={handleSelectAddress}
+        addresses={addresses}
+      />
       )}
 
       {loginType === LOGIN_TYPES.MOBILE &&

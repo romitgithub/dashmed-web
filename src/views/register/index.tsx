@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { REGISTER_STATES, REGISTER_TYPES, RegisterFormDataContext } from "./register-data-provider";
 import { OptionForRegisterView } from "./registration-options";
 import { SelectAddress } from "@/components/select-address";
@@ -69,8 +69,11 @@ export const RegisterView = () => {
      const [addresses, setAddresses] = useState<string[]>([]);
      const router = useRouter();
 
-     const handleSubmit = (data: any) => {
-          fetchPostJSONExternal('/phr/api/register/sendOtp', { ...data, type: registerType })
+     const handleSubmit = useCallback((data: any) => {
+          fetchPostJSONExternal('/phr/api/register/sendOtp', {
+               ...data,
+               type: registerType
+          })
                .then((res) => {
                     console.log({ res });
                     if (res?.transaction_id) {
@@ -82,7 +85,7 @@ export const RegisterView = () => {
                     toast.error("Registration failed. Please try again.");
                     console.log({ err });
                });
-     };
+     }, [registerType]);
 
 
      const handleSubmitRegisterDetails = (data: any) => {
@@ -146,7 +149,10 @@ export const RegisterView = () => {
      };
 
      const handleResendOTP = async () => {
-          fetchPostJSONExternal('/phr/api/register/resendOtp', { transactionId, type: registerType })
+          fetchPostJSONExternal('/phr/api/register/resendOtp', {
+               transactionId,
+               type: registerType
+          })
                .then((res) => {
                     console.log({ res });
                     if (!res?.success) toast.error(res?.error || "Please try again.");
@@ -179,13 +185,14 @@ export const RegisterView = () => {
 
      const handleContinue = () => setRegisterState(REGISTER_STATES?.USER_DETAILS_FORM_VIEW);
 
-     const handleBackButtonClick = () => {
+     const handleBackButtonClick = useCallback(() => {
           if (registerState === REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW) setRegisterState(REGISTER_STATES?.USER_DETAILS_FORM_VIEW);
           else if (registerState === REGISTER_STATES?.USER_DETAILS_FORM_VIEW) setRegisterState(REGISTER_STATES?.ADDRESS_VIEW);
           else if (registerState === REGISTER_STATES?.ADDRESS_VIEW) setRegisterState(REGISTER_STATES?.OTP_VIEW);
           else if (registerState === REGISTER_STATES?.OTP_VIEW) setRegisterState(REGISTER_STATES?.DEFAULT_VIEW);
           else if (registerState === REGISTER_STATES?.DEFAULT_VIEW) setRegisterType(REGISTER_TYPES?.DEFAULT_TYPE);
-     };
+     }, [registerState, registerType]);
+
 
      return (
           <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">

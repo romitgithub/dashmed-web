@@ -8,7 +8,7 @@ interface Details {
      abhaNumber?: string;
      abhaAddress?: string;
      name?: string;
-     gender?: string;
+     gender?: { value: any; label: any };
      dob?: string;
      mobile?: string;
      address?: string;
@@ -20,9 +20,19 @@ interface Props {
      onSubmit: (details: Details) => void;
 };
 
+const initialDetails = {
+     abhaNumber: "",
+     abhaAddress: "",
+     name: "",
+     gender: { value: "", label: "Select gender" },
+     dob: "",
+     mobile: "",
+     address: "",
+};
+
 export const ScanToShareDetails: React.FC<Props> = ({ headingText, footerText, onSubmit }) => {
 
-     const [details, setDetails] = useState<Details>({});
+     const [details, setDetails] = useState<Details>(initialDetails);
 
      const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
           const { name, value } = e.target;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Header from "@/components/header";
 import { ScanToShareDetails } from "./scan-to-share-details";
 import TokenModal from "./token-card-pop-over";
@@ -24,16 +24,14 @@ const ScanView = () => {
           setScanType(SCAN_FLOW_TYPES.TOKEN);
      };
 
-     // const handleBackButtonClick = () => setScanType(value);
-     const handleBackButtonClick = () => {
+     const handleBackButtonClick = useCallback(() => {
           if (scanType === SCAN_FLOW_TYPES.TOKEN) setScanType(SCAN_FLOW_TYPES.SHARE_DETAILS);
           else if (scanType === SCAN_FLOW_TYPES?.SHARE_DETAILS) router.push("/scan");
-     };
+     }, [scanType, router]);
 
      useEffect(() => {
           const data = JSON.parse(window.localStorage.getItem("scannedData") || "null");
           setScannedData(data);
-          console.log({ data, scannedData });
      }, [setScannedData]);
 
      console.log({ scannedData });

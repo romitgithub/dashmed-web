@@ -17,11 +17,9 @@ export const ViaAbhaAddress: React.FC<ViaAbhaAddressProps> = ({ onSubmit }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!validateAbhaAddress(abhaAddress)) {
-      setAbhaAddressError('Please enter a valid ABHA address');
-      return;
-    } else setAbhaAddressError(null);
-    // if (onSubmit) onSubmit({ value: abhaAddress, password });
+    if (!validateAbhaAddress(abhaAddress)) return setAbhaAddressError('Please enter a valid ABHA address');
+    else setAbhaAddressError(null);
+    if (onSubmit) onSubmit({ value: abhaAddress, password });
   };
 
 
