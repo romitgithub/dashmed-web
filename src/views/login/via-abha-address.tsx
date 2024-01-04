@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Checkbox } from "@/atoms/checkbox";
-import { ViewPasswordIcon } from "@/atoms/showPasswordIcon";
-import { HidePasswordIcon } from "@/atoms/hidePasswordIcon";
+import { ViewPasswordIcon } from "@/atoms/show-password-icon";
+import { HidePasswordIcon } from "@/atoms/hide-password-icon";
 import { Button } from "@/atoms/button";
 
 interface ViaAbhaAddressProps {

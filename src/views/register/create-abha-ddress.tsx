@@ -1,7 +1,7 @@
 import { Button } from '@/atoms/button';
-import { HidePasswordIcon } from '@/atoms/hidePasswordIcon';
+import { HidePasswordIcon } from '@/atoms/hide-password-icon';
 import AppInput from '@/atoms/input';
-import { ViewPasswordIcon } from '@/atoms/showPasswordIcon';
+import { ViewPasswordIcon } from '@/atoms/show-password-icon';
 import React, { useState } from 'react';
 
 interface Props {

@@ -1,4 +1,4 @@
-import { LeftArrowIcon } from '@/atoms/leftIArrowIcon';
+import { LeftArrowIcon } from '@/atoms/left-arrow-icon';
 import React from 'react';
 
 interface HeaderProps {
