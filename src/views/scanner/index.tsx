@@ -1,29 +1,39 @@
-import React, { useCallback, useState } from "react";
+import React, { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/header";
-import { QRScanner } from "./qr-scanner";
+import { QrReader } from "react-qr-reader";
 import { IS_DATA_SCANNED } from "@/constants";
+
 
 export const Scanner: React.FC = React.memo(() => {
 
      const router = useRouter();
-     const [shouldScan, setShouldScan] = useState(true);
-     const [isVisible, setIsVisible] = useState(true);
 
-     const handleScan = useCallback((data: any) => {
+     const handleScan = (data: any) => {
           window.localStorage.setItem("scannedData", JSON.stringify(data));
           window.localStorage.setItem(IS_DATA_SCANNED, "true");
-          setShouldScan(false);
-          setIsVisible(false);
           router.push('/scan-share');
-     }, [router]);
+     };
 
      const handleBackButtonClick = () => router.back();
+
+     const qrReader = useMemo(() => (
+          <QrReader
+               onResult={(result: any, error: any) => {
+                    if (!!result) handleScan(result);
+                    if (!!error) console.log(error);
+               }}
+               videoStyle={{ width: "100%", height: 'full' }}
+               containerStyle={{ width: "full", height: 'full' }}
+               videoContainerStyle={{ width: "full", height: '100%' }}
+               constraints={{ facingMode: 'environment' }}
+          />
+     ), []);
 
      return (
           <>
                <Header title={`Scan to share`} onBackClick={handleBackButtonClick} showBackButton={true} />
-               {shouldScan ? <QRScanner onScan={handleScan} isVisible={isVisible} /> : null}
+               {qrReader};
           </>
      );
 });
