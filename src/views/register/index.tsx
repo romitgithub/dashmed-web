@@ -88,45 +88,6 @@ export const RegisterView = () => {
      }, [registerType]);
 
 
-     const handleSubmitRegisterDetails = (data: any) => {
-          fetchPostJSONExternal('/phr/api/register/registerDetails', {
-               ...data,
-               transactionId,
-               type: registerType
-          })
-               .then((res) => {
-                    console.log({ res });
-                    if (res?.transaction_id) {
-                         setTransactionId(res?.transactionId);
-                         setRegisterState(REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW);
-                    } else toast.error(res?.error || "Please try again.");
-               })
-               .catch((err) => {
-                    toast.error("Registration details invalid. Please try again.");
-                    console.log({ err });
-               });
-     };
-
-     const handleCreateAbhaAddress = (data: any) => {
-          fetchPostJSONExternal('/phr/api/register/attachAddress', {
-               ...data,
-               transactionId,
-               type: registerType
-          })
-               .then((res) => {
-                    console.log({ res });
-                    if (res?.transaction_id) {
-                         setTransactionId(res?.transactionId);
-                         setRegisterState(REGISTER_STATES?.OTP_VIEW);
-                    } else toast.error(res?.error || "Please try again.");
-               })
-               .catch((err) => {
-                    toast.error("Details invalid. Please try again.");
-                    console.log({ err });
-               });
-     };
-
-
      // save the otp value and make network request
      const handleSubmitOtp = async (otpValue: string) => {
           fetchPostJSONExternal('/phr/api/register/verifyOtp', {
@@ -174,7 +135,7 @@ export const RegisterView = () => {
                     if (res?.token) {
                          localStorage.setItem(ACCESS_TOKEN, res?.token);
                          console.log({ token: res?.token });
-                         router.push('/login');
+                         router.push('/scan');
                     } else toast.error(res?.error || "Please try again.");
                })
                .catch((err) => {
@@ -184,6 +145,46 @@ export const RegisterView = () => {
      };
 
      const handleContinue = () => setRegisterState(REGISTER_STATES?.USER_DETAILS_FORM_VIEW);
+
+     const handleSubmitRegisterDetails = (data: any) => {
+          fetchPostJSONExternal('/phr/api/register/registerDetails', {
+               ...data,
+               transactionId,
+               type: registerType
+          })
+               .then((res) => {
+                    console.log({ res });
+                    if (res?.transaction_id) {
+                         setTransactionId(res?.transactionId);
+                         setRegisterState(REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW);
+                    } else toast.error(res?.error || "Please try again.");
+               })
+               .catch((err) => {
+                    toast.error("Registration details invalid. Please try again.");
+                    console.log({ err });
+               });
+     };
+
+     const handleCreateAbhaAddress = (data: any) => {
+          fetchPostJSONExternal('/phr/api/register/attachAddress', {
+               ...data,
+               transactionId,
+               type: registerType
+          })
+               .then((res) => {
+                    console.log({ res });
+                    if (res?.transaction_id) {
+                         setTransactionId(res?.transactionId);
+                         setRegisterState(REGISTER_STATES?.OTP_VIEW);
+                         router.push('/dashboard');
+                    } else toast.error(res?.error || "Please try again.");
+               })
+               .catch((err) => {
+                    toast.error("Details invalid. Please try again.");
+                    console.log({ err });
+               });
+     };
+
 
      const handleBackButtonClick = useCallback(() => {
           if (registerState === REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW) setRegisterState(REGISTER_STATES?.USER_DETAILS_FORM_VIEW);
