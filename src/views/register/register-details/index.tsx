@@ -2,9 +2,10 @@ import { Button } from "@/atoms/button";
 import AppInput from "@/atoms/input";
 import AppSelect from "@/atoms/select";
 import { gender, statesDistrict } from "@/constants";
-import React, { ChangeEvent, useCallback, useState } from "react";
+import React, { ChangeEvent, useCallback, useContext, useState } from "react";
 import DateOfBirthInput from "./date-of-birth";
 import FullNameInput from "./full-name-input";
+import { RegisterFormDataContext } from "../register-data-provider";
 
 interface UserDetails {
      countryCode?: string;
@@ -47,6 +48,7 @@ interface Props {
 
 export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
 
+     const { loading } = useContext(RegisterFormDataContext);
      const [registerDetails, setRegisterDetails] = useState<UserDetails>(initialRegisterDetails);
      const [dobError, setDobError] = useState<string>('');
      const [genderError, setGenderError] = useState<string>('');
@@ -60,7 +62,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                [name]: value,
           }));
      };
-     
+
 
      function getDistrictsByStateName(stateName: string) {
           const state = statesDistrict.find(state => state.label === stateName);
@@ -76,7 +78,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
      const handleSelectState = useCallback((selectedOption: any) => setRegisterDetails({ ...registerDetails, stateName: selectedOption }), [registerDetails]);
      const handleSelectDistrict = useCallback((selectedOption: any) => setRegisterDetails({ ...registerDetails, districtName: selectedOption }), [registerDetails]);
 
-     
+
      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
           if (registerDetails?.dayOfBirth?.value === 0 || registerDetails?.monthOfBirth?.value === 0 || registerDetails?.yearOfBirth?.value === 1900) return setDobError('Please select a valid date of birth.');
@@ -196,7 +198,7 @@ export const RegisterDetails: React.FC<Props> = ({ onSubmit }) => {
                     />
                </div>
 
-               <Button className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300 mt-5">{"CONTINUE"}</Button>
+               <Button isLoading={loading} disabled={loading} spinnerColor="fill-yellow-600" className="disabled:text-gray-400 p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300 mt-5">{"CONTINUE"}</Button>
           </form>
      );
 };

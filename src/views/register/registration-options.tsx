@@ -21,9 +21,7 @@ export const OptionForRegisterView = () => {
      const [selectedOption, setSelectedOption] = useState<string>('');
 
      const handleContinue = () => {
-          if (selectedOption) {
-               setRegisterType(selectedOption);
-          }
+          if (selectedOption) setRegisterType(selectedOption);
           console.log('Selected Option:', selectedOption);
      };
 
@@ -34,7 +32,6 @@ export const OptionForRegisterView = () => {
                          <input
                               type="radio"
                               id={`option-${index}`}
-                              
                               value={option.value}
                               checked={selectedOption === option?.value}
                               onChange={() => setSelectedOption(option?.value)}

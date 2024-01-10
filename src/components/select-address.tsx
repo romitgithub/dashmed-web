@@ -2,16 +2,18 @@ import { Button } from "@/atoms/button";
 import { useState } from "react";
 
 interface SelectAddressProps {
-  onSelectAddress: (otpValue: string) => void;
+  isLoading?: boolean;
+  onSubmitAddress: (otpValue: string) => void;
   onContinue?: () => void;
   addresses: string[] | null;
   label?: string;
-}
+};
 
 const SelectAddress: React.FC<SelectAddressProps> = ({
-  onSelectAddress,
+  isLoading,
+  onSubmitAddress,
   onContinue,
-  addresses = ["ram", "shyam"],
+  addresses = [],
   label,
 }) => {
 
@@ -26,7 +28,7 @@ const SelectAddress: React.FC<SelectAddressProps> = ({
       setError('Please select a ABHA address');
       return;
     } else setError(null);
-    if (onSelectAddress && selectedAddress) onSelectAddress(selectedAddress);
+    if (onSubmitAddress && selectedAddress) onSubmitAddress(selectedAddress);
   };
 
   const handleContinue = () => {
@@ -46,8 +48,7 @@ const SelectAddress: React.FC<SelectAddressProps> = ({
         {addresses?.map((item, index) => (
           <div
             key={index}
-            className="border border-solid border-gray-700 w-full flex p-2 pl-3 rounded-md mt-2"
-          >
+            className="border border-solid border-gray-700 w-full flex p-2 pl-3 rounded-md mt-2">
             <input
               type="radio"
               id={`item_${index}`}
@@ -61,7 +62,7 @@ const SelectAddress: React.FC<SelectAddressProps> = ({
         ))}
       </div>
       <div className="mt-5 mb-5 w-full">
-        <Button className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300">
+        <Button isLoading={isLoading} disabled={isLoading} spinnerColor="fill-yellow-600" className="disabled:text-gray-400 p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300">
           LOGIN
         </Button>
       </div>
@@ -70,8 +71,7 @@ const SelectAddress: React.FC<SelectAddressProps> = ({
           <span className="font-semibold">Or</span>
           <span
             className="cursor-pointer text-teal-600 font-semibold mt-3 mb-5 text-base sm:text-lg md:text-xl lg:text-2xl"
-            onClick={handleContinue}
-          >
+            onClick={handleContinue}>
             {label}
           </span>
         </div>

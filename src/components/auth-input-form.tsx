@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/atoms/button';
-import { LOGIN_TYPES } from '@/views/login';
 
 interface InputConfig {
      inputLabel: string;
@@ -11,12 +10,14 @@ interface InputConfig {
 };
 
 interface InputFormProps {
+     isLoading?: boolean
      onSubmit: (formData: Record<string, any>) => void;
      inputType: string;
      inputConfigs: Record<string, InputConfig>;
 };
 
 export const AuthInputForm: React.FC<InputFormProps> = ({
+     isLoading,
      onSubmit,
      inputType,
      inputConfigs,
@@ -88,7 +89,7 @@ export const AuthInputForm: React.FC<InputFormProps> = ({
                )}
                {error && <div className='text-red-500'>{error}</div>}
                <div className='mt-5'>
-                    <Button className='p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300'>
+                    <Button isLoading={isLoading} disabled={isLoading} spinnerColor="fill-yellow-600" className='p-2 w-full disabled:text-gray-400 bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300'>
                          CONTINUE
                     </Button>
                </div>

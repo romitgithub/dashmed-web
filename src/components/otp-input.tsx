@@ -4,16 +4,19 @@ import React, { KeyboardEvent } from "react";
 import { Button } from "@/atoms/button";
 
 interface OtpInputProps {
+  isLoading?: boolean;
   onSubmitOtp: (otpValue: string) => void;
   label?: string;
   onResendOTP: () => void;
-}
+};
 
 export const OtpInput: React.FC<OtpInputProps> = ({
   onSubmitOtp,
+  isLoading,
   onResendOTP,
   label,
 }) => {
+
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const refs = [
     useRef<HTMLInputElement>(null),
@@ -87,9 +90,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({
         </span>
       </div>
       <div className="mt-5 mb-5">
-        <Button className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300">
-          CONTINUE
-        </Button>
+        <Button isLoading={isLoading} disabled={isLoading} spinnerColor="fill-yellow-600" className="disabled:text-gray-400 p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300">CONTINUE</Button>
       </div>
     </form>
   );

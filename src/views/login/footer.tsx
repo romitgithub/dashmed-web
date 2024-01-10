@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { LOGIN_TYPES } from ".";
 import { Button } from "@/atoms/button";
+import { LOGIN_TYPES } from "./login-data-provider";
 
 interface FooterSectionProps {
      onToggleLoginType: (loginType: string) => void;

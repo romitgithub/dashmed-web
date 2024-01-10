@@ -2,7 +2,8 @@ import { Button } from '@/atoms/button';
 import { HidePasswordIcon } from '@/atoms/hide-password-icon';
 import AppInput from '@/atoms/input';
 import { ViewPasswordIcon } from '@/atoms/show-password-icon';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { RegisterFormDataContext } from './register-data-provider';
 
 interface Props {
      onSubmit: (formData: { phrAddress: string | null; password: string | null }) => void;
@@ -11,6 +12,7 @@ interface Props {
 
 export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
 
+     const { loading } = useContext(RegisterFormDataContext);
      const [phrAddress, setPhrAddress] = useState<string | null>(null);
      const [password, setPassword] = useState<string | null>(null);
      const [confirmPassword, setConfirmPassword] = useState<string | null>(null);
@@ -35,7 +37,6 @@ export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
           if (!passwordRegex.test(password || '')) return setPasswordError('Password must contain at least 6 characters, including one uppercase letter, one lowercase letter, and one number.');
           if (password !== confirmPassword) return setPasswordError('Passwords do not match');
           setPasswordError(null);
-
           onSubmit({ phrAddress, password });
      };
 
@@ -87,7 +88,7 @@ export const CreateAbhaAddress: React.FC<Props> = ({ onSubmit }) => {
                     </div>
                </div>
 
-               <Button className="p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300 mt-5" >SUBMIT</Button>
+               <Button isLoading={loading} disabled={loading} spinnerColor="fill-yellow-600" className="disabled:text-gray-400 p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300 mt-5" >SUBMIT</Button>
           </form>
      );
 };

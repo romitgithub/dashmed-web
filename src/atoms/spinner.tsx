@@ -2,13 +2,14 @@ import { classNames } from "@/utils/styles";
 
 interface SpinnerProps {
   size?: "small" | "medium" | "large";
+  color?: string;
 }
 
-export default function Spinner({ size = "medium" }: SpinnerProps) {
+export default function Spinner({ size = "medium", color = "fill-blue-600" }: SpinnerProps) {
   return (
     <svg
       className={classNames(
-        "inline mr-2 w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600",
+        `inline mr-2 w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 ${color}`,
         size === "small" ? "w-4 h-4" : "",
         size === "large" ? "w-8 h-8" : ""
       )}

@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, HTMLProps } from "react";
+import { FC, HTMLAttributes } from "react";
 import Link from "next/link";
 import Spinner from "./spinner";
 
@@ -7,30 +7,30 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   label?: string;
   disabled?: boolean;
   isLoading?: boolean;
+  spinnerColor?: string;
 }
 
 export const Button: FC<ButtonProps> = ({ href = "", ...props }) => {
-  if (href?.startsWith("http"))
+  if (href?.startsWith("http")) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer">
         <Btn {...props} />
       </a>
     );
-  else if (href)
+  } else if (href) {
     return (
-      <Link className={props.disabled ? "disabled" : ""} href={href} passHref>
-        {/* <a className={props.disabled ? "disabled" : ""}> */}
+      <Link href={href} passHref>
         <Btn {...props} />
-        {/* </a> */}
       </Link>
     );
+  }
   return <Btn {...props} />;
 };
 
-function Btn({ children, label, isLoading = false, ...props }: ButtonProps) {
+function Btn({ children, label, isLoading = false, spinnerColor, ...props }: ButtonProps) {
   return (
     <button {...props}>
-      {isLoading ? <Spinner /> : null}
+      {isLoading ? <Spinner color={spinnerColor} /> : null}
       {label} {children}
     </button>
   );

@@ -25,6 +25,7 @@ export const RegisterFormDataProvider = ({ children }: RegisterFormDataProviderP
 
      const [registerType, setRegisterType] = useState<string>(REGISTER_TYPES.DEFAULT_TYPE);
      const [registerState, setRegisterState] = useState<string>(REGISTER_STATES.DEFAULT_VIEW);
+     const [loading, setLoading] = useState(false);
      const handleChangeRegisterType = (value: string) => setRegisterType(value);
 
      return (
@@ -34,6 +35,8 @@ export const RegisterFormDataProvider = ({ children }: RegisterFormDataProviderP
                     setRegisterType,
                     registerState,
                     setRegisterState,
+                    loading,
+                    setLoading,
                     handleChangeRegisterType,
                }}
           >

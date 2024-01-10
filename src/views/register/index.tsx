@@ -63,6 +63,8 @@ export const RegisterView = () => {
           registerState,
           setRegisterState,
           setRegisterType,
+          loading,
+          setLoading,
      } = useContext(RegisterFormDataContext);
 
      const [transactionId, setTransactionId] = useState<string | null>(null);
@@ -70,6 +72,7 @@ export const RegisterView = () => {
      const router = useRouter();
 
      const handleSubmit = useCallback((data: any) => {
+          setLoading(true);
           fetchPostJSONExternal('/phr/api/register/sendOtp', {
                ...data,
                type: registerType
@@ -80,8 +83,10 @@ export const RegisterView = () => {
                          setTransactionId(res?.transaction_id);
                          setRegisterState(REGISTER_STATES?.OTP_VIEW);
                     } else toast.error(res.error || "Something wend wrong. Please try again.");
+                    setLoading(false);
                })
                .catch((err) => {
+                    setLoading(false);
                     toast.error("Registration failed. Please try again.");
                     console.log({ err });
                });
@@ -90,6 +95,7 @@ export const RegisterView = () => {
 
      // save the otp value and make network request
      const handleSubmitOtp = async (otpValue: string) => {
+          setLoading(true);
           fetchPostJSONExternal('/phr/api/register/verifyOtp', {
                otp: otpValue,
                transactionId,
@@ -102,14 +108,17 @@ export const RegisterView = () => {
                          setAddresses(res?.mappedPhrAddress);
                          setRegisterState(REGISTER_STATES?.ADDRESS_VIEW);
                     } else toast.error(res?.error || "Please try again.");
+                    setLoading(false);
                })
                .catch((err) => {
                     toast.error("Something went wrong with OTP.");
                     console.log({ err });
+                    setLoading(false);
                });
      };
 
      const handleResendOTP = async () => {
+          setLoading(true);
           fetchPostJSONExternal('/phr/api/register/resendOtp', {
                transactionId,
                type: registerType
@@ -117,15 +126,18 @@ export const RegisterView = () => {
                .then((res) => {
                     console.log({ res });
                     if (!res?.success) toast.error(res?.error || "Please try again.");
+                    setLoading(false);
                })
                .catch((err) => {
                     toast.error("Something went wrong with OTP.");
                     console.log({ err });
+                    setLoading(false);
                });
      };
 
      // save the selected address value and make network request
-     const handleSelectAddress = async (selectedAddressValue: string) => {
+     const handleSubmitSelectedAddress = async (selectedAddressValue: string) => {
+          setLoading(true);
           fetchPostJSONExternal('/phr/api/login/abhaAddConfirm', {
                abhaAdd: selectedAddressValue,
                transactionId,
@@ -137,16 +149,19 @@ export const RegisterView = () => {
                          console.log({ token: res?.token });
                          router.push('/scan');
                     } else toast.error(res?.error || "Please try again.");
+                    setLoading(false);
                })
                .catch((err) => {
                     toast.error("Something went wrong with address.");
                     console.log({ err });
+                    setLoading(false);
                });
      };
 
      const handleContinue = () => setRegisterState(REGISTER_STATES?.USER_DETAILS_FORM_VIEW);
 
      const handleSubmitRegisterDetails = (data: any) => {
+          setLoading(true);
           fetchPostJSONExternal('/phr/api/register/registerDetails', {
                ...data,
                transactionId,
@@ -158,14 +173,17 @@ export const RegisterView = () => {
                          setTransactionId(res?.transactionId);
                          setRegisterState(REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW);
                     } else toast.error(res?.error || "Please try again.");
+                    setLoading(false);
                })
                .catch((err) => {
                     toast.error("Registration details invalid. Please try again.");
                     console.log({ err });
+                    setLoading(false);
                });
      };
 
      const handleCreateAbhaAddress = (data: any) => {
+          setLoading(true);
           fetchPostJSONExternal('/phr/api/register/attachAddress', {
                ...data,
                transactionId,
@@ -178,15 +196,18 @@ export const RegisterView = () => {
                          setRegisterState(REGISTER_STATES?.OTP_VIEW);
                          router.push('/dashboard');
                     } else toast.error(res?.error || "Please try again.");
+                    setLoading(false);
                })
                .catch((err) => {
                     toast.error("Details invalid. Please try again.");
                     console.log({ err });
+                    setLoading(false);
                });
      };
 
 
      const handleBackButtonClick = useCallback(() => {
+          setLoading(false);
           if (registerState === REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW) setRegisterState(REGISTER_STATES?.USER_DETAILS_FORM_VIEW);
           else if (registerState === REGISTER_STATES?.USER_DETAILS_FORM_VIEW) setRegisterState(REGISTER_STATES?.ADDRESS_VIEW);
           else if (registerState === REGISTER_STATES?.ADDRESS_VIEW) setRegisterState(REGISTER_STATES?.OTP_VIEW);
@@ -201,9 +222,9 @@ export const RegisterView = () => {
                {registerType === REGISTER_TYPES?.DEFAULT_TYPE ? (
                     <OptionForRegisterView />
                ) : (<>
-                    {registerState === REGISTER_STATES?.DEFAULT_VIEW && <AuthInputForm onSubmit={handleSubmit} inputType={registerType} inputConfigs={registerInputConfigs} />}
-                    {registerState === REGISTER_STATES?.OTP_VIEW && <OtpInput onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} label={`We have sent you an OTP`} />}
-                    {registerState === REGISTER_STATES?.ADDRESS_VIEW && <SelectAddress onSelectAddress={handleSelectAddress} onContinue={handleContinue} addresses={addresses} label={"Still want to create new ABHA address"} />}
+                    {registerState === REGISTER_STATES?.DEFAULT_VIEW && <AuthInputForm isLoading={loading} onSubmit={handleSubmit} inputType={registerType} inputConfigs={registerInputConfigs} />}
+                    {registerState === REGISTER_STATES?.OTP_VIEW && <OtpInput isLoading={loading} onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} label={`We have sent you an OTP`} />}
+                    {registerState === REGISTER_STATES?.ADDRESS_VIEW && <SelectAddress isLoading={loading} onSubmitAddress={handleSubmitSelectedAddress} onContinue={handleContinue} addresses={addresses} label={"Still want to create new ABHA address"} />}
                     {registerState === REGISTER_STATES?.USER_DETAILS_FORM_VIEW && <RegisterDetails onSubmit={handleSubmitRegisterDetails} />}
                     {registerState === REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW && <CreateAbhaAddress onSubmit={handleCreateAbhaAddress} />}
                </>)}

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Checkbox } from "@/atoms/checkbox";
 import { ViewPasswordIcon } from "@/atoms/show-password-icon";
 import { HidePasswordIcon } from "@/atoms/hide-password-icon";
 import { Button } from "@/atoms/button";
+import { LoginContext } from "./login-data-provider";
 
 interface ViaAbhaAddressProps {
   onSubmit: (formData: Record<string, any>) => void;
@@ -10,6 +11,7 @@ interface ViaAbhaAddressProps {
 
 export const ViaAbhaAddress: React.FC<ViaAbhaAddressProps> = ({ onSubmit }) => {
 
+  const { loading } = useContext(LoginContext);
   const [abhaAddress, setAbhaAddress] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -81,7 +83,7 @@ export const ViaAbhaAddress: React.FC<ViaAbhaAddressProps> = ({ onSubmit }) => {
         </div>
       </div>
       <div className="mt-5">
-        <Button className='p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300'>
+        <Button isLoading={loading} disabled={loading} spinnerColor="fill-yellow-600" className='disabled:text-gray-400 p-2 w-full bg-#296999 text-white rounded-md hover:bg-#1b5887 transition duration-300'>
           LOGIN
         </Button>
       </div>

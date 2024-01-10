@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { FooterSection } from "./footer";
 import { fetchPostJSONExternal } from "@/utils/apiHelpers";
 import { SelectAddress } from "@/components/select-address";
@@ -10,40 +10,30 @@ import Header from "@/components/header";
 import { OtpInput } from "@/components/otp-input";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { LOGIN_STATES, LOGIN_TYPES, LoginContext, loginTypeTextMap } from "./login-data-provider";
 
-
-export const LOGIN_TYPES = {
-  ABHA_ADD: "ABHA_ADD",
-  ABHA_NO: "ABHA_NO",
-  MOBILE: "MOBILE",
-  EMAIL: "EMAIL",
-};
-
-export const LOGIN_STATES = {
-  DEFAULT_VIEW: "DEFAULT_VIEW",
-  OTP_VIEW: "OTP_VIEW",
-  ADDRESS_VIEW: "ADDRESS_VIEW",
-};
-
-// Constants for login type text
-const loginTypeTextMap: Record<string, string> = {
-  [LOGIN_TYPES?.MOBILE]: "Mobile Number",
-  [LOGIN_TYPES?.ABHA_ADD]: "ABHA address",
-  [LOGIN_TYPES?.ABHA_NO]: "ABHA Number",
-  [LOGIN_TYPES?.EMAIL]: "Email Id",
-};
 
 export const LoginView = () => {
 
-  const [loginType, setLoginType] = useState<string>(LOGIN_TYPES.MOBILE);
-  const [loginState, setLoginState] = useState<string>(LOGIN_STATES.DEFAULT_VIEW);
-  const [transactionId, setTransactionId] = useState(null);
-  const [addresses, setAddresses] = useState([]);
-  const [value, setValue] = useState(null); // store login-via email, abha no.,mobile no. credential value
+  const {
+    loginType,
+    setLoginType,
+    loginState,
+    setLoginState,
+    transactionId,
+    setTransactionId,
+    addresses,
+    setAddresses,
+    loading,
+    setLoading,
+  } = useContext(LoginContext);
+
+  const [value, setValue] = useState(null); // store login-via email, abha no., mobile no. credential value
   const router = useRouter();
 
   // on saving anything among ABHA num, Abha Address, Mobile num, Email-id and making a network request.
   const handleSubmit = useCallback(async (data: any) => {
+    setLoading(true);
     fetchPostJSONExternal("/phr/api/login/sendOtp", {
       ...data,
       type: loginType,
@@ -55,15 +45,18 @@ export const LoginView = () => {
           setLoginState(LOGIN_STATES.OTP_VIEW);
           setValue(data?.value);
         } else toast.error("Please try again.");
+        setLoading(false);
       })
       .catch((err) => {
         toast.error("Please try again.");
         console.log({ err });
+        setLoading(false);
       });
   }, [loginType]);
 
 
   const handleResendOTP = useCallback(async () => {
+    setLoading(true);
     fetchPostJSONExternal("/phr/api/login/sendOtp", {
       value,
       type: loginType,
@@ -74,16 +67,19 @@ export const LoginView = () => {
           setTransactionId(res?.transactionId);
           setLoginState(LOGIN_STATES.OTP_VIEW);
         } else toast.error("Please try again.");
+        setLoading(false);
       })
       .catch((err) => {
         toast.error("Please try again.");
         console.log({ err });
+        setLoading(false);
       });
   }, [loginType, value]);
 
 
   // save the otp value and make network request
   const handleSubmitOtp = useCallback(async (otpValue: string) => {
+    setLoading(true);
     fetchPostJSONExternal("/phr/api/login/verifyOtp", {
       otp: otpValue,
       transactionId,
@@ -96,16 +92,19 @@ export const LoginView = () => {
           setAddresses(res?.mappedPhrAddress);
           setLoginState(LOGIN_STATES.ADDRESS_VIEW);
         } else toast.error("Please try again.");
+        setLoading(false);
       })
       .catch((err) => {
         toast.error("Please try again.");
         console.log({ err });
+        setLoading(false);
       });
   }, [loginType, transactionId]);
 
 
   // save the selected address value and make network request
-  const handleSelectAddress = useCallback(async (selectedAddressValue: string) => {
+  const handleSubmitSelectedAddress = useCallback(async (selectedAddressValue: string) => {
+    setLoading(true);
     fetchPostJSONExternal("/phr/api/login/abhaAddConfirm", {
       abhaAdd: selectedAddressValue,
       transactionId,
@@ -117,22 +116,28 @@ export const LoginView = () => {
           console.log({ token: res?.token });
           router.push("/scan");
         } else toast.error("Please try again.");
+        setLoading(false);
       })
       .catch((err) => {
         toast.error("Login failed, Please try again.");
         console.log({ err });
+        setLoading(false);
       });
   }, [transactionId]);
 
 
   const handleBackButtonClick = useCallback(() => {
+    setLoading(false);
     if (loginState === LOGIN_STATES.ADDRESS_VIEW) setLoginState(LOGIN_STATES.OTP_VIEW);
     else if (loginState === LOGIN_STATES.OTP_VIEW) setLoginState(LOGIN_STATES.DEFAULT_VIEW);
     else if (loginState === LOGIN_STATES.DEFAULT_VIEW) setLoginType(LOGIN_TYPES.MOBILE);
   }, [loginType, loginState]);
 
 
-  const handleToggleLoginType = useCallback((value: string) => setLoginType(value), []);
+  const handleToggleLoginType = useCallback((value: string) => {
+    setLoading(false);
+    setLoginType(value)
+  }, []);
 
 
   return (
@@ -144,15 +149,16 @@ export const LoginView = () => {
       />
 
       {loginState === LOGIN_STATES.DEFAULT_VIEW && (
-        <LoginVia onSubmit={handleSubmit} loginType={loginType} />
+        <LoginVia onSubmit={handleSubmit} />
       )}
 
       {loginState === LOGIN_STATES.OTP_VIEW && (
-        <OtpInput onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} />
+        <OtpInput isLoading={loading} onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} />
       )}
 
       {loginState === LOGIN_STATES.ADDRESS_VIEW && (<SelectAddress
-        onSelectAddress={handleSelectAddress}
+        isLoading={loading}
+        onSubmitAddress={handleSubmitSelectedAddress}
         addresses={addresses}
       />
       )}
