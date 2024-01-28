@@ -1,6 +1,6 @@
 import { LeftArrowIcon } from '@/atoms/left-arrow-icon';
 import { ACCESS_TOKEN } from '@/constants';
-import React, { useState } from 'react';
+import React from 'react';
 import { Menu } from '@headlessui/react';
 import { MenuIcon } from '@/atoms/menu';
 import { useRouter } from 'next/navigation';
