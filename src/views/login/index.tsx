@@ -141,32 +141,34 @@ export const LoginView = () => {
 
 
   return (
-    <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
+    <>
       <Header
         title={`Login with ${loginTypeTextMap[loginType]}` || "Unknown"}
         onBackClick={handleBackButtonClick}
         showBackButton={loginType !== LOGIN_TYPES.MOBILE}
       />
+      <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
 
-      {loginState === LOGIN_STATES.DEFAULT_VIEW && (
-        <LoginVia onSubmit={handleSubmit} />
-      )}
-
-      {loginState === LOGIN_STATES.OTP_VIEW && (
-        <OtpInput isLoading={loading} onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} />
-      )}
-
-      {loginState === LOGIN_STATES.ADDRESS_VIEW && (<SelectAddress
-        isLoading={loading}
-        onSubmitAddress={handleSubmitSelectedAddress}
-        addresses={addresses}
-      />
-      )}
-
-      {loginType === LOGIN_TYPES.MOBILE &&
-        LOGIN_STATES.DEFAULT_VIEW === loginState && (
-          <FooterSection onToggleLoginType={handleToggleLoginType} />
+        {loginState === LOGIN_STATES.DEFAULT_VIEW && (
+          <LoginVia onSubmit={handleSubmit} />
         )}
-    </div>
+
+        {loginState === LOGIN_STATES.OTP_VIEW && (
+          <OtpInput isLoading={loading} onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} />
+        )}
+
+        {loginState === LOGIN_STATES.ADDRESS_VIEW && (<SelectAddress
+          isLoading={loading}
+          onSubmitAddress={handleSubmitSelectedAddress}
+          addresses={addresses}
+        />
+        )}
+
+        {loginType === LOGIN_TYPES.MOBILE &&
+          LOGIN_STATES.DEFAULT_VIEW === loginState && (
+            <FooterSection onToggleLoginType={handleToggleLoginType} />
+          )}
+      </div>
+    </>
   );
 };

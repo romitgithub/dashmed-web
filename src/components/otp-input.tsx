@@ -83,7 +83,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({
       <div className="flex flex-row w-full justify-between mt-5">
         <OtpTimer />
         <span
-          className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-teal-400"
+          className="text-sm sm:text-sm md:text-md lg:text-lg xl:text-xl text-teal-400 cursor-pointer"
           onClick={resendOtpFunc}
         >
           RESEND OTP

@@ -24,7 +24,7 @@ const ScanView = () => {
      const [tokenNum, setTokenNum] = useState<number | null>(null);
      const [showToken, setShowToken] = useState(false);
      const handleOpenCloseModal = () => setShowToken(prev => !prev);
-     
+
 
      const handleSubmit = (data: any) => {
           console.log({ data });
@@ -68,20 +68,22 @@ const ScanView = () => {
      console.log({ scannedData });
 
      return (
-          <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
+          <>
                <Header title={`Scan to share` || "Unknown"} onBackClick={handleBackButtonClick} showBackButton={true} />
-               {SCAN_FLOW_TYPES.SHARE_DETAILS === scanType &&
-                    <ScanToShareDetails
-                         data={scannedData}
-                         tokenNum={tokenNum}
-                         headingText={headingText}
-                         footerText={footerText}
-                         onSubmit={handleSubmit}
-                         onOkay={handleOpenCloseModal}
-                         onCancel={handleBackButtonClick}
-                    />}
-               <TokenModal isModalOpen={showToken} onCloseModal={handleOpenCloseModal} />
-          </div>
+               <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
+                    {SCAN_FLOW_TYPES.SHARE_DETAILS === scanType &&
+                         <ScanToShareDetails
+                              data={scannedData}
+                              tokenNum={tokenNum}
+                              headingText={headingText}
+                              footerText={footerText}
+                              onSubmit={handleSubmit}
+                              onOkay={handleOpenCloseModal}
+                              onCancel={handleBackButtonClick}
+                         />}
+                    <TokenModal isModalOpen={showToken} onCloseModal={handleOpenCloseModal} />
+               </div>
+          </>
      );
 };
 

@@ -1,8 +1,9 @@
-import { ComponentType, useEffect } from "react";
+import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ACCESS_TOKEN } from "@/constants";
 
 const withUser = (WrappedComponent: any) => {
+
   const ComponentWithUser = (props: any) => {
     const router = useRouter();
     const pathname = usePathname();
@@ -14,7 +15,7 @@ const withUser = (WrappedComponent: any) => {
       const isRegisterPage = pathname === "/register";
       if (!token && !isLoginPage && !isRegisterPage && router) router.replace("/login");
       if (token && pathname === "/login") router.replace("/scan");
-      
+
     }, [pathname, router]);
 
     return <WrappedComponent {...props} />;

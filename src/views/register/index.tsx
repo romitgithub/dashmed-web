@@ -217,17 +217,19 @@ export const RegisterView = () => {
 
 
      return (
-          <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
+          <>
                <Header title={`${registerTypeTextMap[registerType]}` || "Unknown"} onBackClick={handleBackButtonClick} showBackButton={registerType !== REGISTER_TYPES.DEFAULT_TYPE} />
-               {registerType === REGISTER_TYPES?.DEFAULT_TYPE ? (
-                    <OptionForRegisterView />
-               ) : (<>
-                    {registerState === REGISTER_STATES?.DEFAULT_VIEW && <AuthInputForm isLoading={loading} onSubmit={handleSubmit} inputType={registerType} inputConfigs={registerInputConfigs} />}
-                    {registerState === REGISTER_STATES?.OTP_VIEW && <OtpInput isLoading={loading} onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} label={`We have sent you an OTP`} />}
-                    {registerState === REGISTER_STATES?.ADDRESS_VIEW && <SelectAddress isLoading={loading} onSubmitAddress={handleSubmitSelectedAddress} onContinue={handleContinue} addresses={addresses} label={"Still want to create new ABHA address"} />}
-                    {registerState === REGISTER_STATES?.USER_DETAILS_FORM_VIEW && <RegisterDetails onSubmit={handleSubmitRegisterDetails} />}
-                    {registerState === REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW && <CreateAbhaAddress onSubmit={handleCreateAbhaAddress} />}
-               </>)}
-          </div>
+               <div className="flex min-h-screen flex-col items-center w-full small:w-4/5 sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/5 m-auto p-1">
+                    {registerType === REGISTER_TYPES?.DEFAULT_TYPE ? (
+                         <OptionForRegisterView />
+                    ) : (<>
+                         {registerState === REGISTER_STATES?.DEFAULT_VIEW && <AuthInputForm isLoading={loading} onSubmit={handleSubmit} inputType={registerType} inputConfigs={registerInputConfigs} />}
+                         {registerState === REGISTER_STATES?.OTP_VIEW && <OtpInput isLoading={loading} onSubmitOtp={handleSubmitOtp} onResendOTP={handleResendOTP} label={`We have sent you an OTP`} />}
+                         {registerState === REGISTER_STATES?.ADDRESS_VIEW && <SelectAddress isLoading={loading} onSubmitAddress={handleSubmitSelectedAddress} onContinue={handleContinue} addresses={addresses} label={"Still want to create new ABHA address"} />}
+                         {registerState === REGISTER_STATES?.USER_DETAILS_FORM_VIEW && <RegisterDetails onSubmit={handleSubmitRegisterDetails} />}
+                         {registerState === REGISTER_STATES?.CREATE_ABHA_ADDRESS_VIEW && <CreateAbhaAddress onSubmit={handleCreateAbhaAddress} />}
+                    </>)}
+               </div>
+          </>
      );
 };
